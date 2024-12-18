@@ -9,7 +9,7 @@ import 'package:teatally/features/home/infrastructure/home_remote.dart';
 
 @injectable
 class HomeRepository {
-  HomeRemoteService _remoteService;
+  final HomeRemoteService _remoteService;
 
   HomeRepository(this._remoteService);
 
