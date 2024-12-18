@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "28068623394",
+    "project_id": "teatally-d1b86",
+    "storage_bucket": "teatally-d1b86.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28068623394:android:600106fc614f77c66a067b",
+        "android_client_info": {
+          "package_name": "com.example.teatally"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28068623394-1gid21q03k9f651i37k4cc726uei6sip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.teatally",
+            "certificate_hash": "7e99eefd7194db57c3eb30614a05ec51ac5d5eda"
+          }
+        },
+        {
+          "client_id": "28068623394-1dsa8njivjnh6m1r4e4d6050f5vrcgn0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5wJ60iIe6VVgV1R358UKyqNePA8022Mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28068623394-1dsa8njivjnh6m1r4e4d6050f5vrcgn0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "28068623394-npdobs6kcaip5gmb2n969kaspos8edj7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.teatally"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
