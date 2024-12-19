@@ -55,6 +55,14 @@ class CredentialStorage {
     return prefs.getString(_keyDisplayName);
   }
 
+  static Future<Map<String, String?>> getUserDetails() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final displayName = prefs.getString(_keyDisplayName);
+    final email = prefs.getString(_keyEmail);
+    final photoURL = prefs.getString(_keyPhotoURL);
+    return {'displayName': displayName, "email": email, 'photoURL': photoURL};
+  }
+
   static Future<String?> getEmail() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_keyEmail);

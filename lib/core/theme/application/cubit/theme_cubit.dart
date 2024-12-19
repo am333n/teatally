@@ -37,7 +37,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
       emit(ThemeState(
         themeType: AppThemeType.defaultTheme,
-        isDarkMode: false,
+        isDarkMode: true,
         isUpdating: false,
       ));
 

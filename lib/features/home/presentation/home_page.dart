@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teatally/core/app_colors.dart';
+import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/styles/text/txt.dart';
+import 'package:teatally/core/styles/text/txt_styles.dart';
+import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
 import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
@@ -12,7 +15,9 @@ import 'package:teatally/features/home/presentation/components/add_group_dialog.
 import 'package:teatally/features/home/presentation/components/background_image.dart';
 import 'package:teatally/features/home/presentation/components/counter_button.dart';
 import 'package:teatally/features/home/presentation/components/item_label.dart';
+import 'package:teatally/features/home/presentation/components/profile_button.dart';
 import 'package:teatally/features/home/presentation/components/saved_data_dialog.dart';
+import 'package:teatally/features/home/presentation/components/search_and_add_header.dart';
 import 'package:teatally/features/home/presentation/components/summary_bottom_sheet.dart';
 import 'package:teatally/features/home/presentation/components/total_display.dart';
 
@@ -68,19 +73,21 @@ class _HomePageState extends State<HomePage> {
               //     ? beverageTypes[selectedBeverageTypeIndex!].beverages
               //     : beverageTypes.expand((type) => type.beverages).toList();
 
-              return Padding(
-                padding: const EdgeInsets.all(10),
+              return SafeArea(
                 child: CustomScrollView(
                   slivers: [
                     SliverAppBar(
                       centerTitle: false,
-                      // title: SavedDataDialog(),
+                      title: SavedDataDialog(),
+                      backgroundColor:
+                          context.theme.appColors.backgroundPrimary,
                       actions: [
-                        IconButton(
-                            onPressed: () {
-                              context.read<AuthCubit>().signOut();
-                            },
-                            icon: Icon(Icons.logout)),
+                        ProfileButton(
+                          onTap: () {
+                            context.read<AuthCubit>().signOut();
+                          },
+                        ),
+
                         // InkWell(
                         //   onTap: () {
                         //     // if (total > 0) {
@@ -173,12 +180,36 @@ class _HomePageState extends State<HomePage> {
                       //   ),
                       // ),
                     ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 15, bottom: 10),
+                        child: Text(
+                          'Groups',
+                          style: TextStyles.getTextStyle(
+                                  context, TxtStyle.headerLSemiBold)
+                              .copyWith(fontSize: 45),
+                        ),
+                      ),
+                    ),
+                    SearchAndAddButtonHeader(),
                     SliverList.builder(
-                        itemCount: groups?.length ?? 0,
+                        itemCount: 100,
                         itemBuilder: (context, index) {
-                          final item = groups?[index];
-                          return ListTile(
-                            title: Txt(item?.name ?? '-'),
+                          // final item = groups?[index];
+                          return InkWell(
+                            onTap: () {
+                              // AutoRouter.of(context)
+                              //     .push(GroupDetailRoute(groupDetail: item));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              padding: const EdgeInsets.all(10),
+                              color: Colors.white,
+                              child: Row(
+                                children: [Txt(index.toString())],
+                              ),
+                            ),
                           );
                         }),
                     // SliverGrid(

@@ -389,14 +389,16 @@ class CommonWidgets {
     required Widget icon,
     String? tooltip,
     Color? color,
+    Color? highlightColor,
   }) {
     return Material(
-      color: Colors.transparent,
+      color: color,
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
       child: IconButton(
-        splashColor: color?.withOpacity(0.5),
-        highlightColor: color?.withOpacity(0.2),
+        color: color,
+        splashColor: highlightColor?.withOpacity(0.5),
+        highlightColor: highlightColor?.withOpacity(0.2),
         onPressed: onPressed,
         tooltip: tooltip,
         icon: icon,

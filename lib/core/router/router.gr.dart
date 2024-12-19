@@ -45,6 +45,52 @@ class AuthRouteArgs {
 }
 
 /// generated route for
+/// [GroupDetailPage]
+class GroupDetailRoute extends PageRouteInfo<GroupDetailRouteArgs> {
+  GroupDetailRoute({
+    Key? key,
+    required GroupModel? groupDetail,
+    List<PageRouteInfo>? children,
+  }) : super(
+          GroupDetailRoute.name,
+          args: GroupDetailRouteArgs(
+            key: key,
+            groupDetail: groupDetail,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'GroupDetailRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<GroupDetailRouteArgs>();
+      return GroupDetailPage(
+        key: args.key,
+        groupDetail: args.groupDetail,
+      );
+    },
+  );
+}
+
+class GroupDetailRouteArgs {
+  const GroupDetailRouteArgs({
+    this.key,
+    required this.groupDetail,
+  });
+
+  final Key? key;
+
+  final GroupModel? groupDetail;
+
+  @override
+  String toString() {
+    return 'GroupDetailRouteArgs{key: $key, groupDetail: $groupDetail}';
+  }
+}
+
+/// generated route for
 /// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})

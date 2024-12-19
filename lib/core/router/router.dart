@@ -5,6 +5,9 @@ import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/auth/presentation/auth_screen.dart';
 import 'package:teatally/features/home/presentation/home_page.dart';
 
+import '../../features/group/presentation/group_detail.dart';
+import '../../features/home/domain/group_model.dart';
+
 part 'router.gr.dart';
 
 @AutoRouterConfig()
@@ -13,6 +16,9 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         _buildRoute(page: HomeRoute.page, initial: false),
         _buildRoute(page: AuthRoute.page, initial: true, guards: [AuthGuard()]),
+        _buildRoute(
+          page: GroupDetailRoute.page,
+        ),
       ];
 
   CustomRoute _buildRoute({
