@@ -22,6 +22,8 @@ GroupModel _$GroupModelFromJson(Map<String, dynamic> json) {
 mixin _$GroupModel {
   @JsonKey(name: 'uid')
   String get uid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'docId')
+  String? get docId => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'description')
@@ -40,6 +42,8 @@ mixin _$GroupModel {
   String get icon => throw _privateConstructorUsedError;
   @JsonKey(name: 'color')
   String get color => throw _privateConstructorUsedError;
+  @JsonKey(name: 'isPinned')
+  bool get isPinned => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,6 +59,7 @@ abstract class $GroupModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String uid,
+      @JsonKey(name: 'docId') String? docId,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'createdBy') String createdBy,
@@ -63,7 +68,8 @@ abstract class $GroupModelCopyWith<$Res> {
       @JsonKey(name: 'members') List<String> members,
       @JsonKey(name: 'admin') String admin,
       @JsonKey(name: 'icon') String icon,
-      @JsonKey(name: 'color') String color});
+      @JsonKey(name: 'color') String color,
+      @JsonKey(name: 'isPinned') bool isPinned});
 }
 
 /// @nodoc
@@ -80,6 +86,7 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
   @override
   $Res call({
     Object? uid = null,
+    Object? docId = freezed,
     Object? name = null,
     Object? description = freezed,
     Object? createdBy = null,
@@ -89,12 +96,17 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
     Object? admin = null,
     Object? icon = null,
     Object? color = null,
+    Object? isPinned = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      docId: freezed == docId
+          ? _value.docId
+          : docId // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -131,6 +143,10 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as String,
+      isPinned: null == isPinned
+          ? _value.isPinned
+          : isPinned // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -145,6 +161,7 @@ abstract class _$$GroupModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String uid,
+      @JsonKey(name: 'docId') String? docId,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'createdBy') String createdBy,
@@ -153,7 +170,8 @@ abstract class _$$GroupModelImplCopyWith<$Res>
       @JsonKey(name: 'members') List<String> members,
       @JsonKey(name: 'admin') String admin,
       @JsonKey(name: 'icon') String icon,
-      @JsonKey(name: 'color') String color});
+      @JsonKey(name: 'color') String color,
+      @JsonKey(name: 'isPinned') bool isPinned});
 }
 
 /// @nodoc
@@ -168,6 +186,7 @@ class __$$GroupModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
+    Object? docId = freezed,
     Object? name = null,
     Object? description = freezed,
     Object? createdBy = null,
@@ -177,12 +196,17 @@ class __$$GroupModelImplCopyWithImpl<$Res>
     Object? admin = null,
     Object? icon = null,
     Object? color = null,
+    Object? isPinned = null,
   }) {
     return _then(_$GroupModelImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      docId: freezed == docId
+          ? _value.docId
+          : docId // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -219,6 +243,10 @@ class __$$GroupModelImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as String,
+      isPinned: null == isPinned
+          ? _value.isPinned
+          : isPinned // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -228,6 +256,7 @@ class __$$GroupModelImplCopyWithImpl<$Res>
 class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
   const _$GroupModelImpl(
       {@JsonKey(name: 'uid') required this.uid,
+      @JsonKey(name: 'docId') this.docId,
       @JsonKey(name: 'name') required this.name,
       @JsonKey(name: 'description') this.description,
       @JsonKey(name: 'createdBy') required this.createdBy,
@@ -236,7 +265,8 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
       @JsonKey(name: 'members') required final List<String> members,
       @JsonKey(name: 'admin') required this.admin,
       @JsonKey(name: 'icon') required this.icon,
-      @JsonKey(name: 'color') required this.color})
+      @JsonKey(name: 'color') required this.color,
+      @JsonKey(name: 'isPinned') required this.isPinned})
       : _members = members;
 
   factory _$GroupModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -245,6 +275,9 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
   @override
   @JsonKey(name: 'uid')
   final String uid;
+  @override
+  @JsonKey(name: 'docId')
+  final String? docId;
   @override
   @JsonKey(name: 'name')
   final String name;
@@ -278,10 +311,13 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
   @override
   @JsonKey(name: 'color')
   final String color;
+  @override
+  @JsonKey(name: 'isPinned')
+  final bool isPinned;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GroupModel(uid: $uid, name: $name, description: $description, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, members: $members, admin: $admin, icon: $icon, color: $color)';
+    return 'GroupModel(uid: $uid, docId: $docId, name: $name, description: $description, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, members: $members, admin: $admin, icon: $icon, color: $color, isPinned: $isPinned)';
   }
 
   @override
@@ -290,6 +326,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
     properties
       ..add(DiagnosticsProperty('type', 'GroupModel'))
       ..add(DiagnosticsProperty('uid', uid))
+      ..add(DiagnosticsProperty('docId', docId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('createdBy', createdBy))
@@ -298,7 +335,8 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
       ..add(DiagnosticsProperty('members', members))
       ..add(DiagnosticsProperty('admin', admin))
       ..add(DiagnosticsProperty('icon', icon))
-      ..add(DiagnosticsProperty('color', color));
+      ..add(DiagnosticsProperty('color', color))
+      ..add(DiagnosticsProperty('isPinned', isPinned));
   }
 
   @override
@@ -307,6 +345,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
         (other.runtimeType == runtimeType &&
             other is _$GroupModelImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.docId, docId) || other.docId == docId) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -319,7 +358,9 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
             const DeepCollectionEquality().equals(other._members, _members) &&
             (identical(other.admin, admin) || other.admin == admin) &&
             (identical(other.icon, icon) || other.icon == icon) &&
-            (identical(other.color, color) || other.color == color));
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.isPinned, isPinned) ||
+                other.isPinned == isPinned));
   }
 
   @JsonKey(ignore: true)
@@ -327,6 +368,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
   int get hashCode => Object.hash(
       runtimeType,
       uid,
+      docId,
       name,
       description,
       createdBy,
@@ -335,7 +377,8 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
       const DeepCollectionEquality().hash(_members),
       admin,
       icon,
-      color);
+      color,
+      isPinned);
 
   @JsonKey(ignore: true)
   @override
@@ -353,16 +396,19 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
 
 abstract class _GroupModel implements GroupModel {
   const factory _GroupModel(
-      {@JsonKey(name: 'uid') required final String uid,
-      @JsonKey(name: 'name') required final String name,
-      @JsonKey(name: 'description') final String? description,
-      @JsonKey(name: 'createdBy') required final String createdBy,
-      @JsonKey(name: 'createdAt') required final DateTime createdAt,
-      @JsonKey(name: 'updatedAt') required final DateTime updatedAt,
-      @JsonKey(name: 'members') required final List<String> members,
-      @JsonKey(name: 'admin') required final String admin,
-      @JsonKey(name: 'icon') required final String icon,
-      @JsonKey(name: 'color') required final String color}) = _$GroupModelImpl;
+          {@JsonKey(name: 'uid') required final String uid,
+          @JsonKey(name: 'docId') final String? docId,
+          @JsonKey(name: 'name') required final String name,
+          @JsonKey(name: 'description') final String? description,
+          @JsonKey(name: 'createdBy') required final String createdBy,
+          @JsonKey(name: 'createdAt') required final DateTime createdAt,
+          @JsonKey(name: 'updatedAt') required final DateTime updatedAt,
+          @JsonKey(name: 'members') required final List<String> members,
+          @JsonKey(name: 'admin') required final String admin,
+          @JsonKey(name: 'icon') required final String icon,
+          @JsonKey(name: 'color') required final String color,
+          @JsonKey(name: 'isPinned') required final bool isPinned}) =
+      _$GroupModelImpl;
 
   factory _GroupModel.fromJson(Map<String, dynamic> json) =
       _$GroupModelImpl.fromJson;
@@ -370,6 +416,9 @@ abstract class _GroupModel implements GroupModel {
   @override
   @JsonKey(name: 'uid')
   String get uid;
+  @override
+  @JsonKey(name: 'docId')
+  String? get docId;
   @override
   @JsonKey(name: 'name')
   String get name;
@@ -397,6 +446,9 @@ abstract class _GroupModel implements GroupModel {
   @override
   @JsonKey(name: 'color')
   String get color;
+  @override
+  @JsonKey(name: 'isPinned')
+  bool get isPinned;
   @override
   @JsonKey(ignore: true)
   _$$GroupModelImplCopyWith<_$GroupModelImpl> get copyWith =>

@@ -1,14 +1,22 @@
+import 'dart:developer';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/widgets/app_card.dart';
-import 'package:teatally/core/widgets/color_picker.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/components/color_picker.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
 import 'package:teatally/core/widgets/form_components.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/domain/group_model.dart';
 import 'package:teatally/features/home/domain/users_model.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/components/form_builder_color_picker.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/components/form_builder_icon_picker.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/components/group_icon_display.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/components/icon_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class AddGroupDialog extends StatefulWidget {
@@ -58,6 +66,10 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
               child: Column(
                 children: [
                   // Group Name Field
+                  GroupIconDisplay(
+                      formKey: _formKey,
+                      colorFieldName: 'color',
+                      iconFieldName: 'icon'),
                   FormComponents.formBuilderTextField(context,
                       fieldName: 'name',
                       label: 'Group Name',
@@ -68,11 +80,15 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                       label: 'Description',
                       hintText: 'Enter group description',
                       isRichText: true),
-                  ColorPickerWidget(onColorSelected: (colorCode, color) {
-                    setState(() {
-                      foregroundColor = color;
-                    });
-                  }),
+                  FormBuilderColorPicker(
+                      name: 'color',
+                      onColorChanged: (p0) {
+                        log(p0.toString());
+                        setState(() {
+                          foregroundColor = p0;
+                        });
+                      }),
+                  const FormBuilderIconPicker(name: 'icon'),
                   FormComponents.formBuilderTextField(
                     context,
                     fieldName: '',
@@ -136,7 +152,7 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                     selectedMemebers.add(currentUser ?? '');
                     if ((formState?.validate() ?? false) &&
                         selectedMemebers.isNotEmpty) {
-                      var uuid = Uuid();
+                      var uuid = const Uuid();
                       final groupData = GroupModel(
                           uid: uuid.v1(),
                           name: formState?.fields['name']?.value,
@@ -146,11 +162,14 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                           updatedAt: DateTime.now(),
                           members: selectedMemebers,
                           admin: currentUser ?? '',
-                          icon: '',
-                          color: '');
+                          icon: formState?.fields['icon']?.value,
+                          color: formState?.fields['color']?.value,
+                          isPinned: false);
+                      if (!context.mounted) return;
                       await context
                           .read<HomePageCubit>()
                           .createGroup(groupData);
+                      AutoRouter.of(context).maybePop();
                     }
                   })
                 ],

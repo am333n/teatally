@@ -58,4 +58,32 @@ class HomeRepository {
       return Left(FailureHandler.handleGenericException(e as Exception));
     }
   }
+
+  Future<Either<Failure, bool>> deleteGroup(String? docId) async {
+    try {
+      final response = await _remoteService.deleteGroup(docId);
+      return response.when(success: (data) {
+        return const Right(true);
+      }, failure: (failure) {
+        return Left(failure);
+      });
+    } catch (e) {
+      return Left(FailureHandler.handleGenericException(e as Exception));
+    }
+  }
+
+  Future<Either<Failure, bool>> setIsPinned(
+      String? docId, bool currentPinnedStatus) async {
+    try {
+      final response =
+          await _remoteService.setIsPinned(docId, currentPinnedStatus);
+      return response.when(success: (data) {
+        return const Right(true);
+      }, failure: (failure) {
+        return Left(failure);
+      });
+    } catch (e) {
+      return Left(FailureHandler.handleGenericException(e as Exception));
+    }
+  }
 }

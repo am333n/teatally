@@ -10,10 +10,8 @@ import 'package:teatally/core/injection/injection.dart';
 
 @injectable
 class AuthRemoteService with BaseFirebase {
-  final FirebaseAuth _firebaseAuth;
-
-  AuthRemoteService(this._firebaseAuth);
-
+  AuthRemoteService();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   BaseReturnType signInWithEmailPassword(String email, String password) async {
     try {
       final UserCredential userCredential =

@@ -8,7 +8,6 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:teatally/core/theme/application/cubit/theme_cubit.dart'
@@ -20,6 +19,12 @@ import 'package:teatally/features/auth/infrastructure/auth_remote.dart'
     as _i653;
 import 'package:teatally/features/auth/infrastructure/auth_repository.dart'
     as _i400;
+import 'package:teatally/features/group/application/cubit/group_detail_cubit.dart'
+    as _i416;
+import 'package:teatally/features/group/infrastructure/group_remote_service.dart'
+    as _i962;
+import 'package:teatally/features/group/infrastructure/group_repository.dart'
+    as _i681;
 import 'package:teatally/features/home/application/home_page_cubit.dart'
     as _i111;
 import 'package:teatally/features/home/infrastructure/home_remote.dart'
@@ -40,18 +45,22 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i777.ThemeRepository>(() => _i777.ThemeRepository());
     gh.factory<_i911.HomeRemoteService>(() => _i911.HomeRemoteService());
+    gh.factory<_i653.AuthRemoteService>(() => _i653.AuthRemoteService());
+    gh.factory<_i962.GroupRemoteService>(() => _i962.GroupRemoteService());
     gh.singleton<_i121.ThemeCubit>(
         () => _i121.ThemeCubit(gh<_i777.ThemeRepository>()));
     gh.factory<_i813.HomeRepository>(
         () => _i813.HomeRepository(gh<_i911.HomeRemoteService>()));
-    gh.factory<_i111.HomePageCubit>(
-        () => _i111.HomePageCubit(gh<_i813.HomeRepository>()));
-    gh.factory<_i653.AuthRemoteService>(
-        () => _i653.AuthRemoteService(gh<_i59.FirebaseAuth>()));
     gh.factory<_i400.AuthRepository>(
         () => _i400.AuthRepository(gh<_i653.AuthRemoteService>()));
+    gh.factory<_i111.HomePageCubit>(
+        () => _i111.HomePageCubit(gh<_i813.HomeRepository>()));
+    gh.factory<_i681.GroupRepository>(
+        () => _i681.GroupRepository(gh<_i962.GroupRemoteService>()));
     gh.factory<_i769.AuthCubit>(
         () => _i769.AuthCubit(gh<_i400.AuthRepository>()));
+    gh.factory<_i416.GroupDetailCubit>(
+        () => _i416.GroupDetailCubit(gh<_i681.GroupRepository>()));
     return this;
   }
 }

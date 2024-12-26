@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/components/color_mapper.dart';
 
 class ColorPickerWidget extends StatefulWidget {
   final Function(String, Color) onColorSelected;
@@ -11,20 +12,14 @@ class ColorPickerWidget extends StatefulWidget {
 }
 
 class _ColorPickerWidgetState extends State<ColorPickerWidget> {
-  final List<Color> _colors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.yellow,
-    Colors.orange,
-    Colors.purple,
-    Colors.cyan,
-    Colors.brown,
-    Colors.grey,
-    Colors.pink,
-  ];
+  final List<Color> _colors = ColorMapper.colors;
 
   Color? _selectedColor;
+  @override
+  void initState() {
+    _selectedColor = ColorMapper.defaultColor;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +35,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
               setState(() {
                 _selectedColor = color;
               });
-              widget.onColorSelected(_colorToHex(color), color);
+              widget.onColorSelected(ColorMapper.colorToHex(color), color);
             },
             child: Container(
               width: 40,
@@ -57,10 +52,5 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         }).toList(),
       ),
     );
-  }
-
-  /// Converts a [Color] object to a HEX color code as a [String].
-  String _colorToHex(Color color) {
-    return '#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}';
   }
 }

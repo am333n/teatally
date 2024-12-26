@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:teatally/core/widgets/toast.dart';
+
 import 'package:teatally/features/home/application/home_page_state.dart';
 import 'package:teatally/features/home/domain/beverages.dart';
 import 'package:teatally/features/home/domain/group_model.dart';
@@ -19,6 +19,8 @@ class HomePageCubit extends Cubit<HomePageState> {
   List<ItemCounter> selectedBeverages = [];
   final beverages = BeverageData.beverageTypes;
   int total = 0;
+
+  List<GroupModel>? groups;
 
   void addGroup() {}
 
@@ -40,12 +42,47 @@ class HomePageCubit extends Cubit<HomePageState> {
     });
   }
 
+  void search(String? query) async {
+    if (query != null && query.isNotEmpty) {
+      if (groups?.isNotEmpty ?? false) {
+        final filteredGroup =
+            groups?.where((e) => e.name.toLowerCase().contains(query)).toList();
+        emit(HomePageState.loaded(groups: filteredGroup));
+      }
+    } else {
+      emit(HomePageState.loaded(groups: groups));
+    }
+  }
+
   Future<void> loadGroups() async {
     final response = await _repository.getAllGroups();
-    response.fold((l) {}, (r) {
+    response.fold((l) {
+      emit(HomePageState.error(failure: l));
+    }, (r) {
+      groups = r;
       emit(HomePageState.loaded(groups: r));
     });
   }
+
+  Future<void> deleteGroup(String? docID) async {
+    final response = await _repository.deleteGroup(docID);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      loadGroups();
+      Toast.showSuccess('Group Deleted');
+    });
+  }
+
+  Future<void> setPinned(String? docId, bool currentPinnedStatus) async {
+    final response = await _repository.setIsPinned(docId, currentPinnedStatus);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      loadGroups();
+    });
+  }
+
   // void loadBeverages() {
   //   emit(HomePageState.loaded(
   //       beverageTypes: beverages,

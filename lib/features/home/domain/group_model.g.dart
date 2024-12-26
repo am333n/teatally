@@ -9,6 +9,7 @@ part of 'group_model.dart';
 _$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
     _$GroupModelImpl(
       uid: json['uid'] as String,
+      docId: json['docId'] as String?,
       name: json['name'] as String,
       description: json['description'] as String?,
       createdBy: json['createdBy'] as String,
@@ -19,11 +20,13 @@ _$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
       admin: json['admin'] as String,
       icon: json['icon'] as String,
       color: json['color'] as String,
+      isPinned: json['isPinned'] as bool,
     );
 
 Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
+      'docId': instance.docId,
       'name': instance.name,
       'description': instance.description,
       'createdBy': instance.createdBy,
@@ -33,4 +36,5 @@ Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
       'admin': instance.admin,
       'icon': instance.icon,
       'color': instance.color,
+      'isPinned': instance.isPinned,
     };

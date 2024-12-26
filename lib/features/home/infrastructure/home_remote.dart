@@ -10,8 +10,32 @@ import 'package:teatally/features/home/domain/group_model.dart';
 
 @injectable
 class HomeRemoteService with BaseFirebase {
-  BaseReturnType getAllUsersList() {
-    return super.getAllItemsExceptCurrentUser(Collections.users);
+  BaseReturnType getAllUsersList() async {
+    try {
+      final currentUser = firebaseAuth.currentUser?.uid;
+      if (currentUser == null) {
+        return const RemoteResponse.failure(
+            Failure.serverError(message: 'User Not Authenticated'));
+      }
+      final snapshot = await super
+          .firebaseFirestore
+          .collection(Collections.users)
+          .where('', arrayContains: currentUser)
+          .orderBy('isPinned', descending: true)
+          .get();
+
+      List<Map<String, dynamic>> items = snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['docId'] = doc.id;
+        return data;
+      }).toList();
+
+      return RemoteResponse.success(items);
+    } on FirebaseException catch (e) {
+      return RemoteResponse.failure(FailureHandler.handleFirestoreException(e));
+    } catch (e) {
+      return RemoteResponse.failure(Failure.serverError(message: e.toString()));
+    }
   }
 
   BaseReturnType createGroup(GroupModel groupDetails) {
@@ -25,14 +49,34 @@ class HomeRemoteService with BaseFirebase {
           .firebaseFirestore
           .collection(Collections.groups)
           .where('members', arrayContains: currentUser)
+          .orderBy('isPinned', descending: true)
           .get();
-      List<Map<String, dynamic>> items =
-          snapshot.docs.map((doc) => doc.data()).toList();
+
+      List<Map<String, dynamic>> items = snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['docId'] = doc.id;
+        return data;
+      }).toList();
+
       return RemoteResponse.success(items);
     } on FirebaseException catch (e) {
       return RemoteResponse.failure(FailureHandler.handleFirestoreException(e));
     } catch (e) {
       return RemoteResponse.failure(Failure.serverError(message: e.toString()));
     }
+  }
+
+  BaseReturnType setIsPinned(String? docid, bool currentPinnedStatus) async {
+    if (docid == null) {
+      return const RemoteResponse.failure(
+          Failure.serverError(message: 'Invalid docId'));
+    }
+    return await super.updateItem(Collections.groups, docid, {
+      'isPinned': !currentPinnedStatus,
+    });
+  }
+
+  BaseReturnType deleteGroup(String? docId) {
+    return super.deleteItem(Collections.groups, docId);
   }
 }

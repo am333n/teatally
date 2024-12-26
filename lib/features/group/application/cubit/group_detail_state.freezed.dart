@@ -18,33 +18,47 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$GroupDetailState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
+        loadedState,
+    required TResult Function() loadingState,
+    required TResult Function(Failure failure) errorState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
+        loadedState,
+    TResult? Function()? loadingState,
+    TResult? Function(Failure failure)? errorState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
+    TResult Function()? loadingState,
+    TResult Function(Failure failure)? errorState,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_LoadedState value) loadedState,
+    required TResult Function(_LoadingState value) loadingState,
+    required TResult Function(_ErrorState value) errorState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
+    TResult? Function(_LoadedState value)? loadedState,
+    TResult? Function(_LoadingState value)? loadingState,
+    TResult? Function(_ErrorState value)? errorState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_LoadedState value)? loadedState,
+    TResult Function(_LoadingState value)? loadingState,
+    TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -69,35 +83,189 @@ class _$GroupDetailStateCopyWithImpl<$Res, $Val extends GroupDetailState>
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+abstract class _$$LoadedStateImplCopyWith<$Res> {
+  factory _$$LoadedStateImplCopyWith(
+          _$LoadedStateImpl value, $Res Function(_$LoadedStateImpl) then) =
+      __$$LoadedStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({GroupDetailsLoadedStateModel loadedStateData});
+
+  $GroupDetailsLoadedStateModelCopyWith<$Res> get loadedStateData;
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$GroupDetailStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+class __$$LoadedStateImplCopyWithImpl<$Res>
+    extends _$GroupDetailStateCopyWithImpl<$Res, _$LoadedStateImpl>
+    implements _$$LoadedStateImplCopyWith<$Res> {
+  __$$LoadedStateImplCopyWithImpl(
+      _$LoadedStateImpl _value, $Res Function(_$LoadedStateImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? loadedStateData = null,
+  }) {
+    return _then(_$LoadedStateImpl(
+      null == loadedStateData
+          ? _value.loadedStateData
+          : loadedStateData // ignore: cast_nullable_to_non_nullable
+              as GroupDetailsLoadedStateModel,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $GroupDetailsLoadedStateModelCopyWith<$Res> get loadedStateData {
+    return $GroupDetailsLoadedStateModelCopyWith<$Res>(_value.loadedStateData,
+        (value) {
+      return _then(_value.copyWith(loadedStateData: value));
+    });
+  }
 }
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+class _$LoadedStateImpl implements _LoadedState {
+  const _$LoadedStateImpl(this.loadedStateData);
+
+  @override
+  final GroupDetailsLoadedStateModel loadedStateData;
 
   @override
   String toString() {
-    return 'GroupDetailState.initial()';
+    return 'GroupDetailState.loadedState(loadedStateData: $loadedStateData)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$LoadedStateImpl &&
+            (identical(other.loadedStateData, loadedStateData) ||
+                other.loadedStateData == loadedStateData));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, loadedStateData);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadedStateImplCopyWith<_$LoadedStateImpl> get copyWith =>
+      __$$LoadedStateImplCopyWithImpl<_$LoadedStateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
+        loadedState,
+    required TResult Function() loadingState,
+    required TResult Function(Failure failure) errorState,
+  }) {
+    return loadedState(loadedStateData);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
+        loadedState,
+    TResult? Function()? loadingState,
+    TResult? Function(Failure failure)? errorState,
+  }) {
+    return loadedState?.call(loadedStateData);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
+    TResult Function()? loadingState,
+    TResult Function(Failure failure)? errorState,
+    required TResult orElse(),
+  }) {
+    if (loadedState != null) {
+      return loadedState(loadedStateData);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadedState value) loadedState,
+    required TResult Function(_LoadingState value) loadingState,
+    required TResult Function(_ErrorState value) errorState,
+  }) {
+    return loadedState(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadedState value)? loadedState,
+    TResult? Function(_LoadingState value)? loadingState,
+    TResult? Function(_ErrorState value)? errorState,
+  }) {
+    return loadedState?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadedState value)? loadedState,
+    TResult Function(_LoadingState value)? loadingState,
+    TResult Function(_ErrorState value)? errorState,
+    required TResult orElse(),
+  }) {
+    if (loadedState != null) {
+      return loadedState(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadedState implements GroupDetailState {
+  const factory _LoadedState(
+      final GroupDetailsLoadedStateModel loadedStateData) = _$LoadedStateImpl;
+
+  GroupDetailsLoadedStateModel get loadedStateData;
+  @JsonKey(ignore: true)
+  _$$LoadedStateImplCopyWith<_$LoadedStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LoadingStateImplCopyWith<$Res> {
+  factory _$$LoadingStateImplCopyWith(
+          _$LoadingStateImpl value, $Res Function(_$LoadingStateImpl) then) =
+      __$$LoadingStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadingStateImplCopyWithImpl<$Res>
+    extends _$GroupDetailStateCopyWithImpl<$Res, _$LoadingStateImpl>
+    implements _$$LoadingStateImplCopyWith<$Res> {
+  __$$LoadingStateImplCopyWithImpl(
+      _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LoadingStateImpl implements _LoadingState {
+  const _$LoadingStateImpl();
+
+  @override
+  String toString() {
+    return 'GroupDetailState.loadingState()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadingStateImpl);
   }
 
   @override
@@ -106,27 +274,35 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
+        loadedState,
+    required TResult Function() loadingState,
+    required TResult Function(Failure failure) errorState,
   }) {
-    return initial();
+    return loadingState();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
+        loadedState,
+    TResult? Function()? loadingState,
+    TResult? Function(Failure failure)? errorState,
   }) {
-    return initial?.call();
+    return loadingState?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
+    TResult Function()? loadingState,
+    TResult Function(Failure failure)? errorState,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial();
+    if (loadingState != null) {
+      return loadingState();
     }
     return orElse();
   }
@@ -134,32 +310,189 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_LoadedState value) loadedState,
+    required TResult Function(_LoadingState value) loadingState,
+    required TResult Function(_ErrorState value) errorState,
   }) {
-    return initial(this);
+    return loadingState(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
+    TResult? Function(_LoadedState value)? loadedState,
+    TResult? Function(_LoadingState value)? loadingState,
+    TResult? Function(_ErrorState value)? errorState,
   }) {
-    return initial?.call(this);
+    return loadingState?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_LoadedState value)? loadedState,
+    TResult Function(_LoadingState value)? loadingState,
+    TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial(this);
+    if (loadingState != null) {
+      return loadingState(this);
     }
     return orElse();
   }
 }
 
-abstract class _Initial implements GroupDetailState {
-  const factory _Initial() = _$InitialImpl;
+abstract class _LoadingState implements GroupDetailState {
+  const factory _LoadingState() = _$LoadingStateImpl;
+}
+
+/// @nodoc
+abstract class _$$ErrorStateImplCopyWith<$Res> {
+  factory _$$ErrorStateImplCopyWith(
+          _$ErrorStateImpl value, $Res Function(_$ErrorStateImpl) then) =
+      __$$ErrorStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Failure failure});
+
+  $FailureCopyWith<$Res> get failure;
+}
+
+/// @nodoc
+class __$$ErrorStateImplCopyWithImpl<$Res>
+    extends _$GroupDetailStateCopyWithImpl<$Res, _$ErrorStateImpl>
+    implements _$$ErrorStateImplCopyWith<$Res> {
+  __$$ErrorStateImplCopyWithImpl(
+      _$ErrorStateImpl _value, $Res Function(_$ErrorStateImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? failure = null,
+  }) {
+    return _then(_$ErrorStateImpl(
+      null == failure
+          ? _value.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FailureCopyWith<$Res> get failure {
+    return $FailureCopyWith<$Res>(_value.failure, (value) {
+      return _then(_value.copyWith(failure: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$ErrorStateImpl implements _ErrorState {
+  const _$ErrorStateImpl(this.failure);
+
+  @override
+  final Failure failure;
+
+  @override
+  String toString() {
+    return 'GroupDetailState.errorState(failure: $failure)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ErrorStateImpl &&
+            (identical(other.failure, failure) || other.failure == failure));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, failure);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
+      __$$ErrorStateImplCopyWithImpl<_$ErrorStateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
+        loadedState,
+    required TResult Function() loadingState,
+    required TResult Function(Failure failure) errorState,
+  }) {
+    return errorState(failure);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
+        loadedState,
+    TResult? Function()? loadingState,
+    TResult? Function(Failure failure)? errorState,
+  }) {
+    return errorState?.call(failure);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
+    TResult Function()? loadingState,
+    TResult Function(Failure failure)? errorState,
+    required TResult orElse(),
+  }) {
+    if (errorState != null) {
+      return errorState(failure);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadedState value) loadedState,
+    required TResult Function(_LoadingState value) loadingState,
+    required TResult Function(_ErrorState value) errorState,
+  }) {
+    return errorState(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadedState value)? loadedState,
+    TResult? Function(_LoadingState value)? loadingState,
+    TResult? Function(_ErrorState value)? errorState,
+  }) {
+    return errorState?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadedState value)? loadedState,
+    TResult Function(_LoadingState value)? loadingState,
+    TResult Function(_ErrorState value)? errorState,
+    required TResult orElse(),
+  }) {
+    if (errorState != null) {
+      return errorState(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ErrorState implements GroupDetailState {
+  const factory _ErrorState(final Failure failure) = _$ErrorStateImpl;
+
+  Failure get failure;
+  @JsonKey(ignore: true)
+  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

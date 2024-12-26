@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:teatally/features/group/domain/item_model.dart';
 import 'package:teatally/features/home/domain/beverages.dart';
 
-class ItemBackgroundImage extends StatelessWidget {
-  const ItemBackgroundImage({
+class ItemBackground extends StatelessWidget {
+  const ItemBackground({
     super.key,
     required this.bgColor,
     required this.darkerColor,
     required this.size,
-    required this.beverageItem,
+    required this.item,
+    required this.child,
   });
 
   final Color bgColor;
   final Color darkerColor;
   final Size size;
-  final Beverage beverageItem;
+  final ItemModel? item;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +31,7 @@ class ItemBackgroundImage extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(22),
         ),
-        child: AspectRatio(
-            aspectRatio: 5 / 5,
-            child: Transform.translate(
-                offset: Offset(size.width * 0.22, 0),
-                child: Transform.scale(
-                    scale: 1,
-                    child: Image.asset(
-                        fit: BoxFit.contain, beverageItem.imagePath)))),
+        child: child,
       ),
     );
   }

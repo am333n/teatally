@@ -8,6 +8,7 @@ part 'group_model.g.dart';
 class GroupModel with _$GroupModel {
   const factory GroupModel({
     @JsonKey(name: 'uid') required String uid,
+    @JsonKey(name: 'docId') String? docId,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'description') String? description,
     @JsonKey(name: 'createdBy') required String createdBy,
@@ -17,6 +18,7 @@ class GroupModel with _$GroupModel {
     @JsonKey(name: 'admin') required String admin,
     @JsonKey(name: 'icon') required String icon,
     @JsonKey(name: 'color') required String color,
+    @JsonKey(name: 'isPinned') required bool isPinned,
   }) = _GroupModel;
   factory GroupModel.fromJson(Map<String, dynamic> json) =>
       _$GroupModelFromJson(json);

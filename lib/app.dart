@@ -7,6 +7,7 @@ import 'package:teatally/core/theme/application/cubit/theme_cubit.dart';
 import 'package:teatally/core/theme/application/cubit/theme_state.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
+import 'package:teatally/features/group/application/cubit/group_detail_cubit.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/presentation/home_page.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => getIt<ThemeCubit>()),
           BlocProvider(create: (context) => getIt<HomePageCubit>()),
           BlocProvider(create: (context) => getIt<AuthCubit>()),
+          BlocProvider(create: (context) => getIt<GroupDetailCubit>()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {

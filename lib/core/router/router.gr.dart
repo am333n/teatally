@@ -10,6 +10,58 @@
 part of 'router.dart';
 
 /// generated route for
+/// [AddItemPage]
+class AddItemRoute extends PageRouteInfo<AddItemRouteArgs> {
+  AddItemRoute({
+    Key? key,
+    required CategoriesModel? categoryDetail,
+    required GroupModel? groupDetails,
+    List<PageRouteInfo>? children,
+  }) : super(
+          AddItemRoute.name,
+          args: AddItemRouteArgs(
+            key: key,
+            categoryDetail: categoryDetail,
+            groupDetails: groupDetails,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'AddItemRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<AddItemRouteArgs>();
+      return AddItemPage(
+        key: args.key,
+        categoryDetail: args.categoryDetail,
+        groupDetails: args.groupDetails,
+      );
+    },
+  );
+}
+
+class AddItemRouteArgs {
+  const AddItemRouteArgs({
+    this.key,
+    required this.categoryDetail,
+    required this.groupDetails,
+  });
+
+  final Key? key;
+
+  final CategoriesModel? categoryDetail;
+
+  final GroupModel? groupDetails;
+
+  @override
+  String toString() {
+    return 'AddItemRouteArgs{key: $key, categoryDetail: $categoryDetail, groupDetails: $groupDetails}';
+  }
+}
+
+/// generated route for
 /// [AuthScreen]
 class AuthRoute extends PageRouteInfo<AuthRouteArgs> {
   AuthRoute({

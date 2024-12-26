@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:teatally/core/infrastructure/failure_handler.dart';
 import 'package:teatally/core/infrastructure/remote_response.dart';
-import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'failure.dart'; // Assuming Failure class is already defined
 
 mixin BaseFirebase {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   // Add a document or item to any Firestore collection
   Future<RemoteResponse> addItem(
@@ -15,14 +15,19 @@ mixin BaseFirebase {
     String? uniqueField, // Optional: the field to check for uniqueness
   }) async {
     try {
-      // Check if the document already exists by the unique field (if provided)
+      final userId = firebaseAuth.currentUser?.uid;
+
+      if (userId == null) {
+        return const RemoteResponse.failure(
+            Failure.serverError(message: 'User is not authenticated.'));
+      }
+
+      // Check for uniqueness if needed
       if (uniqueField != null && data.containsKey(uniqueField)) {
         final querySnapshot = await firebaseFirestore
             .collection(collectionPath)
             .where(uniqueField, isEqualTo: data[uniqueField])
             .get();
-
-        // If any document exists with the same value, return a failure
         if (querySnapshot.docs.isNotEmpty) {
           return RemoteResponse.failure(
             Failure.serverError(message: '$uniqueField already exists.'),
@@ -32,7 +37,8 @@ mixin BaseFirebase {
 
       final response =
           await firebaseFirestore.collection(collectionPath).add(data);
-      return RemoteResponse.success(response);
+
+      return RemoteResponse.success({'docId': response.id, 'userId': userId});
     } on FirebaseException catch (e) {
       return RemoteResponse.failure(FailureHandler.handleFirestoreException(e));
     } catch (e) {
@@ -41,8 +47,7 @@ mixin BaseFirebase {
     }
   }
 
-  // Get a document or item from Firestore
-  BaseReturnType getItem(
+  Future<RemoteResponse> getItem(
     String collectionPath,
     String documentId,
   ) async {
@@ -51,10 +56,13 @@ mixin BaseFirebase {
           .collection(collectionPath)
           .doc(documentId)
           .get();
+
       if (docSnapshot.exists) {
-        return RemoteResponse.success(docSnapshot.data());
+        final data = docSnapshot.data()!;
+        data['docId'] = docSnapshot.id;
+        return RemoteResponse.success(data);
       } else {
-        return RemoteResponse.failure(
+        return const RemoteResponse.failure(
             Failure.serverError(message: 'Document not found.'));
       }
     } on FirebaseException catch (e) {
@@ -65,18 +73,22 @@ mixin BaseFirebase {
     }
   }
 
-  // Update an existing document or item in Firestore
-  BaseReturnType updateItem(
+  Future<RemoteResponse> updateItem(
     String collectionPath,
-    String documentId,
+    String? documentId,
     Map<String, dynamic> data,
   ) async {
     try {
+      if (documentId == null) {
+        return const RemoteResponse.failure(
+            Failure.serverError(message: 'Invalid documentId'));
+      }
+
       await firebaseFirestore
           .collection(collectionPath)
           .doc(documentId)
           .update(data);
-      return RemoteResponse.success(null);
+      return RemoteResponse.success({'docId': documentId});
     } on FirebaseException catch (e) {
       return RemoteResponse.failure(Failure.firebaseNetworkError(
           message: e.message ?? 'Unknown error', code: e.code));
@@ -85,17 +97,28 @@ mixin BaseFirebase {
     }
   }
 
-  // Delete a document or item from Firestore
-  BaseReturnType deleteItem(
+  Future<RemoteResponse> deleteItem(
     String collectionPath,
-    String documentId,
+    String? documentId,
   ) async {
     try {
+      final userId = firebaseAuth.currentUser?.uid;
+
+      if (userId == null) {
+        return const RemoteResponse.failure(
+            Failure.serverError(message: 'User is not authenticated.'));
+      }
+      if (documentId == null) {
+        return const RemoteResponse.failure(
+            Failure.serverError(message: 'documentId Invalid'));
+      }
+
       await firebaseFirestore
           .collection(collectionPath)
           .doc(documentId)
           .delete();
-      return RemoteResponse.success(null);
+
+      return RemoteResponse.success({'docId': documentId});
     } on FirebaseException catch (e) {
       return RemoteResponse.failure(Failure.firebaseNetworkError(
           message: e.message ?? 'Unknown error', code: e.code));
@@ -105,11 +128,21 @@ mixin BaseFirebase {
   }
 
   // Fetch all documents from a collection as a list of maps
-  BaseReturnType getAllItems(String collectionPath) async {
+  Future<RemoteResponse> getAllItems(String collectionPath) async {
     try {
+      final userId = firebaseAuth.currentUser?.uid;
+
+      if (userId == null) {
+        return const RemoteResponse.failure(
+            Failure.serverError(message: 'User is not authenticated.'));
+      }
+
       final snapshot = await firebaseFirestore.collection(collectionPath).get();
-      List<Map<String, dynamic>> items =
-          snapshot.docs.map((doc) => doc.data()).toList();
+      List<Map<String, dynamic>> items = snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['docId'] = doc.id;
+        return data;
+      }).toList();
       return RemoteResponse.success(items);
     } on FirebaseException catch (e) {
       return RemoteResponse.failure(Failure.firebaseNetworkError(
@@ -119,17 +152,26 @@ mixin BaseFirebase {
     }
   }
 
-  BaseReturnType getAllItemsExceptCurrentUser(
+  Future<RemoteResponse> getAllItemsExceptCurrentUser(
     String collectionPath,
   ) async {
-    final currentUserId = await CredentialStorage.getUid();
+    final userId = firebaseAuth.currentUser?.uid;
+
+    if (userId == null) {
+      return const RemoteResponse.failure(
+          Failure.serverError(message: 'User is not authenticated.'));
+    }
+
     try {
       final snapshot = await firebaseFirestore
           .collection(collectionPath)
-          .where('uid', isNotEqualTo: currentUserId) // Exclude current user
+          .where('userId', isNotEqualTo: userId)
           .get();
-      List<Map<String, dynamic>> items =
-          snapshot.docs.map((doc) => doc.data()).toList();
+      List<Map<String, dynamic>> items = snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['docId'] = doc.id;
+        return data;
+      }).toList();
       return RemoteResponse.success(items);
     } on FirebaseException catch (e) {
       return RemoteResponse.failure(Failure.firebaseNetworkError(
@@ -139,65 +181,33 @@ mixin BaseFirebase {
     }
   }
 
-  BaseReturnType getAllItemsOfCurrentUser(
+  // Fetch documents for the current user
+  Future<RemoteResponse> getAllItemsOfCurrentUser(
     String collectionPath,
   ) async {
-    final currentUserId = await CredentialStorage.getUid();
+    final userId = firebaseAuth.currentUser?.uid;
+
+    if (userId == null) {
+      return const RemoteResponse.failure(
+          Failure.serverError(message: 'User is not authenticated.'));
+    }
+
     try {
       final snapshot = await firebaseFirestore
           .collection(collectionPath)
-          .where('uid', isEqualTo: currentUserId)
+          .where('userId', isEqualTo: userId)
           .get();
-      List<Map<String, dynamic>> items =
-          snapshot.docs.map((doc) => doc.data()).toList();
+      List<Map<String, dynamic>> items = snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['docId'] = doc.id;
+        return data;
+      }).toList();
       return RemoteResponse.success(items);
     } on FirebaseException catch (e) {
       return RemoteResponse.failure(Failure.firebaseNetworkError(
           message: e.message ?? 'Unknown error', code: e.code));
     } catch (e) {
       return RemoteResponse.failure(Failure.serverError(message: e.toString()));
-    }
-  }
-
-  // Fetch documents by a specific field value in a collection
-  BaseReturnType getItemsByQuery(
-    String collectionPath, {
-    required String field,
-    required dynamic value,
-  }) async {
-    try {
-      final snapshot = await firebaseFirestore
-          .collection(collectionPath)
-          .where(field, isEqualTo: value)
-          .get();
-      List<Map<String, dynamic>> items =
-          snapshot.docs.map((doc) => doc.data()).toList();
-      return RemoteResponse.success(items);
-    } on FirebaseException catch (e) {
-      return RemoteResponse.failure(Failure.firebaseNetworkError(
-          message: e.message ?? 'Unknown error', code: e.code));
-    } catch (e) {
-      return RemoteResponse.failure(Failure.serverError(message: e.toString()));
-    }
-  }
-
-  Stream<RemoteResponse> getStreamItems(String collectionPath) {
-    try {
-      final stream = firebaseFirestore
-          .collection(collectionPath)
-          .snapshots()
-          .map((snapshot) {
-        List<Map<String, dynamic>> items =
-            snapshot.docs.map((doc) => doc.data()).toList();
-        return RemoteResponse.success(items);
-      });
-      return stream;
-    } on FirebaseException catch (e) {
-      return Stream.value(RemoteResponse.failure(Failure.firebaseNetworkError(
-          message: e.message ?? 'Unknown error', code: e.code)));
-    } catch (e) {
-      return Stream.value(
-          RemoteResponse.failure(Failure.serverError(message: e.toString())));
     }
   }
 }
