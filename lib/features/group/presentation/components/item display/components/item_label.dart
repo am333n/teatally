@@ -20,7 +20,7 @@ class ItemLabel extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(15),
           child: Txt(
             item?.name ?? '-',
             style: TxtStyle.headerMRegular,
@@ -28,16 +28,25 @@ class ItemLabel extends StatelessWidget {
           ),
         ),
         if (item?.tags?.isNotEmpty ?? false)
-          Container(
-            margin: const EdgeInsets.only(left: 20),
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-            decoration: BoxDecoration(
-                color: AppColors.yellow,
-                borderRadius: BorderRadius.circular(22)),
-            child: Txt(
-              item?.tags?.join(',') ?? "-",
-              color: context.theme.appColors.backgroundPrimary,
-              style: TxtStyle.bodyLSemiBold,
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Wrap(
+              spacing: 5, // Space between containers
+              runSpacing: 5, // Space between rows
+              children: item!.tags!.map((tag) {
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.yellow,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Txt(
+                    tag,
+                    style: TxtStyle.bodyMRegular,
+                  ),
+                );
+              }).toList(),
             ),
           ),
       ],

@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -39,7 +40,7 @@ class CommonWidgets {
       curve: Curves.easeInOut, // Smooth curve for animation
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: color, width: 1),
       ),
       child: Material(
@@ -48,7 +49,7 @@ class CommonWidgets {
           splashColor: splash.withOpacity(0.4),
           highlightColor: splash.withOpacity(0.2),
           borderRadius:
-              BorderRadius.circular(5), // Match borderRadius of the decoration
+              BorderRadius.circular(20), // Match borderRadius of the decoration
           onTap: onPressed,
           child: Container(
             padding: EdgeInsets.all(buttonPadding),
@@ -95,6 +96,19 @@ class CommonWidgets {
     );
   }
 
+  static Widget formHeader(BuildContext context,
+      {required String actionText, required String text}) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          txtSpan(context, text: actionText, style: TxtStyle.headerSSemiBold),
+          txtSpan(context, text: ' ', style: TxtStyle.headerSSemiBold),
+          txtSpan(context, text: text, style: TxtStyle.headerSRegular),
+        ],
+      ),
+    );
+  }
+
   static Widget borderColoredTextButton(BuildContext context,
       {required String text,
       Color? borderColor, //border and text have same color
@@ -113,7 +127,7 @@ class CommonWidgets {
                 border: Border.all(
                     color: borderColor ?? activeTheme().appColors.danger,
                     width: 1),
-                borderRadius: BorderRadius.circular(5)),
+                borderRadius: BorderRadius.circular(20)),
             child: Center(
                 child: Txt(
               text,
@@ -406,6 +420,32 @@ class CommonWidgets {
     );
   }
 
+  static Widget backButton(
+    BuildContext context, {
+    String? tooltip,
+    Color? color,
+    Color? highlightColor,
+  }) {
+    return Material(
+      color: context.theme.appColors.backgroundPrimary,
+      shape: const CircleBorder(),
+      clipBehavior: Clip.antiAlias,
+      child: IconButton(
+        color: color,
+        splashColor: highlightColor?.withOpacity(0.5),
+        highlightColor: highlightColor?.withOpacity(0.2),
+        onPressed: () {
+          AutoRouter.of(context).maybePop();
+        },
+        tooltip: 'Back',
+        icon: Icon(
+          Icons.chevron_left,
+          color: context.theme.appColors.fontPrimary,
+        ),
+      ),
+    );
+  }
+
   static Align showCircularProgressIndicator() {
     return const Align(
       heightFactor: 15,
@@ -431,7 +471,7 @@ class CommonWidgets {
             decoration: BoxDecoration(
                 border: Border.all(
                     color: color ?? primaryColor, width: borderWidth ?? 2),
-                borderRadius: BorderRadius.circular(5)),
+                borderRadius: BorderRadius.circular(20)),
             padding: const EdgeInsets.all(3),
             child: icon,
           ),

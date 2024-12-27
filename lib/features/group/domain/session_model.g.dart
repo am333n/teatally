@@ -9,6 +9,7 @@ part of 'session_model.dart';
 _$SessionModelImpl _$$SessionModelImplFromJson(Map<String, dynamic> json) =>
     _$SessionModelImpl(
       uid: json['uid'] as String?,
+      isCreatedByCurrentUser: json['isCreatedByCurrentUser'] as bool?,
       docId: json['docId'] as String?,
       groupId: json['groupId'] as String?,
       startedBy: json['startedBy'] as String?,
@@ -31,6 +32,7 @@ _$SessionModelImpl _$$SessionModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$SessionModelImplToJson(_$SessionModelImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
+      'isCreatedByCurrentUser': instance.isCreatedByCurrentUser,
       'docId': instance.docId,
       'groupId': instance.groupId,
       'startedBy': instance.startedBy,
@@ -46,6 +48,7 @@ _$SelectedItemImpl _$$SelectedItemImplFromJson(Map<String, dynamic> json) =>
     _$SelectedItemImpl(
       itemUid: json['itemUid'] as String?,
       itemName: json['itemName'] as String?,
+      categoryId: json['categoryId'] as String?,
       totalCount: (json['totalCount'] as num?)?.toInt(),
       selections: (json['selections'] as List<dynamic>?)
           ?.map((e) => Selection.fromJson(e as Map<String, dynamic>))
@@ -56,6 +59,7 @@ Map<String, dynamic> _$$SelectedItemImplToJson(_$SelectedItemImpl instance) =>
     <String, dynamic>{
       'itemUid': instance.itemUid,
       'itemName': instance.itemName,
+      'categoryId': instance.categoryId,
       'totalCount': instance.totalCount,
       'selections': instance.selections?.map((e) => e.toJson()).toList(),
     };

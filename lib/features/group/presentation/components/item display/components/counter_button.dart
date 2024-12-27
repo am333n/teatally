@@ -74,7 +74,20 @@ class _CounterButtonState extends State<CounterButton> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppIconButton(icon: Icons.remove, onPressed: () {}),
+          AppIconButton(
+              icon: Icons.remove,
+              onPressed: () {
+                if (itemCount != 0) {
+                  context
+                      .read<GroupDetailCubit>()
+                      .incrementOrDecrementItemCount(
+                          widget.item?.name,
+                          widget.item?.uid,
+                          widget.item?.groupId,
+                          widget.item?.categoryId,
+                          false);
+                }
+              }),
           Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
@@ -94,12 +107,12 @@ class _CounterButtonState extends State<CounterButton> {
           AppIconButton(
               icon: Icons.add,
               onPressed: () {
-                context.read<GroupDetailCubit>().incrementItemCount(
-                      widget.item?.name,
-                      widget.item?.uid,
-                      widget.item?.groupId,
-                      widget.item?.categoryId,
-                    );
+                context.read<GroupDetailCubit>().incrementOrDecrementItemCount(
+                    widget.item?.name,
+                    widget.item?.uid,
+                    widget.item?.groupId,
+                    widget.item?.categoryId,
+                    true);
               })
         ],
       ),

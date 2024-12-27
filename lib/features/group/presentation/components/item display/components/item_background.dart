@@ -9,14 +9,12 @@ class ItemBackground extends StatelessWidget {
     required this.darkerColor,
     required this.size,
     required this.item,
-    required this.child,
   });
 
   final Color bgColor;
   final Color darkerColor;
   final Size size;
   final ItemModel? item;
-  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,6 @@ class ItemBackground extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(22),
         ),
-        child: child,
       ),
     );
   }

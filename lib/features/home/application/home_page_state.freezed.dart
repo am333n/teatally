@@ -19,21 +19,21 @@ mixin _$HomePageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GroupModel>? groups) loaded,
+    required TResult Function(HomePageLoadedStateModel loadedStateData) loaded,
     required TResult Function(Failure? failure) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GroupModel>? groups)? loaded,
+    TResult? Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult? Function(Failure? failure)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GroupModel>? groups)? loaded,
+    TResult Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult Function(Failure? failure)? error,
     required TResult orElse(),
   }) =>
@@ -119,7 +119,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GroupModel>? groups) loaded,
+    required TResult Function(HomePageLoadedStateModel loadedStateData) loaded,
     required TResult Function(Failure? failure) error,
   }) {
     return loading();
@@ -129,7 +129,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GroupModel>? groups)? loaded,
+    TResult? Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult? Function(Failure? failure)? error,
   }) {
     return loading?.call();
@@ -139,7 +139,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GroupModel>? groups)? loaded,
+    TResult Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult Function(Failure? failure)? error,
     required TResult orElse(),
   }) {
@@ -194,7 +194,9 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<GroupModel>? groups});
+  $Res call({HomePageLoadedStateModel loadedStateData});
+
+  $HomePageLoadedStateModelCopyWith<$Res> get loadedStateData;
 }
 
 /// @nodoc
@@ -208,35 +210,37 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? groups = freezed,
+    Object? loadedStateData = null,
   }) {
     return _then(_$LoadedImpl(
-      groups: freezed == groups
-          ? _value._groups
-          : groups // ignore: cast_nullable_to_non_nullable
-              as List<GroupModel>?,
+      null == loadedStateData
+          ? _value.loadedStateData
+          : loadedStateData // ignore: cast_nullable_to_non_nullable
+              as HomePageLoadedStateModel,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $HomePageLoadedStateModelCopyWith<$Res> get loadedStateData {
+    return $HomePageLoadedStateModelCopyWith<$Res>(_value.loadedStateData,
+        (value) {
+      return _then(_value.copyWith(loadedStateData: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl({final List<GroupModel>? groups}) : _groups = groups;
+  const _$LoadedImpl(this.loadedStateData);
 
-  final List<GroupModel>? _groups;
   @override
-  List<GroupModel>? get groups {
-    final value = _groups;
-    if (value == null) return null;
-    if (_groups is EqualUnmodifiableListView) return _groups;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
+  final HomePageLoadedStateModel loadedStateData;
 
   @override
   String toString() {
-    return 'HomePageState.loaded(groups: $groups)';
+    return 'HomePageState.loaded(loadedStateData: $loadedStateData)';
   }
 
   @override
@@ -244,12 +248,12 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            const DeepCollectionEquality().equals(other._groups, _groups));
+            (identical(other.loadedStateData, loadedStateData) ||
+                other.loadedStateData == loadedStateData));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_groups));
+  int get hashCode => Object.hash(runtimeType, loadedStateData);
 
   @JsonKey(ignore: true)
   @override
@@ -261,32 +265,32 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GroupModel>? groups) loaded,
+    required TResult Function(HomePageLoadedStateModel loadedStateData) loaded,
     required TResult Function(Failure? failure) error,
   }) {
-    return loaded(groups);
+    return loaded(loadedStateData);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GroupModel>? groups)? loaded,
+    TResult? Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult? Function(Failure? failure)? error,
   }) {
-    return loaded?.call(groups);
+    return loaded?.call(loadedStateData);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GroupModel>? groups)? loaded,
+    TResult Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult Function(Failure? failure)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(groups);
+      return loaded(loadedStateData);
     }
     return orElse();
   }
@@ -327,9 +331,10 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements HomePageState {
-  const factory _Loaded({final List<GroupModel>? groups}) = _$LoadedImpl;
+  const factory _Loaded(final HomePageLoadedStateModel loadedStateData) =
+      _$LoadedImpl;
 
-  List<GroupModel>? get groups;
+  HomePageLoadedStateModel get loadedStateData;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -414,7 +419,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GroupModel>? groups) loaded,
+    required TResult Function(HomePageLoadedStateModel loadedStateData) loaded,
     required TResult Function(Failure? failure) error,
   }) {
     return error(failure);
@@ -424,7 +429,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GroupModel>? groups)? loaded,
+    TResult? Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult? Function(Failure? failure)? error,
   }) {
     return error?.call(failure);
@@ -434,7 +439,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GroupModel>? groups)? loaded,
+    TResult Function(HomePageLoadedStateModel loadedStateData)? loaded,
     TResult Function(Failure? failure)? error,
     required TResult orElse(),
   }) {

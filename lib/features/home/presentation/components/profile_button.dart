@@ -8,8 +8,8 @@ class ProfileButton extends StatelessWidget {
   final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return SizedBox(
+      height: 45,
       child: InkWell(
         onTap: onTap,
         child: Container(

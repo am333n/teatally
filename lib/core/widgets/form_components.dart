@@ -363,7 +363,7 @@ class FormComponents {
     bool? readOnly,
     Attached attached = Attached.none,
   }) {
-    final borderColor = context.theme.appColors.formBorder;
+    final borderColor = context.theme.appColors.formBackground;
     return InputDecoration(
       suffixIcon: suffixIcon,
       hintText: hintText,
@@ -403,27 +403,28 @@ class FormComponents {
   }
 
   static BorderRadius getBorderRadius(Attached attached) {
+    const double defaultBorderRadius = 15;
     const Map<Attached, BorderRadius> borderRadiusMap = {
       Attached.right: BorderRadius.only(
-        topLeft: Radius.circular(5),
-        bottomLeft: Radius.circular(5),
+        topLeft: Radius.circular(defaultBorderRadius),
+        bottomLeft: Radius.circular(defaultBorderRadius),
       ),
       Attached.left: BorderRadius.only(
-        topRight: Radius.circular(5),
-        bottomRight: Radius.circular(5),
+        topRight: Radius.circular(defaultBorderRadius),
+        bottomRight: Radius.circular(defaultBorderRadius),
       ),
       Attached.bottom: BorderRadius.only(
-        topRight: Radius.circular(5),
-        topLeft: Radius.circular(5),
+        topRight: Radius.circular(defaultBorderRadius),
+        topLeft: Radius.circular(defaultBorderRadius),
       ),
       Attached.top: BorderRadius.only(
-        bottomLeft: Radius.circular(5),
-        bottomRight: Radius.circular(5),
+        bottomLeft: Radius.circular(defaultBorderRadius),
+        bottomRight: Radius.circular(defaultBorderRadius),
       ),
-      Attached.none: BorderRadius.all(Radius.circular(5)),
+      Attached.none: BorderRadius.all(Radius.circular(defaultBorderRadius)),
     };
     return borderRadiusMap[attached] ??
-        const BorderRadius.all(Radius.circular(5));
+        const BorderRadius.all(Radius.circular(defaultBorderRadius));
   }
 }
 

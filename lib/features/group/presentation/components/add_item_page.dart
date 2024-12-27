@@ -23,56 +23,72 @@ class AddItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Txt('Add item for: ${categoryDetail?.name ?? '-'}'),
-      ),
-      body: SingleChildScrollView(
-        child: FormBuilder(
-          key: _formKey,
-          child: Column(
-            children: [
-              FormComponents.formBuilderTextField(context,
-                  fieldName: 'name', label: 'Item Name', hintText: ''),
-              FormComponents.formBuilderTextField(context,
-                  fieldName: 'price',
-                  label: 'Price',
-                  hintText: '',
-                  textInputType: TextInputType.number),
-              FormComponents.formBuilderTextField(context,
-                  fieldName: 'tags',
-                  label: 'Tags',
-                  hintText: 'enter tags seperated by comma',
-                  isRichText: true),
-              const FormBuilderColorPicker(name: 'color'),
-              CommonWidgets.coloredTextButton(context, text: 'Save',
-                  onPressed: () {
-                final formState = _formKey.currentState;
-                if (formState?.validate() ?? false) {
-                  final List<String> tags = formState?.fields['tags']?.value
-                          ?.toString()
-                          .split(',')
-                          .map((tag) => tag.trim())
-                          .where((tag) => tag.isNotEmpty)
-                          .toList() ??
-                      [];
-                  final itemDetails = ItemModel(
-                      uid: Uuid().v4(),
-                      name: formState?.fields['name']?.value ?? '',
-                      createdAt: DateTime.now(),
-                      groupId: groupDetails?.uid,
-                      categoryId: categoryDetail?.uid,
-                      tags: tags,
-                      price:
-                          double.tryParse(formState?.fields['price']?.value) ??
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: FormBuilder(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      CommonWidgets.backButton(context),
+                      const Txt(
+                        'Add Items',
+                        style: TxtStyle.headerSSemiBold,
+                      )
+                    ],
+                  ),
+                  FormComponents.formBuilderTextField(context,
+                      fieldName: 'name',
+                      label: 'Item Name',
+                      hintText: 'Enter Item Name Eg: Hotdog '),
+                  FormComponents.formBuilderTextField(context,
+                      fieldName: 'price',
+                      label: 'Price',
+                      hintText: 'Enter Price Eg: 40.0',
+                      textInputType: TextInputType.number),
+                  FormComponents.formBuilderTextField(
+                    context,
+                    fieldName: 'tags',
+                    label: 'Tags',
+                    hintText: 'Enter Tags Seperated By Comma  Eg: Spicy, Sweet',
+                  ),
+                  const VerticalSpacing(15),
+                  const FormBuilderColorPicker(name: 'color'),
+                  const VerticalSpacing(15),
+                  CommonWidgets.coloredTextButton(context, text: 'Save',
+                      onPressed: () {
+                    final formState = _formKey.currentState;
+                    if (formState?.validate() ?? false) {
+                      final List<String> tags = formState?.fields['tags']?.value
+                              ?.toString()
+                              .split(',')
+                              .map((tag) => tag.trim())
+                              .where((tag) => tag.isNotEmpty)
+                              .toList() ??
+                          [];
+                      final itemDetails = ItemModel(
+                          uid: const Uuid().v4(),
+                          name: formState?.fields['name']?.value ?? '',
+                          createdAt: DateTime.now(),
+                          groupId: groupDetails?.uid,
+                          categoryId: categoryDetail?.uid,
+                          tags: tags,
+                          price: double.tryParse(
+                                  formState?.fields['price']?.value) ??
                               0,
-                      color: formState?.fields['color']?.value,
-                      updatedAt: DateTime.now());
-                  context
-                      .read<GroupDetailCubit>()
-                      .addItemForCategory(groupDetails?.uid, itemDetails);
-                }
-              })
-            ],
+                          color: formState?.fields['color']?.value,
+                          updatedAt: DateTime.now());
+                      context
+                          .read<GroupDetailCubit>()
+                          .addItemForCategory(groupDetails?.uid, itemDetails);
+                    }
+                  })
+                ],
+              ),
+            ),
           ),
         ),
       ),

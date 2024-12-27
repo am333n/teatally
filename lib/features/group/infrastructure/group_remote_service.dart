@@ -71,6 +71,25 @@ class GroupRemoteService with BaseFirebase {
     return super.addItem(Collections.categories, categoryDetail.toJson());
   }
 
+  BaseReturnType updateCategory(CategoriesModel categoryDetail) {
+    return super.updateItem(
+        Collections.categories, categoryDetail.docId, categoryDetail.toJson());
+  }
+
+  BaseReturnType deleteCategory(String docId) {
+    return super.deleteItem(
+      Collections.categories,
+      docId,
+    );
+  }
+
+  BaseReturnType deleteSession(String docId) {
+    return super.deleteItem(
+      Collections.counterSession,
+      docId,
+    );
+  }
+
   BaseReturnType addActiveSession(SessionModel sessionDetails) {
     sessionDetails = sessionDetails.copyWith(
         startedBy: super.firebaseAuth.currentUser?.uid,
@@ -129,6 +148,7 @@ class GroupRemoteService with BaseFirebase {
   }
 
   Stream<RemoteResponse<dynamic>> streamLatestActiveSession(String groupId) {
+    final currentUser = firebaseAuth.currentUser?.uid;
     return super
         .firebaseFirestore
         .collection(Collections.counterSession)
@@ -142,6 +162,8 @@ class GroupRemoteService with BaseFirebase {
         final doc = snapshot.docs.first;
         final data = doc.data();
         data['docId'] = doc.id;
+        data['isCreatedByCurrentUser'] =
+            (doc['startedBy'] == currentUser) ? true : false;
         return RemoteResponse.success(data);
       }
       return const RemoteResponse.success(null);

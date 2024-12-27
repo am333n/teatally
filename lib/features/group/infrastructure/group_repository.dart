@@ -113,6 +113,46 @@ class GroupRepository {
     }
   }
 
+  Future<Either<Failure, bool>> updateCategory(
+      CategoriesModel categoryDetail) async {
+    try {
+      final response = await _remoteService.updateCategory(categoryDetail);
+      return response.when(success: (data) {
+        return const Right(true);
+      }, failure: (failure) {
+        return Left(failure);
+      });
+    } catch (e) {
+      return Left(FailureHandler.handleGenericException(e as Exception));
+    }
+  }
+
+  Future<Either<Failure, bool>> deleteCategory(String docId) async {
+    try {
+      final response = await _remoteService.deleteCategory(docId);
+      return response.when(success: (data) {
+        return const Right(true);
+      }, failure: (failure) {
+        return Left(failure);
+      });
+    } catch (e) {
+      return Left(FailureHandler.handleGenericException(e as Exception));
+    }
+  }
+
+  Future<Either<Failure, bool>> deleteSession(String docId) async {
+    try {
+      final response = await _remoteService.deleteSession(docId);
+      return response.when(success: (data) {
+        return const Right(true);
+      }, failure: (failure) {
+        return Left(failure);
+      });
+    } catch (e) {
+      return Left(FailureHandler.handleGenericException(e as Exception));
+    }
+  }
+
   Future<Either<Failure, bool>> addActiveSession(
       SessionModel sessionDetails) async {
     try {

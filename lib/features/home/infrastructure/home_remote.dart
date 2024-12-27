@@ -20,8 +20,7 @@ class HomeRemoteService with BaseFirebase {
       final snapshot = await super
           .firebaseFirestore
           .collection(Collections.users)
-          .where('', arrayContains: currentUser)
-          .orderBy('isPinned', descending: true)
+          .where('uid', isNotEqualTo: currentUser)
           .get();
 
       List<Map<String, dynamic>> items = snapshot.docs.map((doc) {
@@ -76,7 +75,66 @@ class HomeRemoteService with BaseFirebase {
     });
   }
 
-  BaseReturnType deleteGroup(String? docId) {
-    return super.deleteItem(Collections.groups, docId);
+  BaseReturnType deleteGroup(String? docId) async {
+    try {
+      final currentUser = await CredentialStorage.getUid();
+      final snapshot = await super
+          .firebaseFirestore
+          .collection(Collections.groups)
+          .doc(docId)
+          .get();
+
+      final data = snapshot.data();
+      final groupId = data?['uid'];
+
+      // Delete the group document
+      await super
+          .firebaseFirestore
+          .collection(Collections.groups)
+          .doc(docId)
+          .delete();
+
+      // Delete related documents from categories, items, and sessions
+      final batch = super.firebaseFirestore.batch();
+
+      // Delete from categories
+      final categoriesSnapshot = await super
+          .firebaseFirestore
+          .collection(Collections.categories)
+          .where('groupId', isEqualTo: groupId)
+          .get();
+      for (final doc in categoriesSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Delete from items
+      final itemsSnapshot = await super
+          .firebaseFirestore
+          .collection(Collections.items)
+          .where('groupId', isEqualTo: groupId)
+          .get();
+      for (final doc in itemsSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Delete from sessions
+      final sessionsSnapshot = await super
+          .firebaseFirestore
+          .collection(Collections.counterSession)
+          .where('groupId', isEqualTo: groupId)
+          .get();
+      for (final doc in sessionsSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Commit the batch operation
+      await batch.commit();
+
+      return const RemoteResponse.success(null);
+    } on FirebaseException catch (e) {
+      return RemoteResponse.failure(FailureHandler.handleFirestoreException(e));
+    } catch (e) {
+      return RemoteResponse.failure(Failure.serverError(message: e.toString()));
+    }
   }
 }

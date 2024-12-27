@@ -12,13 +12,20 @@ class AddCategoryDialog extends StatelessWidget {
   AddCategoryDialog({
     super.key,
     required this.groupId,
+    this.isEdit = false,
+    this.categoriesDetail,
   });
   final String groupId;
+  final bool isEdit;
+  final CategoriesModel? categoriesDetail;
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Txt('Add Categories'),
+      title: Txt(
+        '${isEdit ? 'Edit' : 'Add'} Category',
+        style: TxtStyle.headerSSemiBold,
+      ),
       content: FormBuilder(
         key: _formKey,
         child: Column(
@@ -26,21 +33,32 @@ class AddCategoryDialog extends StatelessWidget {
           children: [
             FormComponents.formBuilderTextField(context,
                 fieldName: 'name',
-                label: 'Categories Name',
+                label: 'Category Name',
                 hintText: 'Enter Categories Name',
+                initialValue: categoriesDetail?.name,
                 isRequired: true),
-            CommonWidgets.coloredTextButton(context, text: 'Save',
-                onPressed: () {
+            VerticalSpacing(15),
+            CommonWidgets.coloredTextButton(context,
+                text: isEdit ? 'Update' : 'Save', onPressed: () {
               final formState = _formKey.currentState;
               if (formState?.validate() ?? false) {
-                final categoryDetail = CategoriesModel(
-                    uid: const Uuid().v4(),
+                if (isEdit) {
+                  final updatedCategyDetails = categoriesDetail?.copyWith(
                     name: formState?.fields['name']?.value ?? '',
-                    groupId: groupId,
-                    createdAt: DateTime.now());
-                context
-                    .read<GroupDetailCubit>()
-                    .addCategory(groupId, categoryDetail);
+                  );
+                  context
+                      .read<GroupDetailCubit>()
+                      .updateCategory(updatedCategyDetails);
+                } else {
+                  final categoryDetail = CategoriesModel(
+                      uid: const Uuid().v4(),
+                      name: formState?.fields['name']?.value ?? '',
+                      groupId: groupId,
+                      createdAt: DateTime.now());
+                  context
+                      .read<GroupDetailCubit>()
+                      .addCategory(groupId, categoryDetail);
+                }
               }
             })
           ],

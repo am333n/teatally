@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:teatally/core/styles/text/txt.dart';
+import 'package:teatally/core/styles/text/txt_styles.dart';
 import 'package:teatally/features/group/domain/item_model.dart';
 import 'package:teatally/features/group/domain/session_model.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/components/color_mapper.dart';
 
 class ItemTotalDisplay extends StatelessWidget {
   const ItemTotalDisplay({
@@ -13,6 +15,7 @@ class ItemTotalDisplay extends StatelessWidget {
   final List<SelectedItem>? selectedItems;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final itemCount = selectedItems
             ?.firstWhere(
               (selectedItem) => selectedItem.itemUid == item?.uid,
@@ -21,9 +24,13 @@ class ItemTotalDisplay extends StatelessWidget {
             )
             .totalCount ??
         0;
-    return Txt(
-      'Total : $itemCount',
-      style: TxtStyle.headerLBold,
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Text('$itemCount',
+          style: TextStyles.getTextStyle(context, TxtStyle.headerLBold)
+              .copyWith(
+                  fontSize: size.width * 0.3,
+                  color: ColorMapper.hexToColor(item?.color).withOpacity(0.7))),
     );
   }
 }

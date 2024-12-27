@@ -27,6 +27,10 @@ class BaseTheme {
           primaryColor: primaryColor,
           backgroundColor: backgroundSecondary,
           backgroundSecondary: backgroundColor),
+      dialogTheme: DialogTheme(
+          backgroundColor: backgroundSecondary,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
       datePickerTheme: _datePickerTheme(
           primaryColor: primaryColor, backgroundColor: backgroundSecondary),
       progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),

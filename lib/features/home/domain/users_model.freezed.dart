@@ -26,6 +26,8 @@ mixin _$UserModel {
   String? get displayName => throw _privateConstructorUsedError;
   @JsonKey(name: 'uid')
   String get uid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'docId')
+  String? get docId => throw _privateConstructorUsedError;
   @JsonKey(name: 'photoURL')
   String? get photoURL => throw _privateConstructorUsedError;
 
@@ -44,6 +46,7 @@ abstract class $UserModelCopyWith<$Res> {
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'displayName') String? displayName,
       @JsonKey(name: 'uid') String uid,
+      @JsonKey(name: 'docId') String? docId,
       @JsonKey(name: 'photoURL') String? photoURL});
 }
 
@@ -63,6 +66,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? email = null,
     Object? displayName = freezed,
     Object? uid = null,
+    Object? docId = freezed,
     Object? photoURL = freezed,
   }) {
     return _then(_value.copyWith(
@@ -78,6 +82,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      docId: freezed == docId
+          ? _value.docId
+          : docId // ignore: cast_nullable_to_non_nullable
+              as String?,
       photoURL: freezed == photoURL
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
@@ -98,6 +106,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'displayName') String? displayName,
       @JsonKey(name: 'uid') String uid,
+      @JsonKey(name: 'docId') String? docId,
       @JsonKey(name: 'photoURL') String? photoURL});
 }
 
@@ -115,6 +124,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? displayName = freezed,
     Object? uid = null,
+    Object? docId = freezed,
     Object? photoURL = freezed,
   }) {
     return _then(_$UserModelImpl(
@@ -130,6 +140,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      docId: freezed == docId
+          ? _value.docId
+          : docId // ignore: cast_nullable_to_non_nullable
+              as String?,
       photoURL: freezed == photoURL
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
@@ -145,6 +159,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       {@JsonKey(name: 'email') required this.email,
       @JsonKey(name: 'displayName') this.displayName,
       @JsonKey(name: 'uid') required this.uid,
+      @JsonKey(name: 'docId') this.docId,
       @JsonKey(name: 'photoURL') this.photoURL});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -160,12 +175,15 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   @JsonKey(name: 'uid')
   final String uid;
   @override
+  @JsonKey(name: 'docId')
+  final String? docId;
+  @override
   @JsonKey(name: 'photoURL')
   final String? photoURL;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModel(email: $email, displayName: $displayName, uid: $uid, photoURL: $photoURL)';
+    return 'UserModel(email: $email, displayName: $displayName, uid: $uid, docId: $docId, photoURL: $photoURL)';
   }
 
   @override
@@ -176,6 +194,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('displayName', displayName))
       ..add(DiagnosticsProperty('uid', uid))
+      ..add(DiagnosticsProperty('docId', docId))
       ..add(DiagnosticsProperty('photoURL', photoURL));
   }
 
@@ -188,6 +207,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
             (identical(other.displayName, displayName) ||
                 other.displayName == displayName) &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.docId, docId) || other.docId == docId) &&
             (identical(other.photoURL, photoURL) ||
                 other.photoURL == photoURL));
   }
@@ -195,7 +215,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, email, displayName, uid, photoURL);
+      Object.hash(runtimeType, email, displayName, uid, docId, photoURL);
 
   @JsonKey(ignore: true)
   @override
@@ -216,6 +236,7 @@ abstract class _UserModel implements UserModel {
       {@JsonKey(name: 'email') required final String email,
       @JsonKey(name: 'displayName') final String? displayName,
       @JsonKey(name: 'uid') required final String uid,
+      @JsonKey(name: 'docId') final String? docId,
       @JsonKey(name: 'photoURL') final String? photoURL}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -230,6 +251,9 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(name: 'uid')
   String get uid;
+  @override
+  @JsonKey(name: 'docId')
+  String? get docId;
   @override
   @JsonKey(name: 'photoURL')
   String? get photoURL;

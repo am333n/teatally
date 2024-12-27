@@ -7,6 +7,7 @@ part 'session_model.g.dart';
 class SessionModel with _$SessionModel {
   const factory SessionModel({
     @JsonKey(name: 'uid') String? uid,
+    @JsonKey(name: 'isCreatedByCurrentUser') bool? isCreatedByCurrentUser,
     @JsonKey(name: 'docId') String? docId,
     @JsonKey(name: 'groupId') String? groupId,
     @JsonKey(name: 'startedBy') String? startedBy,
@@ -27,6 +28,7 @@ class SelectedItem with _$SelectedItem {
   const factory SelectedItem({
     @JsonKey(name: 'itemUid') String? itemUid,
     @JsonKey(name: 'itemName') String? itemName,
+    @JsonKey(name: 'categoryId') String? categoryId,
     @JsonKey(name: 'totalCount') int? totalCount,
     @JsonKey(name: 'selections') List<Selection>? selections,
   }) = _SelectedItem;

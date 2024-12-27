@@ -23,12 +23,11 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Wrap(
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: _colors.map((color) {
+      child: Wrap(spacing: 8.0, runSpacing: 8.0, children: [
+        ..._colors.map((color) {
           final isSelected = _selectedColor == color;
           return GestureDetector(
             onTap: () {
@@ -49,8 +48,11 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
               ),
             ),
           );
-        }).toList(),
-      ),
+        }),
+        SizedBox(
+          width: size.width * 0.2,
+        )
+      ]),
     );
   }
 }

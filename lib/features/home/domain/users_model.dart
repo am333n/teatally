@@ -12,6 +12,7 @@ class UserModel with _$UserModel {
     @JsonKey(name: 'email') required String email,
     @JsonKey(name: 'displayName') String? displayName,
     @JsonKey(name: 'uid') required String uid,
+    @JsonKey(name: 'docId') String? docId,
     @JsonKey(name: 'photoURL') String? photoURL,
   }) = _UserModel;
   factory UserModel.fromJson(Map<String, dynamic> json) =>

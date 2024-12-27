@@ -2,42 +2,44 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teatally/core/styles/text/txt.dart';
+import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
-import 'package:teatally/core/widgets/form_components.dart';
 import 'package:teatally/features/group/application/cubit/group_detail_cubit.dart';
+import 'package:teatally/features/group/domain/categories_model.dart';
 import 'package:teatally/features/group/domain/group_details_state_model.dart';
 import 'package:teatally/features/group/presentation/components/add_catgeory_dialog.dart';
 
-class CategoriesSelector extends StatefulWidget {
+class CategoriesSelector extends StatelessWidget {
   const CategoriesSelector(
       {super.key, required this.loadedStateData, required this.groupId});
   final GroupDetailsLoadedStateModel loadedStateData;
   final String groupId;
 
-  @override
-  State<CategoriesSelector> createState() => _CategoriesSelectorState();
-}
-
-class _CategoriesSelectorState extends State<CategoriesSelector> {
-  String? _selectedCategoryId =
-      null; // Ensure _selectedCategoryId is initially null
-
-  void handleCategoriesAdd() {
+  void handleCategoriesAdd(
+      {required BuildContext context,
+      bool isEdit = false,
+      CategoriesModel? categoriesDetail}) {
     showDialog(
         context: context,
         builder: (context) {
-          return AddCategoryDialog(groupId: widget.groupId);
+          return AddCategoryDialog(
+            groupId: groupId,
+            isEdit: isEdit,
+            categoriesDetail: categoriesDetail,
+          );
         });
   }
 
   @override
   Widget build(BuildContext context) {
-    final categories = widget.loadedStateData.categories;
+    final categories = loadedStateData.categories;
+    final selectedCategoryId = loadedStateData.selectedCategory;
 
     // Display button if no categories exist
     if (categories?.isEmpty ?? true) {
       return CommonWidgets.coloredTextButton(context,
-          text: 'Add Categories', onPressed: handleCategoriesAdd);
+          text: 'Add Categories',
+          onPressed: () => handleCategoriesAdd(context: context));
     } else {
       return SizedBox(
         height: kToolbarHeight,
@@ -48,28 +50,70 @@ class _CategoriesSelectorState extends State<CategoriesSelector> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             if (index == categories?.length) {
-              // "Add" button at the end of the list
-              return CommonWidgets.iconButton(
-                onPressed: handleCategoriesAdd,
-                icon: const Icon(Icons.add),
+              return Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ChoiceChip(
+                  backgroundColor: context.theme.appColors.formBackground,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  padding: const EdgeInsets.all(5),
+                  label: const Icon(Icons.add),
+                  selected: false,
+                  onSelected: (value) => handleCategoriesAdd(context: context),
+                ),
               );
             } else {
               final categoryItem = categories?[index];
-              return ChoiceChip(
-                onSelected: (value) {
-                  setState(() {
-                    if (_selectedCategoryId != categoryItem?.uid) {
-                      _selectedCategoryId = categoryItem?.uid;
-                    } else {
-                      _selectedCategoryId = null;
-                    }
-                  });
-                  context
-                      .read<GroupDetailCubit>()
-                      .setSelectedCategory(_selectedCategoryId);
-                },
-                label: Txt(categoryItem?.name ?? '-'),
-                selected: _selectedCategoryId == categoryItem?.uid,
+              final isSelected = selectedCategoryId == categoryItem?.uid;
+
+              return Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: CupertinoContextMenu(
+                  actions: [
+                    CupertinoContextMenuAction(
+                      child: const Txt('Edit'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        handleCategoriesAdd(
+                            context: context,
+                            isEdit: true,
+                            categoriesDetail: categoryItem);
+                      },
+                    ),
+                    CupertinoContextMenuAction(
+                        child: const Txt('Delete'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          context.read<GroupDetailCubit>().deleteCategory(
+                              categoryItem?.uid,
+                              categoryItem?.docId,
+                              categoryItem?.groupId);
+                        }),
+                  ],
+                  child: Material(
+                    shadowColor: context.theme.appColors.primary,
+                    color: Colors.transparent,
+                    borderOnForeground: false,
+                    child: ChoiceChip(
+                      backgroundColor: context.theme.appColors.formBackground,
+                      selectedColor: context.theme.appColors.fontPrimary,
+                      onSelected: (value) {
+                        context.read<GroupDetailCubit>().setSelectedCategory(
+                            isSelected ? null : categoryItem?.uid);
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      padding: const EdgeInsets.all(10),
+                      label: Txt(
+                        categoryItem?.name ?? '-',
+                        color: isSelected
+                            ? context.theme.appColors.formBackground
+                            : context.theme.appColors.fontPrimary,
+                      ),
+                      selected: isSelected,
+                    ),
+                  ),
+                ),
               );
             }
           },

@@ -22,6 +22,8 @@ SessionModel _$SessionModelFromJson(Map<String, dynamic> json) {
 mixin _$SessionModel {
   @JsonKey(name: 'uid')
   String? get uid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'isCreatedByCurrentUser')
+  bool? get isCreatedByCurrentUser => throw _privateConstructorUsedError;
   @JsonKey(name: 'docId')
   String? get docId => throw _privateConstructorUsedError;
   @JsonKey(name: 'groupId')
@@ -55,6 +57,7 @@ abstract class $SessionModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String? uid,
+      @JsonKey(name: 'isCreatedByCurrentUser') bool? isCreatedByCurrentUser,
       @JsonKey(name: 'docId') String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'startedBy') String? startedBy,
@@ -80,6 +83,7 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
   @override
   $Res call({
     Object? uid = freezed,
+    Object? isCreatedByCurrentUser = freezed,
     Object? docId = freezed,
     Object? groupId = freezed,
     Object? startedBy = freezed,
@@ -95,6 +99,10 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCreatedByCurrentUser: freezed == isCreatedByCurrentUser
+          ? _value.isCreatedByCurrentUser
+          : isCreatedByCurrentUser // ignore: cast_nullable_to_non_nullable
+              as bool?,
       docId: freezed == docId
           ? _value.docId
           : docId // ignore: cast_nullable_to_non_nullable
@@ -145,6 +153,7 @@ abstract class _$$SessionModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String? uid,
+      @JsonKey(name: 'isCreatedByCurrentUser') bool? isCreatedByCurrentUser,
       @JsonKey(name: 'docId') String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'startedBy') String? startedBy,
@@ -168,6 +177,7 @@ class __$$SessionModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = freezed,
+    Object? isCreatedByCurrentUser = freezed,
     Object? docId = freezed,
     Object? groupId = freezed,
     Object? startedBy = freezed,
@@ -183,6 +193,10 @@ class __$$SessionModelImplCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCreatedByCurrentUser: freezed == isCreatedByCurrentUser
+          ? _value.isCreatedByCurrentUser
+          : isCreatedByCurrentUser // ignore: cast_nullable_to_non_nullable
+              as bool?,
       docId: freezed == docId
           ? _value.docId
           : docId // ignore: cast_nullable_to_non_nullable
@@ -228,6 +242,7 @@ class __$$SessionModelImplCopyWithImpl<$Res>
 class _$SessionModelImpl implements _SessionModel {
   const _$SessionModelImpl(
       {@JsonKey(name: 'uid') this.uid,
+      @JsonKey(name: 'isCreatedByCurrentUser') this.isCreatedByCurrentUser,
       @JsonKey(name: 'docId') this.docId,
       @JsonKey(name: 'groupId') this.groupId,
       @JsonKey(name: 'startedBy') this.startedBy,
@@ -245,6 +260,9 @@ class _$SessionModelImpl implements _SessionModel {
   @override
   @JsonKey(name: 'uid')
   final String? uid;
+  @override
+  @JsonKey(name: 'isCreatedByCurrentUser')
+  final bool? isCreatedByCurrentUser;
   @override
   @JsonKey(name: 'docId')
   final String? docId;
@@ -282,7 +300,7 @@ class _$SessionModelImpl implements _SessionModel {
 
   @override
   String toString() {
-    return 'SessionModel(uid: $uid, docId: $docId, groupId: $groupId, startedBy: $startedBy, createdAt: $createdAt, updatedBy: $updatedBy, updatedAt: $updatedAt, stoppedAt: $stoppedAt, isActive: $isActive, selectedItems: $selectedItems)';
+    return 'SessionModel(uid: $uid, isCreatedByCurrentUser: $isCreatedByCurrentUser, docId: $docId, groupId: $groupId, startedBy: $startedBy, createdAt: $createdAt, updatedBy: $updatedBy, updatedAt: $updatedAt, stoppedAt: $stoppedAt, isActive: $isActive, selectedItems: $selectedItems)';
   }
 
   @override
@@ -291,6 +309,8 @@ class _$SessionModelImpl implements _SessionModel {
         (other.runtimeType == runtimeType &&
             other is _$SessionModelImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.isCreatedByCurrentUser, isCreatedByCurrentUser) ||
+                other.isCreatedByCurrentUser == isCreatedByCurrentUser) &&
             (identical(other.docId, docId) || other.docId == docId) &&
             (identical(other.groupId, groupId) || other.groupId == groupId) &&
             (identical(other.startedBy, startedBy) ||
@@ -314,6 +334,7 @@ class _$SessionModelImpl implements _SessionModel {
   int get hashCode => Object.hash(
       runtimeType,
       uid,
+      isCreatedByCurrentUser,
       docId,
       groupId,
       startedBy,
@@ -341,6 +362,8 @@ class _$SessionModelImpl implements _SessionModel {
 abstract class _SessionModel implements SessionModel {
   const factory _SessionModel(
       {@JsonKey(name: 'uid') final String? uid,
+      @JsonKey(name: 'isCreatedByCurrentUser')
+      final bool? isCreatedByCurrentUser,
       @JsonKey(name: 'docId') final String? docId,
       @JsonKey(name: 'groupId') final String? groupId,
       @JsonKey(name: 'startedBy') final String? startedBy,
@@ -358,6 +381,9 @@ abstract class _SessionModel implements SessionModel {
   @override
   @JsonKey(name: 'uid')
   String? get uid;
+  @override
+  @JsonKey(name: 'isCreatedByCurrentUser')
+  bool? get isCreatedByCurrentUser;
   @override
   @JsonKey(name: 'docId')
   String? get docId;
@@ -401,6 +427,8 @@ mixin _$SelectedItem {
   String? get itemUid => throw _privateConstructorUsedError;
   @JsonKey(name: 'itemName')
   String? get itemName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'categoryId')
+  String? get categoryId => throw _privateConstructorUsedError;
   @JsonKey(name: 'totalCount')
   int? get totalCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'selections')
@@ -421,6 +449,7 @@ abstract class $SelectedItemCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'itemUid') String? itemUid,
       @JsonKey(name: 'itemName') String? itemName,
+      @JsonKey(name: 'categoryId') String? categoryId,
       @JsonKey(name: 'totalCount') int? totalCount,
       @JsonKey(name: 'selections') List<Selection>? selections});
 }
@@ -440,6 +469,7 @@ class _$SelectedItemCopyWithImpl<$Res, $Val extends SelectedItem>
   $Res call({
     Object? itemUid = freezed,
     Object? itemName = freezed,
+    Object? categoryId = freezed,
     Object? totalCount = freezed,
     Object? selections = freezed,
   }) {
@@ -451,6 +481,10 @@ class _$SelectedItemCopyWithImpl<$Res, $Val extends SelectedItem>
       itemName: freezed == itemName
           ? _value.itemName
           : itemName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      categoryId: freezed == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
               as String?,
       totalCount: freezed == totalCount
           ? _value.totalCount
@@ -475,6 +509,7 @@ abstract class _$$SelectedItemImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'itemUid') String? itemUid,
       @JsonKey(name: 'itemName') String? itemName,
+      @JsonKey(name: 'categoryId') String? categoryId,
       @JsonKey(name: 'totalCount') int? totalCount,
       @JsonKey(name: 'selections') List<Selection>? selections});
 }
@@ -492,6 +527,7 @@ class __$$SelectedItemImplCopyWithImpl<$Res>
   $Res call({
     Object? itemUid = freezed,
     Object? itemName = freezed,
+    Object? categoryId = freezed,
     Object? totalCount = freezed,
     Object? selections = freezed,
   }) {
@@ -503,6 +539,10 @@ class __$$SelectedItemImplCopyWithImpl<$Res>
       itemName: freezed == itemName
           ? _value.itemName
           : itemName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      categoryId: freezed == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
               as String?,
       totalCount: freezed == totalCount
           ? _value.totalCount
@@ -522,6 +562,7 @@ class _$SelectedItemImpl implements _SelectedItem {
   const _$SelectedItemImpl(
       {@JsonKey(name: 'itemUid') this.itemUid,
       @JsonKey(name: 'itemName') this.itemName,
+      @JsonKey(name: 'categoryId') this.categoryId,
       @JsonKey(name: 'totalCount') this.totalCount,
       @JsonKey(name: 'selections') final List<Selection>? selections})
       : _selections = selections;
@@ -535,6 +576,9 @@ class _$SelectedItemImpl implements _SelectedItem {
   @override
   @JsonKey(name: 'itemName')
   final String? itemName;
+  @override
+  @JsonKey(name: 'categoryId')
+  final String? categoryId;
   @override
   @JsonKey(name: 'totalCount')
   final int? totalCount;
@@ -551,7 +595,7 @@ class _$SelectedItemImpl implements _SelectedItem {
 
   @override
   String toString() {
-    return 'SelectedItem(itemUid: $itemUid, itemName: $itemName, totalCount: $totalCount, selections: $selections)';
+    return 'SelectedItem(itemUid: $itemUid, itemName: $itemName, categoryId: $categoryId, totalCount: $totalCount, selections: $selections)';
   }
 
   @override
@@ -562,6 +606,8 @@ class _$SelectedItemImpl implements _SelectedItem {
             (identical(other.itemUid, itemUid) || other.itemUid == itemUid) &&
             (identical(other.itemName, itemName) ||
                 other.itemName == itemName) &&
+            (identical(other.categoryId, categoryId) ||
+                other.categoryId == categoryId) &&
             (identical(other.totalCount, totalCount) ||
                 other.totalCount == totalCount) &&
             const DeepCollectionEquality()
@@ -570,8 +616,8 @@ class _$SelectedItemImpl implements _SelectedItem {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, itemUid, itemName, totalCount,
-      const DeepCollectionEquality().hash(_selections));
+  int get hashCode => Object.hash(runtimeType, itemUid, itemName, categoryId,
+      totalCount, const DeepCollectionEquality().hash(_selections));
 
   @JsonKey(ignore: true)
   @override
@@ -591,6 +637,7 @@ abstract class _SelectedItem implements SelectedItem {
   const factory _SelectedItem(
           {@JsonKey(name: 'itemUid') final String? itemUid,
           @JsonKey(name: 'itemName') final String? itemName,
+          @JsonKey(name: 'categoryId') final String? categoryId,
           @JsonKey(name: 'totalCount') final int? totalCount,
           @JsonKey(name: 'selections') final List<Selection>? selections}) =
       _$SelectedItemImpl;
@@ -604,6 +651,9 @@ abstract class _SelectedItem implements SelectedItem {
   @override
   @JsonKey(name: 'itemName')
   String? get itemName;
+  @override
+  @JsonKey(name: 'categoryId')
+  String? get categoryId;
   @override
   @JsonKey(name: 'totalCount')
   int? get totalCount;

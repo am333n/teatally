@@ -5,28 +5,28 @@ import 'package:teatally/core/theme/presentation/app_color_extension.dart';
 import 'package:teatally/core/theme/presentation/base_theme.dart';
 
 class DefaultTheme {
-  static const primaryColor = AppColors.lightGreen;
+  static const primaryColor = Color(0xffA7D360);
   static ThemeData light = BaseTheme.baseTheme(
           primaryColor: primaryColor,
-          backgroundColor: const Color(0xFFF2F8FF),
-          backgroundSecondary: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFFFFDF3),
+          backgroundSecondary: const Color(0xFFFFFFff),
           isDarkMode: false)
       .copyWith(extensions: [
     const AppColorExtension(
-        backgroundPrimary: Color(0xFFF2F8FF),
+        backgroundPrimary: Color(0xffFFFDF3),
         backgroundSecondary: Color(0xFFFFFFFF),
         primary: primaryColor,
         dynamicPrimary: primaryColor,
-        fontPrimary: Color(0xFF2A3E4B),
-        fontSecondary: Color(0xFF595959),
+        fontPrimary: Color(0xff1C1D1A),
+        fontSecondary: Color(0xFF5D6057),
         fontTertiary: Color(0xFFE7E7E7),
-        formBackground: Color(0xFFFFFFFF),
-        cardBackground: Color(0xFFFFFFFF),
+        formBackground: Color(0xFFECECED),
+        cardBackground: Color(0xffFFFFFF),
         cardHeading: Color(0xffF5F5F5),
         success: Color(0xFF0BAA60),
         danger: Color(0xFFF80031),
         dividerColor: Color(0xFFD7D7D7),
-        formBorder: Color(0xFFD7D7D7))
+        formBorder: Color(0xFFE0E0E1))
   ]);
   static ThemeData dark = BaseTheme.baseTheme(
           primaryColor: primaryColor,

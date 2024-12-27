@@ -19,8 +19,9 @@ import 'package:teatally/features/home/presentation/components/add%20group/compo
 import 'package:teatally/features/group/presentation/components/item%20display/components/item_background.dart';
 import 'package:teatally/features/group/presentation/components/item%20display/components/counter_button.dart';
 import 'package:teatally/features/group/presentation/components/item%20display/components/item_label.dart';
+import 'package:teatally/features/home/presentation/components/groups_listing.dart';
 import 'package:teatally/features/home/presentation/components/profile_button.dart';
-import 'package:teatally/features/home/presentation/components/saved_data_dialog.dart';
+import 'package:teatally/features/home/presentation/components/app_title.dart';
 import 'package:teatally/features/home/presentation/components/search_and_add_header.dart';
 import 'package:teatally/features/home/presentation/components/summary_bottom_sheet.dart';
 import 'package:teatally/features/home/presentation/components/total_display.dart';
@@ -49,282 +50,179 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Reset',
-          backgroundColor: AppColors.lightGreen,
-          onPressed: () async {},
-          child: const Icon(
-            Icons.restart_alt,
-            size: 30,
-            color: Colors.white,
-          ),
-        ),
         body: SafeArea(
             child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              centerTitle: false,
-              title: SavedDataDialog(),
-              backgroundColor: context.theme.appColors.backgroundPrimary,
-              actions: [
-                ProfileButton(
-                  onTap: () {
-                    context.read<AuthCubit>().signOut();
-                  },
-                ),
-
-                // InkWell(
-                //   onTap: () {
-                //     // if (total > 0) {
-                //     //   showModalBottomSheet(
-                //     //       context: context,
-                //     //       useSafeArea: true,
-                //     //       isScrollControlled: true,
-                //     //       builder: (context) {
-                //     //         return SummaryBottomSheet(
-                //     //           beverageTypes: beverageTypes,
-                //     //           selectedBeverages: selectedBeverages,
-                //     //         );
-                //     //       });
-                //     // }
-                //   },
-                //   child: TotalDisplay(
-                //     total: total,
-                //   ),
-                // )
-              ],
-              // bottom: PreferredSize(
-              //   preferredSize: const Size.fromHeight(80.0),
-              //   child: SizedBox(
-              //     height: 80.0,
-              //     child: ListView.builder(
-              //       scrollDirection: Axis.horizontal,
-              //       itemCount: beverageTypes.length +
-              //           1, // +1 for the Clear chip
-              //       itemBuilder: (context, index) {
-              //         if (index == 0) {
-              //           return Padding(
-              //             padding: const EdgeInsets.symmetric(
-              //                 horizontal: 8.0),
-              //             child: ChoiceChip(
-              //               showCheckmark: false,
-              //               label: Txt(
-              //                 'All',
-              //                 color: selectedBeverageTypeIndex == null
-              //                     ? Colors.white
-              //                     : AppColors.black,
-              //               ),
-              //               shape: RoundedRectangleBorder(
-              //                   borderRadius:
-              //                       BorderRadius.circular(30)),
-              //               padding: const EdgeInsets.all(10),
-              //               selected: selectedBeverageTypeIndex == null,
-              //               backgroundColor: AppColors.grey,
-              //               side: BorderSide.none,
-              //               selectedColor: AppColors.black,
-              //               onSelected: (selected) {
-              //                 setState(() {
-              //                   selectedBeverageTypeIndex = null;
-              //                 });
-              //               },
-              //             ),
-              //           );
-              //         }
-              //         final beverageTypeItem = beverageTypes[
-              //             index - 1]; // Adjust index for beverageTypes
-              //         return Padding(
-              //           padding:
-              //               const EdgeInsets.symmetric(horizontal: 8.0),
-              //           child: ChoiceChip(
-              //             showCheckmark: false,
-              //             label: Txt(
-              //               beverageTypeItem.displayName,
-              //               color:
-              //                   selectedBeverageTypeIndex == index - 1
-              //                       ? Colors.white
-              //                       : AppColors.black,
-              //             ),
-              //             shape: RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(30)),
-              //             padding: const EdgeInsets.all(10),
-              //             selected:
-              //                 selectedBeverageTypeIndex == index - 1,
-              //             backgroundColor: AppColors.grey,
-              //             side: BorderSide.none,
-              //             selectedColor: AppColors.black,
-              //             onSelected: (selected) {
-              //               setState(() {
-              //                 selectedBeverageTypeIndex =
-              //                     selected ? index - 1 : null;
-              //               });
-              //             },
-              //           ),
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0, left: 15, bottom: 10),
-                child: Text(
-                  'Groups',
-                  style:
-                      TextStyles.getTextStyle(context, TxtStyle.headerLSemiBold)
-                          .copyWith(fontSize: 45),
-                ),
+      slivers: [
+        SliverAppBar(
+          centerTitle: false,
+          backgroundColor: context.theme.appColors.backgroundPrimary,
+          expandedHeight: 80,
+          collapsedHeight: kToolbarHeight,
+          flexibleSpace: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppTitle(),
+                  ProfileButton(
+                    onTap: () {
+                      context.read<AuthCubit>().signOut();
+                    },
+                  ),
+                ],
               ),
             ),
-            const SearchAndAddButtonHeader(),
-            SliverToBoxAdapter(child: BlocBuilder<HomePageCubit, HomePageState>(
-                builder: (context, state) {
-              return state.when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (failure) => Center(
-                        child: Txt(FailureHandler.getErrorMessageFromFailure(
-                            failure!)),
-                      ),
-                  loaded: (groups) {
-                    return AnimatedList(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        key: ValueKey(groups),
-                        initialItemCount: groups?.length ?? 0,
-                        itemBuilder: (context, index, aniamtion) {
-                          final item = groups?[index];
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Slidable(
-                              endActionPane:
-                                  ActionPane(motion: ScrollMotion(), children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    context
-                                        .read<HomePageCubit>()
-                                        .deleteGroup(item?.docId);
-                                  },
-                                  backgroundColor:
-                                      context.theme.appColors.danger,
-                                  icon: Icons.delete,
-                                ),
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    context.read<HomePageCubit>().setPinned(
-                                        item?.docId, item?.isPinned ?? false);
-                                  },
-                                  icon: (item?.isPinned ?? false)
-                                      ? Icons.push_pin
-                                      : Icons.push_pin_outlined,
-                                )
-                              ]),
-                              child: InkWell(
-                                onTap: () {
-                                  AutoRouter.of(context).push(
-                                      GroupDetailRoute(groupDetail: item));
-                                },
-                                child: Container(
-                                  color: context.theme.appColors.cardBackground,
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        color:
-                                            ColorMapper.hexToColor(item?.color),
-                                        padding: const EdgeInsets.all(10),
-                                        height: 50,
-                                        width: 50,
-                                        child: Image.asset(
-                                            IconMapper.getPathFromCode(
-                                                item?.icon)),
-                                      ),
-                                      const HorizontalSpacing(10),
-                                      Txt(
-                                        item?.name ?? '-',
-                                        style: TxtStyle.headerSRegular,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        });
-                  });
-            })),
+          ),
 
-            // SliverGrid(
-            //   gridDelegate:
-            //       const SliverGridDelegateWithFixedCrossAxisCount(
-            //     crossAxisCount:
-            //         2, // You can change the number of columns here
-            //     crossAxisSpacing: 10.0,
-            //     mainAxisSpacing: 10.0,
-            //   ),
-            //   delegate: SliverChildBuilderDelegate(
-            //     (context, index) {
-            //       final beverageItem = filteredBeverages[index];
-            //       final bgColor =
-            //           Color(int.parse('0xff${beverageItem.bgColor}'));
-            //       final darkerColor = bgColor
-            //           .withOpacity(0.4); // Adjust opacity for darkness
-            //       return Stack(
-            //         children: [
-            //           ItemBackgroundImage(
-            //               bgColor: bgColor,
-            //               darkerColor: darkerColor,
-            //               size: size,
-            //               beverageItem: beverageItem),
-            //           ItemLabel(beverageItem: beverageItem),
-            //           Positioned(
-            //             right: 0,
-            //             child: Container(
-            //               // margin: EdgeInsets.all(5),
-            //               padding: const EdgeInsets.symmetric(
-            //                   horizontal: 10, vertical: 8),
-            //               decoration: const BoxDecoration(
-            //                   color: AppColors.lightYellow,
-            //                   borderRadius: BorderRadius.only(
-            //                       topRight: Radius.circular(22),
-            //                       bottomLeft: Radius.circular(12))),
-            //               child: RichText(
-            //                 text: TextSpan(
-            //                   children: [
-            //                     txtSpan(
-            //                       context,
-            //                       text: '₹',
-            //                       style: TxtStyle.bodySRegular,
-            //                     ),
-            //                     txtSpan(
-            //                       context,
-            //                       text: beverageItem.rate.toString(),
-            //                       style: TxtStyle.bodySRegular,
-            //                     )
-            //                   ],
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           Positioned(
-            //             bottom: 0,
-            //             child: CounterButton(
-            //               beverageItem: beverageItem,
-            //               selectedBeverages: selectedBeverages,
-            //             ),
-            //           ),
-            //         ],
-            //       );
-            //     },
-            //     childCount: filteredBeverages.length,
-            //   ),
-            // ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 80,
-              ),
-            )
-          ],
-        )));
+          // bottom: PreferredSize(
+          //   preferredSize: const Size.fromHeight(80.0),
+          //   child: SizedBox(
+          //     height: 80.0,
+          //     child: ListView.builder(
+          //       scrollDirection: Axis.horizontal,
+          //       itemCount: beverageTypes.length +
+          //           1, // +1 for the Clear chip
+          //       itemBuilder: (context, index) {
+          //         if (index == 0) {
+          //           return Padding(
+          //             padding: const EdgeInsets.symmetric(
+          //                 horizontal: 8.0),
+          //             child: ChoiceChip(
+          //               showCheckmark: false,
+          //               label: Txt(
+          //                 'All',
+          //                 color: selectedBeverageTypeIndex == null
+          //                     ? Colors.white
+          //                     : AppColors.black,
+          //               ),
+          //               shape: RoundedRectangleBorder(
+          //                   borderRadius:
+          //                       BorderRadius.circular(30)),
+          //               padding: const EdgeInsets.all(10),
+          //               selected: selectedBeverageTypeIndex == null,
+          //               backgroundColor: AppColors.grey,
+          //               side: BorderSide.none,
+          //               selectedColor: AppColors.black,
+          //               onSelected: (selected) {
+          //                 setState(() {
+          //                   selectedBeverageTypeIndex = null;
+          //                 });
+          //               },
+          //             ),
+          //           );
+          //         }
+          //         final beverageTypeItem = beverageTypes[
+          //             index - 1]; // Adjust index for beverageTypes
+          //         return Padding(
+          //           padding:
+          //               const EdgeInsets.symmetric(horizontal: 8.0),
+          //           child: ChoiceChip(
+          //             showCheckmark: false,
+          //             label: Txt(
+          //               beverageTypeItem.displayName,
+          //               color:
+          //                   selectedBeverageTypeIndex == index - 1
+          //                       ? Colors.white
+          //                       : AppColors.black,
+          //             ),
+          //             shape: RoundedRectangleBorder(
+          //                 borderRadius: BorderRadius.circular(30)),
+          //             padding: const EdgeInsets.all(10),
+          //             selected:
+          //                 selectedBeverageTypeIndex == index - 1,
+          //             backgroundColor: AppColors.grey,
+          //             side: BorderSide.none,
+          //             selectedColor: AppColors.black,
+          //             onSelected: (selected) {
+          //               setState(() {
+          //                 selectedBeverageTypeIndex =
+          //                     selected ? index - 1 : null;
+          //               });
+          //             },
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
+        ),
+
+        const SearchAndAddButtonHeader(),
+        GroupsListing(),
+
+        // SliverGrid(
+        //   gridDelegate:
+        //       const SliverGridDelegateWithFixedCrossAxisCount(
+        //     crossAxisCount:
+        //         2, // You can change the number of columns here
+        //     crossAxisSpacing: 10.0,
+        //     mainAxisSpacing: 10.0,
+        //   ),
+        //   delegate: SliverChildBuilderDelegate(
+        //     (context, index) {
+        //       final beverageItem = filteredBeverages[index];
+        //       final bgColor =
+        //           Color(int.parse('0xff${beverageItem.bgColor}'));
+        //       final darkerColor = bgColor
+        //           .withOpacity(0.4); // Adjust opacity for darkness
+        //       return Stack(
+        //         children: [
+        //           ItemBackgroundImage(
+        //               bgColor: bgColor,
+        //               darkerColor: darkerColor,
+        //               size: size,
+        //               beverageItem: beverageItem),
+        //           ItemLabel(beverageItem: beverageItem),
+        //           Positioned(
+        //             right: 0,
+        //             child: Container(
+        //               // margin: EdgeInsets.all(5),
+        //               padding: const EdgeInsets.symmetric(
+        //                   horizontal: 10, vertical: 8),
+        //               decoration: const BoxDecoration(
+        //                   color: AppColors.lightYellow,
+        //                   borderRadius: BorderRadius.only(
+        //                       topRight: Radius.circular(22),
+        //                       bottomLeft: Radius.circular(12))),
+        //               child: RichText(
+        //                 text: TextSpan(
+        //                   children: [
+        //                     txtSpan(
+        //                       context,
+        //                       text: '₹',
+        //                       style: TxtStyle.bodySRegular,
+        //                     ),
+        //                     txtSpan(
+        //                       context,
+        //                       text: beverageItem.rate.toString(),
+        //                       style: TxtStyle.bodySRegular,
+        //                     )
+        //                   ],
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //           Positioned(
+        //             bottom: 0,
+        //             child: CounterButton(
+        //               beverageItem: beverageItem,
+        //               selectedBeverages: selectedBeverages,
+        //             ),
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //     childCount: filteredBeverages.length,
+        //   ),
+        // ),
+        const SliverToBoxAdapter(
+          child: SizedBox(
+            height: 80,
+          ),
+        )
+      ],
+    )));
   }
 }

@@ -8,6 +8,7 @@ import 'package:teatally/core/widgets/toast.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
 import 'package:teatally/features/home/domain/beverages.dart';
 import 'package:teatally/features/home/domain/group_model.dart';
+import 'package:teatally/features/home/domain/home_page_loaded_state_model.dart';
 import 'package:teatally/features/home/domain/item.dart';
 import 'package:teatally/features/home/domain/users_model.dart';
 import 'package:teatally/features/home/infrastructure/home_repository.dart';
@@ -15,21 +16,22 @@ import 'package:teatally/features/home/infrastructure/home_repository.dart';
 @injectable
 class HomePageCubit extends Cubit<HomePageState> {
   final HomeRepository _repository;
-  HomePageCubit(this._repository) : super(HomePageState.loading());
-  List<ItemCounter> selectedBeverages = [];
-  final beverages = BeverageData.beverageTypes;
-  int total = 0;
-
+  HomePageCubit(this._repository) : super(const HomePageState.loading());
+  HomePageLoadedStateModel loadedStateData = HomePageLoadedStateModel();
   List<GroupModel>? groups;
 
   void addGroup() {}
 
   Future<List<UserModel?>> getAllUsers() async {
+    loadedStateData = loadedStateData.copyWith(isButtonLoading: true);
+    emit(HomePageState.loaded(loadedStateData));
     final response = await _repository.getAllUsersList();
     return response.fold((l) {
       return [];
     }, (r) {
       log(r.toString());
+      loadedStateData = loadedStateData.copyWith(isButtonLoading: false);
+      emit(HomePageState.loaded(loadedStateData));
       return r;
     });
   }
@@ -47,10 +49,12 @@ class HomePageCubit extends Cubit<HomePageState> {
       if (groups?.isNotEmpty ?? false) {
         final filteredGroup =
             groups?.where((e) => e.name.toLowerCase().contains(query)).toList();
-        emit(HomePageState.loaded(groups: filteredGroup));
+        loadedStateData = loadedStateData.copyWith(groups: filteredGroup);
+        emit(HomePageState.loaded(loadedStateData));
       }
     } else {
-      emit(HomePageState.loaded(groups: groups));
+      loadedStateData = loadedStateData.copyWith(groups: groups);
+      emit(HomePageState.loaded(loadedStateData));
     }
   }
 
@@ -60,7 +64,8 @@ class HomePageCubit extends Cubit<HomePageState> {
       emit(HomePageState.error(failure: l));
     }, (r) {
       groups = r;
-      emit(HomePageState.loaded(groups: r));
+      loadedStateData = loadedStateData.copyWith(groups: r);
+      emit(HomePageState.loaded(loadedStateData));
     });
   }
 

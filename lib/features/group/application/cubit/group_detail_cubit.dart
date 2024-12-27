@@ -14,6 +14,7 @@ import 'package:teatally/features/group/domain/item_model.dart';
 import 'package:teatally/features/group/domain/group_details_state_model.dart';
 import 'package:teatally/features/group/infrastructure/group_repository.dart';
 import 'package:teatally/features/group/domain/session_model.dart';
+import 'package:teatally/features/home/domain/group_model.dart';
 import 'package:teatally/features/home/infrastructure/home_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -34,23 +35,45 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     loadedStateData = const GroupDetailsLoadedStateModel();
   }
 
-  Future<void> getCategories(String? groupId) async {
-    emit(const GroupDetailState.loadingState());
+  Future<void> startUpFunction(GroupModel? groupDetails) async {
+    await getCategories(groupDetails?.uid, emitLoading: true).then((_) async {
+      await getItemsForGroup(groupDetails?.uid, emitLoading: true)
+          .then((_) async {
+        await getAllMembersDetails(groupDetails?.members, emitLoading: true);
+      });
+    });
+
+    startListeningForActiveSession(groupDetails?.uid);
+  }
+
+  Future<void> getCategories(String? groupId,
+      {bool emitLoading = false}) async {
+    if (emitLoading) {
+      emit(const GroupDetailState.loadingState());
+    }
     final response = await _repository.getCategories(groupId);
     response.fold((l) {
       emit(GroupDetailState.errorState(l));
     }, (r) {
-      loadedStateData = loadedStateData.copyWith(categories: r);
+      setSelectedCategory(null);
+      loadedStateData =
+          loadedStateData.copyWith(categories: r, items: allItems);
       emit(GroupDetailState.loadedState(loadedStateData));
     });
   }
 
-  Future<void> getAllMembersDetails(List<String>? membersUids) async {
+  Future<void> getAllMembersDetails(List<String>? membersUids,
+      {bool emitLoading = false}) async {
+    if (emitLoading) {
+      emit(const GroupDetailState.loadingState());
+    }
     final response = await _repository.getAllMemberDetails(membersUids);
     response.fold((l) {
+      emit(GroupDetailState.errorState(l));
       Toast.showErrorMessage(l.toString());
     }, (r) {
       loadedStateData = loadedStateData.copyWith(members: r);
+      emit(GroupDetailState.loadedState(loadedStateData));
     });
   }
 
@@ -85,11 +108,13 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
         result.fold(
           (failure) {
             Toast.showErrorMessage(failure.toString());
+            loadedStateData = loadedStateData.copyWith(session: null);
+            emit(GroupDetailState.loadedState(loadedStateData));
           },
           (sessionData) {
             if (sessionData == null) {
-              log('No session data found');
-              // emit(SessionNoActiveSession());
+              loadedStateData = loadedStateData.copyWith(session: null);
+              emit(GroupDetailState.loadedState(loadedStateData));
             } else {
               loadedStateData = loadedStateData.copyWith(session: sessionData);
               log('Update Data: ${loadedStateData.session}');
@@ -99,6 +124,7 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
         );
       },
       onError: (error) {
+        emit(GroupDetailState.errorState(error));
         Toast.showErrorMessage(error.toString());
         // Handle unexpected errors
         // emit(SessionError(error.toString()));
@@ -106,14 +132,14 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     );
   }
 
-  Future<void> incrementItemCount(String? itemName, String? itemId,
-      String? groupId, String? categoryId) async {
+  Future<void> incrementOrDecrementItemCount(String? itemName, String? itemId,
+      String? groupId, String? categoryId, bool isIncrement) async {
     if (loadedStateData.session != null) {
       log('active session 1');
-      addItemToSession(itemId, itemName);
+      updateItemCount(itemId, itemName, categoryId, isIncrement);
     } else {
       await startCountSession(itemId, groupId, categoryId);
-      addItemToSession(itemId, itemName);
+      updateItemCount(itemId, itemName, categoryId, isIncrement);
       log('active session null');
     }
   }
@@ -133,11 +159,13 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     }, (r) {});
   }
 
-  Future<void> addItemToSession(
+  Future<void> updateItemCount(
     String? itemId,
     String? itemName,
+    String? categoryId,
+    bool isIncrement, // Flag to indicate increment or decrement
   ) async {
-    if (itemId == null || itemName == null) return;
+    if (itemId == null || itemName == null || categoryId == null) return;
 
     // Get the user ID
     final userId = await CredentialStorage.getUid();
@@ -166,26 +194,51 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
           List<Selection>.from(existingItem.selections ?? []);
 
       if (userSelectionIndex != -1) {
-        // User already has a selection, increment the count
-        updatedSelections[userSelectionIndex] =
-            updatedSelections[userSelectionIndex].copyWith(
-          count: (updatedSelections[userSelectionIndex].count ?? 0) + 1,
-        );
-      } else {
-        // User does not have a selection, add a new one
-        updatedSelections.add(Selection(userUid: userId, count: 1));
-      }
+        // User already has a selection
+        final currentUserSelection = updatedSelections[userSelectionIndex];
+        final currentCount = currentUserSelection.count ?? 0;
 
-      // Update the item with new selections and total count
-      updatedSelectedItems[existingItemIndex] = existingItem.copyWith(
-        selections: updatedSelections,
-        totalCount: (existingItem.totalCount ?? 0) + 1,
-      );
-    } else {
-      // Item does not exist, add a new item
+        if (isIncrement) {
+          // Increment the count
+          updatedSelections[userSelectionIndex] =
+              currentUserSelection.copyWith(count: currentCount + 1);
+        } else if (currentCount > 0) {
+          // Decrement the count if greater than 0
+          if (currentCount == 1) {
+            // Remove the user's selection if count becomes zero
+            updatedSelections.removeAt(userSelectionIndex);
+          } else {
+            updatedSelections[userSelectionIndex] =
+                currentUserSelection.copyWith(count: currentCount - 1);
+          }
+        }
+
+        // Update the item with new selections and total count
+        updatedSelectedItems[existingItemIndex] = existingItem.copyWith(
+          selections: updatedSelections,
+          totalCount: isIncrement
+              ? (existingItem.totalCount ?? 0) + 1
+              : (existingItem.totalCount ?? 0) - 1,
+        );
+
+        // Optionally remove the item if total count becomes zero
+        if (updatedSelectedItems[existingItemIndex].totalCount == 0) {
+          updatedSelectedItems.removeAt(existingItemIndex);
+        }
+      } else if (isIncrement) {
+        // User does not have a selection, add a new one for increment only
+        updatedSelections.add(Selection(userUid: userId, count: 1));
+        updatedSelectedItems[existingItemIndex] = existingItem.copyWith(
+          selections: updatedSelections,
+          totalCount: (existingItem.totalCount ?? 0) + 1,
+        );
+      }
+    } else if (isIncrement) {
+      // Item does not exist, add a new item for increment only
       final newItem = SelectedItem(
         itemUid: itemId,
         itemName: itemName,
+        categoryId: categoryId,
         totalCount: 1,
         selections: [Selection(userUid: userId, count: 1)],
       );
@@ -193,12 +246,9 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
       updatedSelectedItems.add(newItem);
     }
 
-    // Update the session's selected items
-    final sessionDetails =
+    final session =
         loadedStateData.session?.copyWith(selectedItems: updatedSelectedItems);
-
-    // Update the active session with new details
-    updateActiveSession(sessionDetails);
+    updateActiveSession(session);
   }
 
   Future<void> updateActiveSession(SessionModel? sessionDetails) async {
@@ -244,6 +294,51 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     }, (r) {
       getCategories(groupId);
       Toast.showSuccess('Category Added');
+    });
+  }
+
+  Future<void> updateCategory(CategoriesModel? categoryDetail) async {
+    if (categoryDetail == null) return;
+    final response = await _repository.updateCategory(categoryDetail);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      getCategories(categoryDetail.groupId);
+      Toast.showSuccess('Category Added');
+    });
+  }
+
+  Future<void> deleteSession(String? docID) async {
+    if (docID == null) return;
+    final response = await _repository.deleteSession(docID);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      Toast.showSuccess('Session Stoped');
+    });
+  }
+
+  Future<void> deleteCategory(
+      String? categoryUid, String? categoryDocID, String? groupId) async {
+    if (categoryUid == null || categoryDocID == null) return;
+
+    final allItemsUnderThisCategory = loadedStateData.items
+        ?.where((item) => item.categoryId == categoryUid)
+        .toList();
+
+    if (allItemsUnderThisCategory?.isNotEmpty ?? false) {
+      Toast.showErrorMessage(
+          'Delete Not Allowed: Please remove all items under this category to proceed');
+      return;
+    }
+
+    // Proceed to delete the category
+    final response = await _repository.deleteCategory(categoryDocID);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      getCategories(groupId); // Refresh categories
+      Toast.showSuccess('Category Deleted');
     });
   }
 

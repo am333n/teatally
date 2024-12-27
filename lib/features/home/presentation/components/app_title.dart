@@ -3,13 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teatally/core/app_colors.dart';
 import 'package:teatally/core/styles/text/txt.dart';
+import 'package:teatally/core/styles/text/txt_styles.dart';
 
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 
-class SavedDataDialog extends StatelessWidget {
+class AppTitle extends StatelessWidget {
   final ValueNotifier<int> _rebuildNotifier = ValueNotifier<int>(0);
 
-  SavedDataDialog({super.key});
+  AppTitle({super.key});
 
   String extractDate(String key) {
     // Assuming the key format is 'selectedData_YYYY-MM-DD'
@@ -33,9 +34,10 @@ class SavedDataDialog extends StatelessWidget {
             height: 50,
             width: 50,
           ),
-          const Txt(
+          Text(
             'TeaTally',
-            style: TxtStyle.headerMSemiBold,
+            style: TextStyles.getTextStyle(context, TxtStyle.headerLBold)
+                .copyWith(fontSize: 30),
           ),
         ],
       ),
