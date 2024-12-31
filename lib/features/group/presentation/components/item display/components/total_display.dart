@@ -26,11 +26,22 @@ class ItemTotalDisplay extends StatelessWidget {
         0;
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: Text('$itemCount',
-          style: TextStyles.getTextStyle(context, TxtStyle.headerLBold)
-              .copyWith(
-                  fontSize: size.width * 0.3,
-                  color: ColorMapper.hexToColor(item?.color).withOpacity(0.7))),
+      child: AnimatedSwitcher(
+        duration: Durations.medium,
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(scale: animation, child: child),
+          );
+        },
+        child: Text('$itemCount',
+            key: ValueKey(itemCount),
+            style: TextStyles.getTextStyle(context, TxtStyle.headerLBold)
+                .copyWith(
+                    fontSize: size.width * 0.3,
+                    color:
+                        ColorMapper.hexToColor(item?.color).withOpacity(0.7))),
+      ),
     );
   }
 }

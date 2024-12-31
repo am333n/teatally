@@ -12,6 +12,7 @@ import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/color_mapper.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/icon_mapper.dart';
+import 'package:teatally/features/home/presentation/components/group_loading_shimmer.dart';
 
 class GroupsListing extends StatelessWidget {
   const GroupsListing({
@@ -23,7 +24,7 @@ class GroupsListing extends StatelessWidget {
     return SliverToBoxAdapter(child:
         BlocBuilder<HomePageCubit, HomePageState>(builder: (context, state) {
       return state.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => const GroupLoadingShimmer(),
           error: (failure) => Center(
                 child: Txt(FailureHandler.getErrorMessageFromFailure(failure!)),
               ),

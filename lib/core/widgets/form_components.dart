@@ -273,6 +273,7 @@ class FormComponents {
       String? initialValue,
       Widget? suffixIcon,
       bool? enabled,
+      bool obscureText = false,
       TextInputType textInputType = TextInputType.text,
       List<FormFieldValidator<String>>? validators,
       double verticalPadding = 5}) {
@@ -293,6 +294,7 @@ class FormComponents {
               onTapOutside: (_) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
+              obscureText: obscureText,
               controller: controller,
               inputFormatters: inputFormatters,
               name: fieldName,

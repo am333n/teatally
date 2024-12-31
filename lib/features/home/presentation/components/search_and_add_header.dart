@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teatally/core/styles/text/txt.dart';
+import 'package:teatally/core/styles/text/txt_styles.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
@@ -59,12 +61,25 @@ class _SearchAndAddButtonHeaderState extends State<SearchAndAddButtonHeader> {
                     builder: (context, value, child) {
                       return SearchBar(
                         hintText: 'Search',
+                        hintStyle: WidgetStateProperty.all(
+                            TextStyles.getTextStyle(
+                                context, TxtStyle.bodyLRegular,
+                                color: Theme.of(context)
+                                    .appColors
+                                    .fontPrimary
+                                    .withOpacity(0.5))),
+                        padding: WidgetStateProperty.all(
+                            const EdgeInsets.symmetric(horizontal: 15)),
                         focusNode: _searchFocus,
                         elevation: WidgetStateProperty.all(0),
                         controller: searchController,
-                        leading: const Icon(Icons.search),
+                        leading: Icon(Icons.search,
+                            color: Theme.of(context)
+                                .appColors
+                                .fontPrimary
+                                .withOpacity(0.5)),
                         backgroundColor: WidgetStateProperty.all(
-                          context.theme.appColors.formBorder,
+                          context.theme.appColors.formBackground,
                         ),
                         trailing: value.text.isNotEmpty
                             ? [
@@ -93,22 +108,24 @@ class _SearchAndAddButtonHeaderState extends State<SearchAndAddButtonHeader> {
                     return SizedBox(
                       child: Center(
                         child: CommonWidgets.iconButton(
-                          color: context.theme.appColors.formBorder,
+                          color: context.theme.appColors.formBackground,
                           onPressed: () async {
                             await context
                                 .read<HomePageCubit>()
                                 .getAllUsers()
-                                .then((users) {
-                              showGeneralDialog(
-                                context: context,
-                                pageBuilder: (context, _, __) {
-                                  return SafeArea(
-                                    child: Material(
-                                      child: AddGroupDialog(users: []),
-                                    ),
-                                  );
-                                },
-                              );
+                                .then((data) {
+                              data.fold((l) {}, (users) {
+                                showGeneralDialog(
+                                  context: context,
+                                  pageBuilder: (context, _, __) {
+                                    return SafeArea(
+                                      child: Material(
+                                        child: AddGroupDialog(users: users),
+                                      ),
+                                    );
+                                  },
+                                );
+                              });
                             });
                           },
                           icon: state.maybeWhen(
@@ -117,10 +134,11 @@ class _SearchAndAddButtonHeaderState extends State<SearchAndAddButtonHeader> {
                                 (loadedStateData.isButtonLoading ?? false),
                           )
                               ? const CupertinoActivityIndicator()
-                              : const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
+                              : Icon(Icons.add,
+                                  color: Theme.of(context)
+                                      .appColors
+                                      .fontPrimary
+                                      .withOpacity(0.5)),
                         ),
                       ),
                     );

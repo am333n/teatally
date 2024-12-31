@@ -51,4 +51,49 @@ class DialogHelpers {
       },
     );
   }
+
+  static Future<void> showPopupMenuAbove(
+    BuildContext context, {
+    required GlobalKey containerKey,
+    required List<PopupMenuEntry<int>> items,
+  }) async {
+    final RenderBox? renderBox =
+        containerKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox != null) {
+      final overlay =
+          Overlay.of(context).context.findRenderObject() as RenderBox;
+
+      final containerPosition = renderBox.localToGlobal(Offset.zero);
+      final containerSize = renderBox.size;
+
+      final popupPosition = containerPosition.dy - 50;
+
+      // Adjust the popup position if it would go out of bounds
+      final adjustedPosition = popupPosition < 0
+          ? containerPosition.dy + containerSize.height
+          : popupPosition;
+
+      await showMenu(
+        context: context,
+        position: RelativeRect.fromRect(
+          Rect.fromLTWH(
+            containerPosition.dx,
+            adjustedPosition,
+            containerSize.width,
+            containerSize.height,
+          ),
+          Offset.zero & overlay.size,
+        ),
+        items: items,
+      ).then((value) {
+        if (value != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Selected: Option $value')),
+          );
+        }
+      });
+    } else {
+      debugPrint('Unable to determine widget size or position.');
+    }
+  }
 }

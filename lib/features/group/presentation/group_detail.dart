@@ -54,6 +54,9 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
             ),
             errorState: (failure) => Txt(failure.toString()),
             loadedState: (loadedStateData) {
+              final RenderBox overlay =
+                  Overlay.of(context).context.findRenderObject() as RenderBox;
+
               final size = MediaQuery.sizeOf(context);
               return Stack(
                 children: [
@@ -165,17 +168,9 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
                             final item = loadedStateData.items?[index];
-                            return CupertinoContextMenu(
-                              actions: [
-                                const CupertinoContextMenuAction(
-                                    child: Txt('Edit'))
-                              ],
-                              child: Material(
-                                child: ItemDisplayContainer(
-                                  loadedStateData: loadedStateData,
-                                  item: item,
-                                ),
-                              ),
+                            return ItemDisplayContainer(
+                              loadedStateData: loadedStateData,
+                              item: item,
                             );
                           },
                           childCount: loadedStateData.items?.length ?? 0,

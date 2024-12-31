@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teatally/core/styles/text/txt.dart';
+import 'package:teatally/core/widgets/dialog_helpers.dart';
 import 'package:teatally/features/group/domain/group_details_state_model.dart';
 import 'package:teatally/features/group/domain/item_model.dart';
 import 'package:teatally/features/group/domain/session_model.dart';
@@ -19,7 +20,8 @@ class ItemDisplayContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = ColorMapper.hexToColor(item?.color).withOpacity(0.8);
     final size = MediaQuery.of(context).size;
-    final darkerColor = bgColor.withOpacity(0.3); // Adjust opacity for darkness
+
+    final darkerColor = bgColor.withOpacity(0.3);
     return Stack(
       children: [
         ItemBackground(

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 
 import 'package:injectable/injectable.dart';
 import 'package:teatally/core/widgets/toast.dart';
@@ -22,17 +23,17 @@ class HomePageCubit extends Cubit<HomePageState> {
 
   void addGroup() {}
 
-  Future<List<UserModel?>> getAllUsers() async {
+  Future<Either<void, List<UserModel?>>> getAllUsers() async {
     loadedStateData = loadedStateData.copyWith(isButtonLoading: true);
     emit(HomePageState.loaded(loadedStateData));
     final response = await _repository.getAllUsersList();
     return response.fold((l) {
-      return [];
+      return Left(null);
     }, (r) {
       log(r.toString());
       loadedStateData = loadedStateData.copyWith(isButtonLoading: false);
       emit(HomePageState.loaded(loadedStateData));
-      return r;
+      return Right(r);
     });
   }
 

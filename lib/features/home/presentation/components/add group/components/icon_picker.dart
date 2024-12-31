@@ -42,10 +42,10 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
               height: 40,
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(7),
                 color: isSelected
-                    ? context.theme.appColors.fontPrimary
-                    : context.theme.appColors.backgroundPrimary,
+                    ? context.theme.appColors.formBackground
+                    : Colors.transparent,
                 // border: isSelected
                 //     ? Border.all(color: Colors.black, width: 2.0)
                 //     : null,
@@ -53,10 +53,10 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
               child: Image.asset(
                 icon,
                 color: isSelected
-                    ? context.theme.appColors.backgroundPrimary
-                    : context.theme.appColors.fontPrimary,
-                cacheHeight: 40,
-                cacheWidth: 40,
+                    ? context.theme.appColors.fontPrimary
+                    : context.theme.appColors.fontPrimary.withOpacity(0.3),
+                cacheHeight: 100,
+                cacheWidth: 100,
               ),
             ),
           );

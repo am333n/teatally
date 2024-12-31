@@ -28,8 +28,15 @@ class ProfileButton extends StatelessWidget {
                         return const Icon(Icons.error);
                       } else {
                         return (snapshot.data?['photoURL'] != null)
-                            ? Image.network(snapshot.data!['photoURL']!)
-                            : Txt(snapshot.data!['displayName']!);
+                            ? Image.network(
+                                snapshot.data!['photoURL']!,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(
+                                  Icons.warning,
+                                  color: Colors.amber,
+                                ),
+                              )
+                            : Txt(snapshot.data!['displayName']![0]);
                       }
                   }
                 }),
