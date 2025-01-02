@@ -74,27 +74,34 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                             Row(
                               children: [
                                 CommonWidgets.backButton(context),
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: kToolbarHeight - 10,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: context
-                                              .theme.appColors.formBackground),
-                                      child: Image.asset(
-                                          IconMapper.getPathFromCode(
-                                              widget.groupDetail?.icon)),
-                                    ),
-                                    const HorizontalSpacing(15),
-                                    Txt(
-                                      widget.groupDetail?.name ?? '-',
-                                      style: TxtStyle.headerSSemiBold,
-                                    ),
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    // AutoRouter.of(context).push(
+                                    //     GroupDetailsViewRoute(
+                                    //         groupDetails: widget.groupDetail));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: kToolbarHeight - 10,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: context.theme.appColors
+                                                .formBackground),
+                                        child: Image.asset(
+                                            IconMapper.getPathFromCode(
+                                                widget.groupDetail?.icon)),
+                                      ),
+                                      const HorizontalSpacing(15),
+                                      Txt(
+                                        widget.groupDetail?.name ?? '-',
+                                        style: TxtStyle.headerSSemiBold,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

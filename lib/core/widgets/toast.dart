@@ -21,12 +21,13 @@ class Toast {
       final snackBar = SnackBar(
         duration: const Duration(seconds: 3),
         shape: RoundedRectangleBorder(
-            side: BorderSide(color: iconColor, width: 2),
-            borderRadius: BorderRadius.circular(5)),
+            side: BorderSide(color: activeTheme().appColors.formBorder),
+            borderRadius: BorderRadius.circular(15)),
         action: action,
         content: Row(
           children: [
-            Icon(icon, color: iconColor),
+            Icon(icon,
+                color: activeTheme().appColors.fontPrimary.withOpacity(0.5)),
             const SizedBox(width: 8),
             Flexible(
               child: Txt(msg,
@@ -38,7 +39,8 @@ class Toast {
         ),
         behavior: SnackBarBehavior.floating,
         elevation: 5,
-        backgroundColor: activeTheme().appColors.backgroundSecondary,
+        backgroundColor:
+            activeTheme().appColors.backgroundSecondary.withOpacity(0.8),
       );
 
       scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
@@ -64,46 +66,5 @@ class Toast {
 
   static void showInfo(String msg, {SnackBarAction? action}) {
     show(msg, Icons.info_outline, Colors.blue, action);
-  }
-
-  static void custom(String msg,
-      {required IconData icon,
-      required Color iconColor,
-      SnackBarAction? action,
-      required String dismissLabel}) {
-    final scaffoldMessengerKey = GetIt.I<GlobalKey<ScaffoldMessengerState>>();
-    final context = scaffoldMessengerKey.currentContext;
-
-    if (context == null) return;
-
-    // Schedule showing the SnackBar after the current frame
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      final snackBar = SnackBar(
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: iconColor, width: 2),
-            borderRadius: BorderRadius.circular(5)),
-        content: Row(
-          children: [
-            Icon(icon, color: iconColor),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Txt(msg,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: TxtStyle.bodyLSemiBold),
-            ),
-          ],
-        ),
-        behavior: SnackBarBehavior.floating,
-        elevation: 5,
-        backgroundColor: activeTheme().appColors.backgroundSecondary,
-        duration:
-            const Duration(days: 365), // Keep the SnackBar for a long time
-        action: action,
-        showCloseIcon: true,
-      );
-
-      scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-    });
   }
 }

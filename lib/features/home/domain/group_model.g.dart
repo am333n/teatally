@@ -19,7 +19,7 @@ _$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
           (json['members'] as List<dynamic>).map((e) => e as String).toList(),
       admin: json['admin'] as String,
       icon: json['icon'] as String,
-      color: json['color'] as String,
+      color: json['color'] as String?,
       isPinned: json['isPinned'] as bool,
     );
 

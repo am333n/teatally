@@ -27,7 +27,7 @@ class ItemTotalDisplay extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15),
       child: AnimatedSwitcher(
-        duration: Durations.medium,
+        duration: Durations.medium1,
         transitionBuilder: (Widget child, Animation<double> animation) {
           return FadeTransition(
             opacity: animation,

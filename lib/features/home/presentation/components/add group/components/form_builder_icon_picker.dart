@@ -6,13 +6,17 @@ import 'package:teatally/features/home/presentation/components/add%20group/compo
 
 class FormBuilderIconPicker extends StatelessWidget {
   const FormBuilderIconPicker(
-      {super.key, required this.name, required this.onIconSelected});
+      {super.key,
+      required this.name,
+      required this.onIconSelected,
+      this.initialIcon});
   final String name;
+  final String? initialIcon;
   final dynamic Function(String) onIconSelected;
   @override
   Widget build(BuildContext context) {
     return FormBuilderField(
-        initialValue: IconMapper.defaultIcon,
+        initialValue: initialIcon ?? IconMapper.defaultIcon,
         builder: (state) {
           return Container(
             padding: const EdgeInsets.all(5),
@@ -22,10 +26,12 @@ class FormBuilderIconPicker extends StatelessWidget {
                     bottomLeft: Radius.circular(15)),
                 border:
                     Border.all(color: Theme.of(context).appColors.formBorder)),
-            child: IconPickerWidget(onIconSelected: (icon) {
-              onIconSelected.call(icon);
-              state.didChange(icon);
-            }),
+            child: IconPickerWidget(
+                initialIcon: initialIcon,
+                onIconSelected: (icon) {
+                  onIconSelected.call(icon);
+                  state.didChange(icon);
+                }),
           );
         },
         name: name);

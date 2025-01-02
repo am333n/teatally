@@ -8,8 +8,11 @@ import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
 import 'package:teatally/core/widgets/dialog_helpers.dart';
+import 'package:teatally/core/widgets/toast.dart';
+import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/add_group_dialog.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/color_mapper.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/icon_mapper.dart';
 import 'package:teatally/features/home/presentation/components/group_loading_shimmer.dart';
@@ -55,6 +58,40 @@ class GroupsListing extends StatelessWidget {
                           },
                           backgroundColor: context.theme.appColors.danger,
                           icon: Icons.delete,
+                        ),
+                        SlidableAction(
+                          onPressed: (_) async {
+                            final currentUser =
+                                await CredentialStorage.getUid();
+                            final isAdmin = item?.admin == currentUser;
+                            if (isAdmin) {
+                              await context
+                                  .read<HomePageCubit>()
+                                  .getAllUsers()
+                                  .then((data) {
+                                data.fold((l) {}, (users) {
+                                  showGeneralDialog(
+                                    context: context,
+                                    pageBuilder: (context, _, __) {
+                                      return SafeArea(
+                                        child: Material(
+                                            child: AddGroupDialog(
+                                          users: users,
+                                          groupDetails: item,
+                                          isEdit: true,
+                                        )),
+                                      );
+                                    },
+                                  );
+                                });
+                              });
+                            } else {
+                              Toast.showErrorMessage(
+                                  'No Permission : Only Admin Can Make Changes To Group');
+                            }
+                          },
+                          borderRadius: BorderRadius.circular(15),
+                          icon: Icons.edit,
                         ),
                         SlidableAction(
                           backgroundColor: context.theme.appColors.primary,

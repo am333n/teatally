@@ -17,7 +17,7 @@ class GroupModel with _$GroupModel {
     @JsonKey(name: 'members') required List<String> members,
     @JsonKey(name: 'admin') required String admin,
     @JsonKey(name: 'icon') required String icon,
-    @JsonKey(name: 'color') required String color,
+    @JsonKey(name: 'color') String? color,
     @JsonKey(name: 'isPinned') required bool isPinned,
   }) = _GroupModel;
   factory GroupModel.fromJson(Map<String, dynamic> json) =>

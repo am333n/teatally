@@ -143,6 +143,52 @@ class GroupDetailRouteArgs {
 }
 
 /// generated route for
+/// [GroupDetailsViewPage]
+class GroupDetailsViewRoute extends PageRouteInfo<GroupDetailsViewRouteArgs> {
+  GroupDetailsViewRoute({
+    Key? key,
+    required GroupModel? groupDetails,
+    List<PageRouteInfo>? children,
+  }) : super(
+          GroupDetailsViewRoute.name,
+          args: GroupDetailsViewRouteArgs(
+            key: key,
+            groupDetails: groupDetails,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'GroupDetailsViewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<GroupDetailsViewRouteArgs>();
+      return GroupDetailsViewPage(
+        key: args.key,
+        groupDetails: args.groupDetails,
+      );
+    },
+  );
+}
+
+class GroupDetailsViewRouteArgs {
+  const GroupDetailsViewRouteArgs({
+    this.key,
+    required this.groupDetails,
+  });
+
+  final Key? key;
+
+  final GroupModel? groupDetails;
+
+  @override
+  String toString() {
+    return 'GroupDetailsViewRouteArgs{key: $key, groupDetails: $groupDetails}';
+  }
+}
+
+/// generated route for
 /// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})

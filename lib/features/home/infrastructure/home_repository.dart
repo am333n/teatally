@@ -72,6 +72,21 @@ class HomeRepository {
     }
   }
 
+  Future<Either<Failure, bool>> updateGroupDetaisl(
+      String? docId, GroupModel groupDetails) async {
+    try {
+      final response =
+          await _remoteService.updateGroupDetaisl(docId, groupDetails);
+      return response.when(success: (data) {
+        return const Right(true);
+      }, failure: (failure) {
+        return Left(failure);
+      });
+    } catch (e) {
+      return Left(FailureHandler.handleGenericException(e as Exception));
+    }
+  }
+
   Future<Either<Failure, bool>> setIsPinned(
       String? docId, bool currentPinnedStatus) async {
     try {

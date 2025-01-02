@@ -4,9 +4,9 @@ import 'package:teatally/features/home/presentation/components/add%20group/compo
 
 class IconPickerWidget extends StatefulWidget {
   final Function(String) onIconSelected;
-
-  const IconPickerWidget({Key? key, required this.onIconSelected})
-      : super(key: key);
+  final String? initialIcon;
+  const IconPickerWidget(
+      {super.key, required this.onIconSelected, this.initialIcon});
 
   @override
   _IconPickerWidgetState createState() => _IconPickerWidgetState();
@@ -17,7 +17,9 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
   String? _selectedIcon;
   @override
   void initState() {
-    _selectedIcon = IconMapper.defaultIconPath;
+    _selectedIcon = widget.initialIcon != null
+        ? IconMapper.getPathFromCode(widget.initialIcon)
+        : IconMapper.defaultIconPath;
     super.initState();
   }
 

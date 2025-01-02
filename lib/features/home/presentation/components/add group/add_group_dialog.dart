@@ -24,9 +24,11 @@ import 'package:teatally/features/home/presentation/components/add%20group/compo
 import 'package:uuid/uuid.dart';
 
 class AddGroupDialog extends StatefulWidget {
-  AddGroupDialog({super.key, required this.users});
+  AddGroupDialog(
+      {super.key, required this.users, this.isEdit = false, this.groupDetails});
   final List<UserModel?>? users;
-
+  final bool isEdit;
+  final GroupModel? groupDetails;
   @override
   State<AddGroupDialog> createState() => _AddGroupDialogState();
 }
@@ -42,13 +44,26 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
   @override
   void initState() {
     super.initState();
+
     _selectedIcon = IconMapper.defaultIcon;
-    // Add listener to update search query
+    if (widget.isEdit) {
+      _selectedIcon = widget.groupDetails?.icon;
+      _addExistingUsers();
+    }
     _searchController.addListener(() {
       setState(() {
         _searchQuery = _searchController.text;
       });
     });
+  }
+
+  void _addExistingUsers() {
+    _selectedUsers.clear();
+    for (var user in widget.users ?? []) {
+      if (widget.groupDetails?.members?.contains(user?.uid) ?? false) {
+        _selectedUsers.add(user);
+      }
+    }
   }
 
   @override
@@ -95,6 +110,7 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                     child: FormComponents.formBuilderTextField(context,
                         fieldName: 'name',
                         label: '',
+                        initialValue: widget.groupDetails?.name,
                         hintText: 'Enter group name',
                         isRequired: true),
                   ),
@@ -103,12 +119,14 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
               FormComponents.formBuilderTextField(context,
                   fieldName: 'desc',
                   label: 'Description',
+                  initialValue: widget.groupDetails?.description,
                   hintText: 'Enter group description',
                   isRichText: true),
               const VerticalSpacing(15),
               FormComponents.buildFormLabel('Group Icon'),
               FormBuilderIconPicker(
                   name: 'icon',
+                  initialIcon: widget.groupDetails?.icon,
                   onIconSelected: (iconCode) {
                     setState(() {
                       _selectedIcon = iconCode;
@@ -122,7 +140,8 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
 
               Container(
                 color: Theme.of(context).appColors.backgroundSecondary,
-                child: CommonWidgets.coloredTextButton(context, text: 'Create',
+                child: CommonWidgets.coloredTextButton(context,
+                    text: widget.isEdit ? "Update" : 'Create',
                     onPressed: () async {
                   final formState = _formKey.currentState;
                   final currentUser = await CredentialStorage.getUid();
@@ -131,21 +150,37 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                   selectedMemebers.add(currentUser ?? '');
                   if ((formState?.validate() ?? false) &&
                       selectedMemebers.isNotEmpty) {
-                    var uuid = const Uuid();
-                    final groupData = GroupModel(
-                        uid: uuid.v1(),
-                        name: formState?.fields['name']?.value,
-                        description: formState?.fields['desc']?.value,
-                        createdBy: currentUser ?? '',
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now(),
-                        members: selectedMemebers,
-                        admin: currentUser ?? '',
-                        icon: formState?.fields['icon']?.value,
-                        color: formState?.fields['color']?.value,
-                        isPinned: false);
-                    if (!context.mounted) return;
-                    await context.read<HomePageCubit>().createGroup(groupData);
+                    if (!widget.isEdit) {
+                      var uuid = const Uuid();
+                      final groupData = GroupModel(
+                          uid: uuid.v1(),
+                          name: formState?.fields['name']?.value,
+                          description: formState?.fields['desc']?.value,
+                          createdBy: currentUser ?? '',
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                          members: selectedMemebers,
+                          admin: currentUser ?? '',
+                          icon: formState?.fields['icon']?.value,
+                          color: formState?.fields['color']?.value,
+                          isPinned: false);
+                      if (!context.mounted) return;
+                      await context
+                          .read<HomePageCubit>()
+                          .createGroup(groupData);
+                    } else {
+                      final updatedGroupDetail = widget.groupDetails?.copyWith(
+                          name: formState?.fields['name']?.value,
+                          description: formState?.fields['desc']?.value,
+                          icon: formState?.fields['icon']?.value ??
+                              widget.groupDetails?.icon,
+                          color: formState?.fields['color']?.value ??
+                              widget.groupDetails?.color,
+                          members: selectedMemebers,
+                          updatedAt: DateTime.now());
+                      await context.read<HomePageCubit>().updateGroupDetaisl(
+                          widget.groupDetails?.docId, updatedGroupDetail);
+                    }
                     AutoRouter.of(context).maybePop();
                   }
                 }),

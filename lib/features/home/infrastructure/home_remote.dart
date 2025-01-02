@@ -75,6 +75,16 @@ class HomeRemoteService with BaseFirebase {
     });
   }
 
+  BaseReturnType updateGroupDetaisl(
+      String? docid, GroupModel groupDetails) async {
+    if (docid == null) {
+      return const RemoteResponse.failure(
+          Failure.serverError(message: 'Invalid docId'));
+    }
+    return await super
+        .updateItem(Collections.groups, docid, groupDetails.toJson());
+  }
+
   BaseReturnType deleteGroup(String? docId) async {
     try {
       final currentUser = await CredentialStorage.getUid();

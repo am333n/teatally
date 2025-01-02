@@ -89,6 +89,18 @@ class HomePageCubit extends Cubit<HomePageState> {
     });
   }
 
+  Future<void> updateGroupDetaisl(
+      String? docId, GroupModel? updateGroupDetaisl) async {
+    if (updateGroupDetaisl == null) return;
+    final response =
+        await _repository.updateGroupDetaisl(docId, updateGroupDetaisl);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      loadGroups();
+    });
+  }
+
   // void loadBeverages() {
   //   emit(HomePageState.loaded(
   //       beverageTypes: beverages,

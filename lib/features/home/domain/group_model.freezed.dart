@@ -41,7 +41,7 @@ mixin _$GroupModel {
   @JsonKey(name: 'icon')
   String get icon => throw _privateConstructorUsedError;
   @JsonKey(name: 'color')
-  String get color => throw _privateConstructorUsedError;
+  String? get color => throw _privateConstructorUsedError;
   @JsonKey(name: 'isPinned')
   bool get isPinned => throw _privateConstructorUsedError;
 
@@ -68,7 +68,7 @@ abstract class $GroupModelCopyWith<$Res> {
       @JsonKey(name: 'members') List<String> members,
       @JsonKey(name: 'admin') String admin,
       @JsonKey(name: 'icon') String icon,
-      @JsonKey(name: 'color') String color,
+      @JsonKey(name: 'color') String? color,
       @JsonKey(name: 'isPinned') bool isPinned});
 }
 
@@ -95,7 +95,7 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
     Object? members = null,
     Object? admin = null,
     Object? icon = null,
-    Object? color = null,
+    Object? color = freezed,
     Object? isPinned = null,
   }) {
     return _then(_value.copyWith(
@@ -139,10 +139,10 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
           ? _value.icon
           : icon // ignore: cast_nullable_to_non_nullable
               as String,
-      color: null == color
+      color: freezed == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isPinned: null == isPinned
           ? _value.isPinned
           : isPinned // ignore: cast_nullable_to_non_nullable
@@ -170,7 +170,7 @@ abstract class _$$GroupModelImplCopyWith<$Res>
       @JsonKey(name: 'members') List<String> members,
       @JsonKey(name: 'admin') String admin,
       @JsonKey(name: 'icon') String icon,
-      @JsonKey(name: 'color') String color,
+      @JsonKey(name: 'color') String? color,
       @JsonKey(name: 'isPinned') bool isPinned});
 }
 
@@ -195,7 +195,7 @@ class __$$GroupModelImplCopyWithImpl<$Res>
     Object? members = null,
     Object? admin = null,
     Object? icon = null,
-    Object? color = null,
+    Object? color = freezed,
     Object? isPinned = null,
   }) {
     return _then(_$GroupModelImpl(
@@ -239,10 +239,10 @@ class __$$GroupModelImplCopyWithImpl<$Res>
           ? _value.icon
           : icon // ignore: cast_nullable_to_non_nullable
               as String,
-      color: null == color
+      color: freezed == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isPinned: null == isPinned
           ? _value.isPinned
           : isPinned // ignore: cast_nullable_to_non_nullable
@@ -265,7 +265,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
       @JsonKey(name: 'members') required final List<String> members,
       @JsonKey(name: 'admin') required this.admin,
       @JsonKey(name: 'icon') required this.icon,
-      @JsonKey(name: 'color') required this.color,
+      @JsonKey(name: 'color') this.color,
       @JsonKey(name: 'isPinned') required this.isPinned})
       : _members = members;
 
@@ -310,7 +310,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
   final String icon;
   @override
   @JsonKey(name: 'color')
-  final String color;
+  final String? color;
   @override
   @JsonKey(name: 'isPinned')
   final bool isPinned;
@@ -406,7 +406,7 @@ abstract class _GroupModel implements GroupModel {
           @JsonKey(name: 'members') required final List<String> members,
           @JsonKey(name: 'admin') required final String admin,
           @JsonKey(name: 'icon') required final String icon,
-          @JsonKey(name: 'color') required final String color,
+          @JsonKey(name: 'color') final String? color,
           @JsonKey(name: 'isPinned') required final bool isPinned}) =
       _$GroupModelImpl;
 
@@ -445,7 +445,7 @@ abstract class _GroupModel implements GroupModel {
   String get icon;
   @override
   @JsonKey(name: 'color')
-  String get color;
+  String? get color;
   @override
   @JsonKey(name: 'isPinned')
   bool get isPinned;
