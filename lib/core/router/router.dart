@@ -6,7 +6,9 @@ import 'package:teatally/features/auth/presentation/auth_screen.dart';
 import 'package:teatally/features/group/domain/categories_model.dart';
 import 'package:teatally/features/group/presentation/components/add_item_page.dart';
 import 'package:teatally/features/group/presentation/pages/group_details.dart';
+import 'package:teatally/features/group/presentation/pages/group_details_edit_page.dart';
 import 'package:teatally/features/home/presentation/home_page.dart';
+import 'package:teatally/features/expense/presentation/expense_form_page.dart';
 
 import '../../features/group/presentation/group_detail.dart';
 import '../../features/home/domain/group_model.dart';
@@ -22,6 +24,7 @@ class AppRouter extends RootStackRouter {
         _buildRoute(page: AuthRoute.page, initial: true, guards: [AuthGuard()]),
         _buildRoute(page: AddItemRoute.page),
         _buildRoute(page: GroupDetailRoute.page),
+        _buildRoute(page: ExpenseFormRoute.page),
       ];
 
   CustomRoute _buildRoute({

@@ -11,11 +11,13 @@ import 'package:teatally/features/home/domain/users_model.dart';
 class MemberSelectionsDisplay extends StatelessWidget {
   const MemberSelectionsDisplay({
     super.key,
-    required this.loadedStateData,
+    required this.session,
     this.item,
+    required this.members,
   });
 
-  final GroupDetailsLoadedStateModel loadedStateData;
+  final SessionModel? session;
+  final List<UserModel>? members;
   final ItemModel? item;
 
   @override
@@ -26,7 +28,7 @@ class MemberSelectionsDisplay extends StatelessWidget {
     }
 
     // Find the selected item in the session
-    final selectedItem = loadedStateData.session?.selectedItems?.firstWhere(
+    final selectedItem = session?.selectedItems?.firstWhere(
       (selectedItem) => selectedItem.itemUid == item?.uid,
       orElse: () => const SelectedItem(
         itemUid: '',
@@ -39,9 +41,7 @@ class MemberSelectionsDisplay extends StatelessWidget {
     // Map the member selections to the new data class
     final memberSelections = selectedItem?.selections
         ?.where((selection) =>
-            loadedStateData.members
-                ?.any((member) => member.uid == selection.userUid) ??
-            false)
+            members?.any((member) => member.uid == selection.userUid) ?? false)
         .map((selection) {
       // final member = loadedStateData.members!.firstWhere(
       //   (m) => m.uid == selection.userUid,
@@ -60,7 +60,7 @@ class MemberSelectionsDisplay extends StatelessWidget {
       // return Text('No members have selected this item');
     }
     return ProfileAndCountDisplay(
-        selectionsData: memberSelections, users: loadedStateData.members);
+        selectionsData: memberSelections, users: members);
     // Build the UI
     // return SizedBox(
     //   height: 50,

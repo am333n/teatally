@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'package:injectable/injectable.dart';
+import 'package:teatally/core/common/api_state.dart';
 import 'package:teatally/core/widgets/toast.dart';
 
 import 'package:teatally/features/home/application/home_page_state.dart';
@@ -15,25 +17,18 @@ import 'package:teatally/features/home/domain/users_model.dart';
 import 'package:teatally/features/home/infrastructure/home_repository.dart';
 
 @injectable
-class HomePageCubit extends Cubit<HomePageState> {
+class HomePageCubit extends HydratedCubit<HomePageState> {
   final HomeRepository _repository;
-  HomePageCubit(this._repository) : super(const HomePageState.loading());
-  HomePageLoadedStateModel loadedStateData = HomePageLoadedStateModel();
-  List<GroupModel>? groups;
-
+  HomePageCubit(this._repository) : super(const HomePageState());
   void addGroup() {}
 
-  Future<Either<void, List<UserModel?>>> getAllUsers() async {
-    loadedStateData = loadedStateData.copyWith(isButtonLoading: true);
-    emit(HomePageState.loaded(loadedStateData));
+  Future<void> getAllUsers() async {
+    emit(state.copyWith(usersStatus: const ApiLoading()));
     final response = await _repository.getAllUsersList();
     return response.fold((l) {
-      return Left(null);
+      emit(state.copyWith(usersStatus: ApiError(l)));
     }, (r) {
-      log(r.toString());
-      loadedStateData = loadedStateData.copyWith(isButtonLoading: false);
-      emit(HomePageState.loaded(loadedStateData));
-      return Right(r);
+      emit(state.copyWith(usersStatus: ApiLoaded(r)));
     });
   }
 
@@ -47,26 +42,27 @@ class HomePageCubit extends Cubit<HomePageState> {
 
   void search(String? query) async {
     if (query != null && query.isNotEmpty) {
+      final groups = state.groups;
       if (groups?.isNotEmpty ?? false) {
         final filteredGroup =
             groups?.where((e) => e.name.toLowerCase().contains(query)).toList();
-        loadedStateData = loadedStateData.copyWith(groups: filteredGroup);
-        emit(HomePageState.loaded(loadedStateData));
+
+        emit(state.copyWith(groupsStatus: ApiLoaded(filteredGroup ?? [])));
       }
     } else {
-      loadedStateData = loadedStateData.copyWith(groups: groups);
-      emit(HomePageState.loaded(loadedStateData));
+      emit(state.copyWith(groupsStatus: ApiLoaded(state.groups ?? [])));
     }
   }
 
   Future<void> loadGroups() async {
+    if (!state.groupsStatus.isLoaded) {
+      emit(state.copyWith(groupsStatus: const ApiLoading()));
+    }
     final response = await _repository.getAllGroups();
     response.fold((l) {
-      emit(HomePageState.error(failure: l));
+      emit(state.copyWith(groupsStatus: ApiError(l)));
     }, (r) {
-      groups = r;
-      loadedStateData = loadedStateData.copyWith(groups: r);
-      emit(HomePageState.loaded(loadedStateData));
+      emit(state.copyWith(groupsStatus: ApiLoaded(r), groups: r));
     });
   }
 
@@ -100,6 +96,13 @@ class HomePageCubit extends Cubit<HomePageState> {
       loadGroups();
     });
   }
+
+  @override
+  HomePageState? fromJson(Map<String, dynamic> json) =>
+      HomePageState.fromJson(json);
+
+  @override
+  Map<String, dynamic>? toJson(HomePageState state) => state.toJson();
 
   // void loadBeverages() {
   //   emit(HomePageState.loaded(

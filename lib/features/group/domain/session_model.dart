@@ -30,6 +30,7 @@ class SelectedItem with _$SelectedItem {
     @JsonKey(name: 'itemName') String? itemName,
     @JsonKey(name: 'categoryId') String? categoryId,
     @JsonKey(name: 'totalCount') int? totalCount,
+    @JsonKey(name: 'itemPrice') double? itemPrice,
     @JsonKey(name: 'selections') List<Selection>? selections,
   }) = _SelectedItem;
 

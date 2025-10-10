@@ -83,6 +83,9 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -99,6 +102,9 @@ class __$$AuthInitialStateImplCopyWithImpl<$Res>
   __$$AuthInitialStateImplCopyWithImpl(_$AuthInitialStateImpl _value,
       $Res Function(_$AuthInitialStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -213,6 +219,9 @@ class __$$AuthloadingStateImplCopyWithImpl<$Res>
   __$$AuthloadingStateImplCopyWithImpl(_$AuthloadingStateImpl _value,
       $Res Function(_$AuthloadingStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -327,6 +336,9 @@ class __$$AuthSuccessStateImplCopyWithImpl<$Res>
   __$$AuthSuccessStateImplCopyWithImpl(_$AuthSuccessStateImpl _value,
       $Res Function(_$AuthSuccessStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -444,6 +456,8 @@ class __$$AuthErrorStateImplCopyWithImpl<$Res>
       _$AuthErrorStateImpl _value, $Res Function(_$AuthErrorStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -483,7 +497,9 @@ class _$AuthErrorStateImpl implements AuthErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, errorMessage);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthErrorStateImplCopyWith<_$AuthErrorStateImpl> get copyWith =>
@@ -570,7 +586,10 @@ abstract class AuthErrorState implements AuthState {
       _$AuthErrorStateImpl;
 
   String? get errorMessage;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthErrorStateImplCopyWith<_$AuthErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -5,6 +5,14 @@ import 'failure.dart';
 
 class FailureHandler {
   /// Handles Firebase Authentication exceptions.
+  ///
+  ///
+
+  static const Failure dataConversionFailure = Failure.serverError(
+    message:
+        'An error occurred while processing the data. Please try again later.',
+  );
+
   static Failure handleFirebaseAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':

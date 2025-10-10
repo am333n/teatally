@@ -19,6 +19,12 @@ import 'package:teatally/features/auth/infrastructure/auth_remote.dart'
     as _i653;
 import 'package:teatally/features/auth/infrastructure/auth_repository.dart'
     as _i400;
+import 'package:teatally/features/expense/application/cubit/expense_cubit.dart'
+    as _i475;
+import 'package:teatally/features/expense/infrastructure/expense_remote_service.dart'
+    as _i888;
+import 'package:teatally/features/expense/infrastructure/expense_repository.dart'
+    as _i229;
 import 'package:teatally/features/group/application/cubit/group_detail_cubit.dart'
     as _i416;
 import 'package:teatally/features/group/infrastructure/group_remote_service.dart'
@@ -47,8 +53,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i911.HomeRemoteService>(() => _i911.HomeRemoteService());
     gh.factory<_i653.AuthRemoteService>(() => _i653.AuthRemoteService());
     gh.factory<_i962.GroupRemoteService>(() => _i962.GroupRemoteService());
+    gh.factory<_i888.ExpenseRemoteService>(() => _i888.ExpenseRemoteService());
     gh.singleton<_i121.ThemeCubit>(
         () => _i121.ThemeCubit(gh<_i777.ThemeRepository>()));
+    gh.factory<_i229.ExpenseRepository>(
+        () => _i229.ExpenseRepository(gh<_i888.ExpenseRemoteService>()));
     gh.factory<_i813.HomeRepository>(
         () => _i813.HomeRepository(gh<_i911.HomeRemoteService>()));
     gh.factory<_i400.AuthRepository>(
@@ -59,6 +68,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i681.GroupRepository(gh<_i962.GroupRemoteService>()));
     gh.factory<_i769.AuthCubit>(
         () => _i769.AuthCubit(gh<_i400.AuthRepository>()));
+    gh.factory<_i475.ExpenseCubit>(
+        () => _i475.ExpenseCubit(gh<_i229.ExpenseRepository>()));
     gh.factory<_i416.GroupDetailCubit>(
         () => _i416.GroupDetailCubit(gh<_i681.GroupRepository>()));
     return this;

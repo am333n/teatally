@@ -113,26 +113,20 @@ class _SearchAndAddButtonHeaderState extends State<SearchAndAddButtonHeader> {
                             await context
                                 .read<HomePageCubit>()
                                 .getAllUsers()
-                                .then((data) {
-                              data.fold((l) {}, (users) {
-                                showGeneralDialog(
-                                  context: context,
-                                  pageBuilder: (context, _, __) {
-                                    return SafeArea(
-                                      child: Material(
-                                        child: AddGroupDialog(users: users),
-                                      ),
-                                    );
-                                  },
-                                );
-                              });
+                                .then((_) {
+                              showGeneralDialog(
+                                context: context,
+                                pageBuilder: (context, _, __) {
+                                  return SafeArea(
+                                    child: Material(
+                                      child: AddGroupDialog(),
+                                    ),
+                                  );
+                                },
+                              );
                             });
                           },
-                          icon: state.maybeWhen(
-                            orElse: () => false,
-                            loaded: (loadedStateData) =>
-                                (loadedStateData.isButtonLoading ?? false),
-                          )
+                          icon: state.usersStatus.isLoading
                               ? const CupertinoActivityIndicator()
                               : Icon(Icons.add,
                                   color: Theme.of(context)

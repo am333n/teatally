@@ -14,6 +14,29 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Failure _$FailureFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType']) {
+    case 'serverError':
+      return _ServerError.fromJson(json);
+    case 'clientError':
+      return _ClientError.fromJson(json);
+    case 'noInternet':
+      return _NoInternet.fromJson(json);
+    case 'noPermission':
+      return _NoPermission.fromJson(json);
+    case 'firebaseAuthError':
+      return _FirebaseAuthError.fromJson(json);
+    case 'firebaseNetworkError':
+      return _FirebaseNetworkError.fromJson(json);
+    case 'firebaseUnknownError':
+      return _FirebaseUnknownError.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(json, 'runtimeType', 'Failure',
+          'Invalid union type "${json['runtimeType']}"!');
+  }
+}
+
 /// @nodoc
 mixin _$Failure {
   @optionalTypeArgs
@@ -86,6 +109,9 @@ mixin _$Failure {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this Failure to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -103,6 +129,9 @@ class _$FailureCopyWithImpl<$Res, $Val extends Failure>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -122,6 +151,8 @@ class __$$ServerErrorImplCopyWithImpl<$Res>
       _$ServerErrorImpl _value, $Res Function(_$ServerErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -137,12 +168,19 @@ class __$$ServerErrorImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ServerErrorImpl implements _ServerError {
-  const _$ServerErrorImpl({required this.message});
+  const _$ServerErrorImpl({required this.message, final String? $type})
+      : $type = $type ?? 'serverError';
+
+  factory _$ServerErrorImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ServerErrorImplFromJson(json);
 
   @override
   final String message;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -157,10 +195,13 @@ class _$ServerErrorImpl implements _ServerError {
             (identical(other.message, message) || other.message == message));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ServerErrorImplCopyWith<_$ServerErrorImpl> get copyWith =>
@@ -259,14 +300,27 @@ class _$ServerErrorImpl implements _ServerError {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ServerErrorImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _ServerError implements Failure {
   const factory _ServerError({required final String message}) =
       _$ServerErrorImpl;
 
+  factory _ServerError.fromJson(Map<String, dynamic> json) =
+      _$ServerErrorImpl.fromJson;
+
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ServerErrorImplCopyWith<_$ServerErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -288,6 +342,8 @@ class __$$ClientErrorImplCopyWithImpl<$Res>
       _$ClientErrorImpl _value, $Res Function(_$ClientErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -303,12 +359,19 @@ class __$$ClientErrorImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ClientErrorImpl implements _ClientError {
-  const _$ClientErrorImpl({required this.message});
+  const _$ClientErrorImpl({required this.message, final String? $type})
+      : $type = $type ?? 'clientError';
+
+  factory _$ClientErrorImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClientErrorImplFromJson(json);
 
   @override
   final String message;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -323,10 +386,13 @@ class _$ClientErrorImpl implements _ClientError {
             (identical(other.message, message) || other.message == message));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ClientErrorImplCopyWith<_$ClientErrorImpl> get copyWith =>
@@ -425,14 +491,27 @@ class _$ClientErrorImpl implements _ClientError {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ClientErrorImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _ClientError implements Failure {
   const factory _ClientError({required final String message}) =
       _$ClientErrorImpl;
 
+  factory _ClientError.fromJson(Map<String, dynamic> json) =
+      _$ClientErrorImpl.fromJson;
+
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ClientErrorImplCopyWith<_$ClientErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -451,12 +530,21 @@ class __$$NoInternetImplCopyWithImpl<$Res>
   __$$NoInternetImplCopyWithImpl(
       _$NoInternetImpl _value, $Res Function(_$NoInternetImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$NoInternetImpl implements _NoInternet {
-  const _$NoInternetImpl();
+  const _$NoInternetImpl({final String? $type}) : $type = $type ?? 'noInternet';
+
+  factory _$NoInternetImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NoInternetImplFromJson(json);
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -469,6 +557,7 @@ class _$NoInternetImpl implements _NoInternet {
         (other.runtimeType == runtimeType && other is _$NoInternetImpl);
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -565,10 +654,20 @@ class _$NoInternetImpl implements _NoInternet {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NoInternetImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _NoInternet implements Failure {
   const factory _NoInternet() = _$NoInternetImpl;
+
+  factory _NoInternet.fromJson(Map<String, dynamic> json) =
+      _$NoInternetImpl.fromJson;
 }
 
 /// @nodoc
@@ -585,12 +684,22 @@ class __$$NoPermissionImplCopyWithImpl<$Res>
   __$$NoPermissionImplCopyWithImpl(
       _$NoPermissionImpl _value, $Res Function(_$NoPermissionImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$NoPermissionImpl implements _NoPermission {
-  const _$NoPermissionImpl();
+  const _$NoPermissionImpl({final String? $type})
+      : $type = $type ?? 'noPermission';
+
+  factory _$NoPermissionImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NoPermissionImplFromJson(json);
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -603,6 +712,7 @@ class _$NoPermissionImpl implements _NoPermission {
         (other.runtimeType == runtimeType && other is _$NoPermissionImpl);
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -699,10 +809,20 @@ class _$NoPermissionImpl implements _NoPermission {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NoPermissionImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _NoPermission implements Failure {
   const factory _NoPermission() = _$NoPermissionImpl;
+
+  factory _NoPermission.fromJson(Map<String, dynamic> json) =
+      _$NoPermissionImpl.fromJson;
 }
 
 /// @nodoc
@@ -722,6 +842,8 @@ class __$$FirebaseAuthErrorImplCopyWithImpl<$Res>
       $Res Function(_$FirebaseAuthErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -742,14 +864,22 @@ class __$$FirebaseAuthErrorImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$FirebaseAuthErrorImpl implements _FirebaseAuthError {
-  const _$FirebaseAuthErrorImpl({required this.message, this.code});
+  const _$FirebaseAuthErrorImpl(
+      {required this.message, this.code, final String? $type})
+      : $type = $type ?? 'firebaseAuthError';
+
+  factory _$FirebaseAuthErrorImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FirebaseAuthErrorImplFromJson(json);
 
   @override
   final String message;
   @override
   final String? code;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -765,10 +895,13 @@ class _$FirebaseAuthErrorImpl implements _FirebaseAuthError {
             (identical(other.code, code) || other.code == code));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, message, code);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FirebaseAuthErrorImplCopyWith<_$FirebaseAuthErrorImpl> get copyWith =>
@@ -868,6 +1001,13 @@ class _$FirebaseAuthErrorImpl implements _FirebaseAuthError {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$FirebaseAuthErrorImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _FirebaseAuthError implements Failure {
@@ -875,9 +1015,15 @@ abstract class _FirebaseAuthError implements Failure {
       {required final String message,
       final String? code}) = _$FirebaseAuthErrorImpl;
 
+  factory _FirebaseAuthError.fromJson(Map<String, dynamic> json) =
+      _$FirebaseAuthErrorImpl.fromJson;
+
   String get message;
   String? get code;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FirebaseAuthErrorImplCopyWith<_$FirebaseAuthErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -899,6 +1045,8 @@ class __$$FirebaseNetworkErrorImplCopyWithImpl<$Res>
       $Res Function(_$FirebaseNetworkErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -919,14 +1067,22 @@ class __$$FirebaseNetworkErrorImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$FirebaseNetworkErrorImpl implements _FirebaseNetworkError {
-  const _$FirebaseNetworkErrorImpl({required this.message, this.code});
+  const _$FirebaseNetworkErrorImpl(
+      {required this.message, this.code, final String? $type})
+      : $type = $type ?? 'firebaseNetworkError';
+
+  factory _$FirebaseNetworkErrorImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FirebaseNetworkErrorImplFromJson(json);
 
   @override
   final String message;
   @override
   final String? code;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -942,10 +1098,13 @@ class _$FirebaseNetworkErrorImpl implements _FirebaseNetworkError {
             (identical(other.code, code) || other.code == code));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, message, code);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FirebaseNetworkErrorImplCopyWith<_$FirebaseNetworkErrorImpl>
@@ -1046,6 +1205,13 @@ class _$FirebaseNetworkErrorImpl implements _FirebaseNetworkError {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$FirebaseNetworkErrorImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _FirebaseNetworkError implements Failure {
@@ -1053,9 +1219,15 @@ abstract class _FirebaseNetworkError implements Failure {
       {required final String message,
       final String? code}) = _$FirebaseNetworkErrorImpl;
 
+  factory _FirebaseNetworkError.fromJson(Map<String, dynamic> json) =
+      _$FirebaseNetworkErrorImpl.fromJson;
+
   String get message;
   String? get code;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FirebaseNetworkErrorImplCopyWith<_$FirebaseNetworkErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1077,6 +1249,8 @@ class __$$FirebaseUnknownErrorImplCopyWithImpl<$Res>
       $Res Function(_$FirebaseUnknownErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1097,14 +1271,22 @@ class __$$FirebaseUnknownErrorImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$FirebaseUnknownErrorImpl implements _FirebaseUnknownError {
-  const _$FirebaseUnknownErrorImpl({required this.message, this.code});
+  const _$FirebaseUnknownErrorImpl(
+      {required this.message, this.code, final String? $type})
+      : $type = $type ?? 'firebaseUnknownError';
+
+  factory _$FirebaseUnknownErrorImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FirebaseUnknownErrorImplFromJson(json);
 
   @override
   final String message;
   @override
   final String? code;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -1120,10 +1302,13 @@ class _$FirebaseUnknownErrorImpl implements _FirebaseUnknownError {
             (identical(other.code, code) || other.code == code));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, message, code);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FirebaseUnknownErrorImplCopyWith<_$FirebaseUnknownErrorImpl>
@@ -1224,6 +1409,13 @@ class _$FirebaseUnknownErrorImpl implements _FirebaseUnknownError {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$FirebaseUnknownErrorImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _FirebaseUnknownError implements Failure {
@@ -1231,9 +1423,15 @@ abstract class _FirebaseUnknownError implements Failure {
       {required final String message,
       final String? code}) = _$FirebaseUnknownErrorImpl;
 
+  factory _FirebaseUnknownError.fromJson(Map<String, dynamic> json) =
+      _$FirebaseUnknownErrorImpl.fromJson;
+
   String get message;
   String? get code;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FirebaseUnknownErrorImplCopyWith<_$FirebaseUnknownErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -97,6 +97,25 @@ class AuthRouteArgs {
 }
 
 /// generated route for
+/// [ExpenseFormPage]
+class ExpenseFormRoute extends PageRouteInfo<void> {
+  const ExpenseFormRoute({List<PageRouteInfo>? children})
+      : super(
+          ExpenseFormRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ExpenseFormRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ExpenseFormPage();
+    },
+  );
+}
+
+/// generated route for
 /// [GroupDetailPage]
 class GroupDetailRoute extends PageRouteInfo<GroupDetailRouteArgs> {
   GroupDetailRoute({
@@ -140,6 +159,25 @@ class GroupDetailRouteArgs {
   String toString() {
     return 'GroupDetailRouteArgs{key: $key, groupDetail: $groupDetail}';
   }
+}
+
+/// generated route for
+/// [GroupDetailsEditPage]
+class GroupDetailsEditRoute extends PageRouteInfo<void> {
+  const GroupDetailsEditRoute({List<PageRouteInfo>? children})
+      : super(
+          GroupDetailsEditRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'GroupDetailsEditRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const GroupDetailsEditPage();
+    },
+  );
 }
 
 /// generated route for

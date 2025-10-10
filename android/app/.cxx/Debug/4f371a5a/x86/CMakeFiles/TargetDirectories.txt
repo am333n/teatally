@@ -1,0 +1,2 @@
+/Users/Shaheer/Developer/Ameen/Personal/TeaTally/teatally/android/app/.cxx/Debug/4f371a5a/x86/CMakeFiles/edit_cache.dir
+/Users/Shaheer/Developer/Ameen/Personal/TeaTally/teatally/android/app/.cxx/Debug/4f371a5a/x86/CMakeFiles/rebuild_cache.dir

@@ -24,8 +24,12 @@ mixin _$HomePageLoadedStateModel {
   List<GroupModel>? get groups => throw _privateConstructorUsedError;
   bool? get isButtonLoading => throw _privateConstructorUsedError;
 
+  /// Serializes this HomePageLoadedStateModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of HomePageLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $HomePageLoadedStateModelCopyWith<HomePageLoadedStateModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$HomePageLoadedStateModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of HomePageLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,6 +97,8 @@ class __$$HomePageLoadedStateModelImplCopyWithImpl<$Res>
       $Res Function(_$HomePageLoadedStateModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HomePageLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -159,12 +167,14 @@ class _$HomePageLoadedStateModelImpl
                 other.isButtonLoading == isButtonLoading));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_groups), isButtonLoading);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HomePageLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HomePageLoadedStateModelImplCopyWith<_$HomePageLoadedStateModelImpl>
@@ -191,8 +201,11 @@ abstract class _HomePageLoadedStateModel implements HomePageLoadedStateModel {
   List<GroupModel>? get groups;
   @override
   bool? get isButtonLoading;
+
+  /// Create a copy of HomePageLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HomePageLoadedStateModelImplCopyWith<_$HomePageLoadedStateModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

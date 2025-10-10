@@ -12,6 +12,7 @@ import 'package:teatally/core/widgets/toast.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
+import 'package:teatally/features/home/domain/users_model.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/add_group_dialog.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/color_mapper.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/icon_mapper.dart';
@@ -26,19 +27,19 @@ class GroupsListing extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(child:
         BlocBuilder<HomePageCubit, HomePageState>(builder: (context, state) {
-      return state.when(
+      return state.groupsStatus.whenOr(
           loading: () => const GroupLoadingShimmer(),
           error: (failure) => Center(
-                child: Txt(FailureHandler.getErrorMessageFromFailure(failure!)),
+                child: Txt(FailureHandler.getErrorMessageFromFailure(failure)),
               ),
-          loaded: (loadedStateData) {
+          loaded: (data) {
             return AnimatedList(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                key: ValueKey(loadedStateData.groups),
-                initialItemCount: loadedStateData.groups?.length ?? 0,
+                key: ValueKey(data),
+                initialItemCount: data.length ?? 0,
                 itemBuilder: (context, index, aniamtion) {
-                  final item = loadedStateData.groups?[index];
+                  final item = data[index];
                   return Padding(
                     padding: const EdgeInsets.all(10),
                     child: Slidable(
@@ -69,21 +70,25 @@ class GroupsListing extends StatelessWidget {
                                   .read<HomePageCubit>()
                                   .getAllUsers()
                                   .then((data) {
-                                data.fold((l) {}, (users) {
-                                  showGeneralDialog(
-                                    context: context,
-                                    pageBuilder: (context, _, __) {
-                                      return SafeArea(
-                                        child: Material(
-                                            child: AddGroupDialog(
-                                          users: users,
-                                          groupDetails: item,
-                                          isEdit: true,
-                                        )),
-                                      );
-                                    },
-                                  );
-                                });
+                                final List<UserModel>? groupMembers = state
+                                    .usersStatus
+                                    .getOrNull()
+                                    ?.where((user) =>
+                                        item.members.contains(user.uid))
+                                    .toList();
+                                showGeneralDialog(
+                                  context: context,
+                                  pageBuilder: (context, _, __) {
+                                    return SafeArea(
+                                      child: Material(
+                                          child: AddGroupDialog(
+                                        members: groupMembers,
+                                        groupDetails: item,
+                                        isEdit: true,
+                                      )),
+                                    );
+                                  },
+                                );
                               });
                             } else {
                               Toast.showErrorMessage(

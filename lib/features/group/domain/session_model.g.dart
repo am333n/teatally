@@ -50,6 +50,7 @@ _$SelectedItemImpl _$$SelectedItemImplFromJson(Map<String, dynamic> json) =>
       itemName: json['itemName'] as String?,
       categoryId: json['categoryId'] as String?,
       totalCount: (json['totalCount'] as num?)?.toInt(),
+      itemPrice: (json['itemPrice'] as num?)?.toDouble(),
       selections: (json['selections'] as List<dynamic>?)
           ?.map((e) => Selection.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -61,6 +62,7 @@ Map<String, dynamic> _$$SelectedItemImplToJson(_$SelectedItemImpl instance) =>
       'itemName': instance.itemName,
       'categoryId': instance.categoryId,
       'totalCount': instance.totalCount,
+      'itemPrice': instance.itemPrice,
       'selections': instance.selections?.map((e) => e.toJson()).toList(),
     };
 

@@ -52,6 +52,7 @@ class _CounterButtonState extends State<CounterButton> {
       orElse: () => const SelectedItem(
         itemUid: '',
         itemName: '',
+        itemPrice: 0,
         totalCount: 0,
         selections: [],
       ),
@@ -84,6 +85,7 @@ class _CounterButtonState extends State<CounterButton> {
                           widget.item?.name,
                           widget.item?.uid,
                           widget.item?.groupId,
+                          widget.item?.price,
                           widget.item?.categoryId,
                           false);
                 }
@@ -111,6 +113,7 @@ class _CounterButtonState extends State<CounterButton> {
                     widget.item?.name,
                     widget.item?.uid,
                     widget.item?.groupId,
+                    widget.item?.price,
                     widget.item?.categoryId,
                     true);
               })

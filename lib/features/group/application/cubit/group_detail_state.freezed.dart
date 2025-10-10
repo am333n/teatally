@@ -14,53 +14,30 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+GroupDetailState _$GroupDetailStateFromJson(Map<String, dynamic> json) {
+  return _GroupDetailState.fromJson(json);
+}
+
 /// @nodoc
 mixin _$GroupDetailState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
-        loadedState,
-    required TResult Function() loadingState,
-    required TResult Function(Failure failure) errorState,
-  }) =>
+  ApiState<List<UserModel>> get membersState =>
       throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
-        loadedState,
-    TResult? Function()? loadingState,
-    TResult? Function(Failure failure)? errorState,
-  }) =>
+  ApiState<List<CategoriesModel>> get categoriesState =>
       throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
-    TResult Function()? loadingState,
-    TResult Function(Failure failure)? errorState,
-    required TResult orElse(),
-  }) =>
+  ApiState<List<ItemModel>> get itemsState =>
       throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadedState value) loadedState,
-    required TResult Function(_LoadingState value) loadingState,
-    required TResult Function(_ErrorState value) errorState,
-  }) =>
+  List<ItemModel> get allItems => throw _privateConstructorUsedError;
+  ApiState<SessionModel?> get sessionState =>
       throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadedState value)? loadedState,
-    TResult? Function(_LoadingState value)? loadingState,
-    TResult? Function(_ErrorState value)? errorState,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadedState value)? loadedState,
-    TResult Function(_LoadingState value)? loadingState,
-    TResult Function(_ErrorState value)? errorState,
-    required TResult orElse(),
-  }) =>
+  String? get selectedCategory => throw _privateConstructorUsedError;
+
+  /// Serializes this GroupDetailState to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $GroupDetailStateCopyWith<GroupDetailState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -69,6 +46,19 @@ abstract class $GroupDetailStateCopyWith<$Res> {
   factory $GroupDetailStateCopyWith(
           GroupDetailState value, $Res Function(GroupDetailState) then) =
       _$GroupDetailStateCopyWithImpl<$Res, GroupDetailState>;
+  @useResult
+  $Res call(
+      {ApiState<List<UserModel>> membersState,
+      ApiState<List<CategoriesModel>> categoriesState,
+      ApiState<List<ItemModel>> itemsState,
+      List<ItemModel> allItems,
+      ApiState<SessionModel?> sessionState,
+      String? selectedCategory});
+
+  $ApiStateCopyWith<List<UserModel>, $Res> get membersState;
+  $ApiStateCopyWith<List<CategoriesModel>, $Res> get categoriesState;
+  $ApiStateCopyWith<List<ItemModel>, $Res> get itemsState;
+  $ApiStateCopyWith<SessionModel?, $Res> get sessionState;
 }
 
 /// @nodoc
@@ -80,419 +70,284 @@ class _$GroupDetailStateCopyWithImpl<$Res, $Val extends GroupDetailState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-}
 
-/// @nodoc
-abstract class _$$LoadedStateImplCopyWith<$Res> {
-  factory _$$LoadedStateImplCopyWith(
-          _$LoadedStateImpl value, $Res Function(_$LoadedStateImpl) then) =
-      __$$LoadedStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({GroupDetailsLoadedStateModel loadedStateData});
-
-  $GroupDetailsLoadedStateModelCopyWith<$Res> get loadedStateData;
-}
-
-/// @nodoc
-class __$$LoadedStateImplCopyWithImpl<$Res>
-    extends _$GroupDetailStateCopyWithImpl<$Res, _$LoadedStateImpl>
-    implements _$$LoadedStateImplCopyWith<$Res> {
-  __$$LoadedStateImplCopyWithImpl(
-      _$LoadedStateImpl _value, $Res Function(_$LoadedStateImpl) _then)
-      : super(_value, _then);
-
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loadedStateData = null,
+    Object? membersState = null,
+    Object? categoriesState = null,
+    Object? itemsState = null,
+    Object? allItems = null,
+    Object? sessionState = null,
+    Object? selectedCategory = freezed,
   }) {
-    return _then(_$LoadedStateImpl(
-      null == loadedStateData
-          ? _value.loadedStateData
-          : loadedStateData // ignore: cast_nullable_to_non_nullable
-              as GroupDetailsLoadedStateModel,
-    ));
+    return _then(_value.copyWith(
+      membersState: null == membersState
+          ? _value.membersState
+          : membersState // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<UserModel>>,
+      categoriesState: null == categoriesState
+          ? _value.categoriesState
+          : categoriesState // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<CategoriesModel>>,
+      itemsState: null == itemsState
+          ? _value.itemsState
+          : itemsState // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<ItemModel>>,
+      allItems: null == allItems
+          ? _value.allItems
+          : allItems // ignore: cast_nullable_to_non_nullable
+              as List<ItemModel>,
+      sessionState: null == sessionState
+          ? _value.sessionState
+          : sessionState // ignore: cast_nullable_to_non_nullable
+              as ApiState<SessionModel?>,
+      selectedCategory: freezed == selectedCategory
+          ? _value.selectedCategory
+          : selectedCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GroupDetailsLoadedStateModelCopyWith<$Res> get loadedStateData {
-    return $GroupDetailsLoadedStateModelCopyWith<$Res>(_value.loadedStateData,
+  $ApiStateCopyWith<List<UserModel>, $Res> get membersState {
+    return $ApiStateCopyWith<List<UserModel>, $Res>(_value.membersState,
         (value) {
-      return _then(_value.copyWith(loadedStateData: value));
+      return _then(_value.copyWith(membersState: value) as $Val);
+    });
+  }
+
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ApiStateCopyWith<List<CategoriesModel>, $Res> get categoriesState {
+    return $ApiStateCopyWith<List<CategoriesModel>, $Res>(
+        _value.categoriesState, (value) {
+      return _then(_value.copyWith(categoriesState: value) as $Val);
+    });
+  }
+
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ApiStateCopyWith<List<ItemModel>, $Res> get itemsState {
+    return $ApiStateCopyWith<List<ItemModel>, $Res>(_value.itemsState, (value) {
+      return _then(_value.copyWith(itemsState: value) as $Val);
+    });
+  }
+
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ApiStateCopyWith<SessionModel?, $Res> get sessionState {
+    return $ApiStateCopyWith<SessionModel?, $Res>(_value.sessionState, (value) {
+      return _then(_value.copyWith(sessionState: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-
-class _$LoadedStateImpl implements _LoadedState {
-  const _$LoadedStateImpl(this.loadedStateData);
-
+abstract class _$$GroupDetailStateImplCopyWith<$Res>
+    implements $GroupDetailStateCopyWith<$Res> {
+  factory _$$GroupDetailStateImplCopyWith(_$GroupDetailStateImpl value,
+          $Res Function(_$GroupDetailStateImpl) then) =
+      __$$GroupDetailStateImplCopyWithImpl<$Res>;
   @override
-  final GroupDetailsLoadedStateModel loadedStateData;
-
-  @override
-  String toString() {
-    return 'GroupDetailState.loadedState(loadedStateData: $loadedStateData)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LoadedStateImpl &&
-            (identical(other.loadedStateData, loadedStateData) ||
-                other.loadedStateData == loadedStateData));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, loadedStateData);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoadedStateImplCopyWith<_$LoadedStateImpl> get copyWith =>
-      __$$LoadedStateImplCopyWithImpl<_$LoadedStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
-        loadedState,
-    required TResult Function() loadingState,
-    required TResult Function(Failure failure) errorState,
-  }) {
-    return loadedState(loadedStateData);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
-        loadedState,
-    TResult? Function()? loadingState,
-    TResult? Function(Failure failure)? errorState,
-  }) {
-    return loadedState?.call(loadedStateData);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
-    TResult Function()? loadingState,
-    TResult Function(Failure failure)? errorState,
-    required TResult orElse(),
-  }) {
-    if (loadedState != null) {
-      return loadedState(loadedStateData);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadedState value) loadedState,
-    required TResult Function(_LoadingState value) loadingState,
-    required TResult Function(_ErrorState value) errorState,
-  }) {
-    return loadedState(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadedState value)? loadedState,
-    TResult? Function(_LoadingState value)? loadingState,
-    TResult? Function(_ErrorState value)? errorState,
-  }) {
-    return loadedState?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadedState value)? loadedState,
-    TResult Function(_LoadingState value)? loadingState,
-    TResult Function(_ErrorState value)? errorState,
-    required TResult orElse(),
-  }) {
-    if (loadedState != null) {
-      return loadedState(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadedState implements GroupDetailState {
-  const factory _LoadedState(
-      final GroupDetailsLoadedStateModel loadedStateData) = _$LoadedStateImpl;
-
-  GroupDetailsLoadedStateModel get loadedStateData;
-  @JsonKey(ignore: true)
-  _$$LoadedStateImplCopyWith<_$LoadedStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$LoadingStateImplCopyWith<$Res> {
-  factory _$$LoadingStateImplCopyWith(
-          _$LoadingStateImpl value, $Res Function(_$LoadingStateImpl) then) =
-      __$$LoadingStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadingStateImplCopyWithImpl<$Res>
-    extends _$GroupDetailStateCopyWithImpl<$Res, _$LoadingStateImpl>
-    implements _$$LoadingStateImplCopyWith<$Res> {
-  __$$LoadingStateImplCopyWithImpl(
-      _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadingStateImpl implements _LoadingState {
-  const _$LoadingStateImpl();
-
-  @override
-  String toString() {
-    return 'GroupDetailState.loadingState()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingStateImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
-        loadedState,
-    required TResult Function() loadingState,
-    required TResult Function(Failure failure) errorState,
-  }) {
-    return loadingState();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
-        loadedState,
-    TResult? Function()? loadingState,
-    TResult? Function(Failure failure)? errorState,
-  }) {
-    return loadingState?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
-    TResult Function()? loadingState,
-    TResult Function(Failure failure)? errorState,
-    required TResult orElse(),
-  }) {
-    if (loadingState != null) {
-      return loadingState();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadedState value) loadedState,
-    required TResult Function(_LoadingState value) loadingState,
-    required TResult Function(_ErrorState value) errorState,
-  }) {
-    return loadingState(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadedState value)? loadedState,
-    TResult? Function(_LoadingState value)? loadingState,
-    TResult? Function(_ErrorState value)? errorState,
-  }) {
-    return loadingState?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadedState value)? loadedState,
-    TResult Function(_LoadingState value)? loadingState,
-    TResult Function(_ErrorState value)? errorState,
-    required TResult orElse(),
-  }) {
-    if (loadingState != null) {
-      return loadingState(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadingState implements GroupDetailState {
-  const factory _LoadingState() = _$LoadingStateImpl;
-}
-
-/// @nodoc
-abstract class _$$ErrorStateImplCopyWith<$Res> {
-  factory _$$ErrorStateImplCopyWith(
-          _$ErrorStateImpl value, $Res Function(_$ErrorStateImpl) then) =
-      __$$ErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Failure failure});
+  $Res call(
+      {ApiState<List<UserModel>> membersState,
+      ApiState<List<CategoriesModel>> categoriesState,
+      ApiState<List<ItemModel>> itemsState,
+      List<ItemModel> allItems,
+      ApiState<SessionModel?> sessionState,
+      String? selectedCategory});
 
-  $FailureCopyWith<$Res> get failure;
+  @override
+  $ApiStateCopyWith<List<UserModel>, $Res> get membersState;
+  @override
+  $ApiStateCopyWith<List<CategoriesModel>, $Res> get categoriesState;
+  @override
+  $ApiStateCopyWith<List<ItemModel>, $Res> get itemsState;
+  @override
+  $ApiStateCopyWith<SessionModel?, $Res> get sessionState;
 }
 
 /// @nodoc
-class __$$ErrorStateImplCopyWithImpl<$Res>
-    extends _$GroupDetailStateCopyWithImpl<$Res, _$ErrorStateImpl>
-    implements _$$ErrorStateImplCopyWith<$Res> {
-  __$$ErrorStateImplCopyWithImpl(
-      _$ErrorStateImpl _value, $Res Function(_$ErrorStateImpl) _then)
+class __$$GroupDetailStateImplCopyWithImpl<$Res>
+    extends _$GroupDetailStateCopyWithImpl<$Res, _$GroupDetailStateImpl>
+    implements _$$GroupDetailStateImplCopyWith<$Res> {
+  __$$GroupDetailStateImplCopyWithImpl(_$GroupDetailStateImpl _value,
+      $Res Function(_$GroupDetailStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? failure = null,
+    Object? membersState = null,
+    Object? categoriesState = null,
+    Object? itemsState = null,
+    Object? allItems = null,
+    Object? sessionState = null,
+    Object? selectedCategory = freezed,
   }) {
-    return _then(_$ErrorStateImpl(
-      null == failure
-          ? _value.failure
-          : failure // ignore: cast_nullable_to_non_nullable
-              as Failure,
+    return _then(_$GroupDetailStateImpl(
+      membersState: null == membersState
+          ? _value.membersState
+          : membersState // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<UserModel>>,
+      categoriesState: null == categoriesState
+          ? _value.categoriesState
+          : categoriesState // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<CategoriesModel>>,
+      itemsState: null == itemsState
+          ? _value.itemsState
+          : itemsState // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<ItemModel>>,
+      allItems: null == allItems
+          ? _value._allItems
+          : allItems // ignore: cast_nullable_to_non_nullable
+              as List<ItemModel>,
+      sessionState: null == sessionState
+          ? _value.sessionState
+          : sessionState // ignore: cast_nullable_to_non_nullable
+              as ApiState<SessionModel?>,
+      selectedCategory: freezed == selectedCategory
+          ? _value.selectedCategory
+          : selectedCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $FailureCopyWith<$Res> get failure {
-    return $FailureCopyWith<$Res>(_value.failure, (value) {
-      return _then(_value.copyWith(failure: value));
-    });
   }
 }
 
 /// @nodoc
+@JsonSerializable()
+class _$GroupDetailStateImpl implements _GroupDetailState {
+  const _$GroupDetailStateImpl(
+      {this.membersState = const ApiState.loading(),
+      this.categoriesState = const ApiState.loading(),
+      this.itemsState = const ApiState.loading(),
+      final List<ItemModel> allItems = const [],
+      this.sessionState = const ApiState.loading(),
+      this.selectedCategory})
+      : _allItems = allItems;
 
-class _$ErrorStateImpl implements _ErrorState {
-  const _$ErrorStateImpl(this.failure);
+  factory _$GroupDetailStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GroupDetailStateImplFromJson(json);
 
   @override
-  final Failure failure;
+  @JsonKey()
+  final ApiState<List<UserModel>> membersState;
+  @override
+  @JsonKey()
+  final ApiState<List<CategoriesModel>> categoriesState;
+  @override
+  @JsonKey()
+  final ApiState<List<ItemModel>> itemsState;
+  final List<ItemModel> _allItems;
+  @override
+  @JsonKey()
+  List<ItemModel> get allItems {
+    if (_allItems is EqualUnmodifiableListView) return _allItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allItems);
+  }
+
+  @override
+  @JsonKey()
+  final ApiState<SessionModel?> sessionState;
+  @override
+  final String? selectedCategory;
 
   @override
   String toString() {
-    return 'GroupDetailState.errorState(failure: $failure)';
+    return 'GroupDetailState(membersState: $membersState, categoriesState: $categoriesState, itemsState: $itemsState, allItems: $allItems, sessionState: $sessionState, selectedCategory: $selectedCategory)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorStateImpl &&
-            (identical(other.failure, failure) || other.failure == failure));
+            other is _$GroupDetailStateImpl &&
+            (identical(other.membersState, membersState) ||
+                other.membersState == membersState) &&
+            (identical(other.categoriesState, categoriesState) ||
+                other.categoriesState == categoriesState) &&
+            (identical(other.itemsState, itemsState) ||
+                other.itemsState == itemsState) &&
+            const DeepCollectionEquality().equals(other._allItems, _allItems) &&
+            (identical(other.sessionState, sessionState) ||
+                other.sessionState == sessionState) &&
+            (identical(other.selectedCategory, selectedCategory) ||
+                other.selectedCategory == selectedCategory));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, failure);
+  int get hashCode => Object.hash(
+      runtimeType,
+      membersState,
+      categoriesState,
+      itemsState,
+      const DeepCollectionEquality().hash(_allItems),
+      sessionState,
+      selectedCategory);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
-      __$$ErrorStateImplCopyWithImpl<_$ErrorStateImpl>(this, _$identity);
+  _$$GroupDetailStateImplCopyWith<_$GroupDetailStateImpl> get copyWith =>
+      __$$GroupDetailStateImplCopyWithImpl<_$GroupDetailStateImpl>(
+          this, _$identity);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(GroupDetailsLoadedStateModel loadedStateData)
-        loadedState,
-    required TResult Function() loadingState,
-    required TResult Function(Failure failure) errorState,
-  }) {
-    return errorState(failure);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(GroupDetailsLoadedStateModel loadedStateData)?
-        loadedState,
-    TResult? Function()? loadingState,
-    TResult? Function(Failure failure)? errorState,
-  }) {
-    return errorState?.call(failure);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupDetailsLoadedStateModel loadedStateData)? loadedState,
-    TResult Function()? loadingState,
-    TResult Function(Failure failure)? errorState,
-    required TResult orElse(),
-  }) {
-    if (errorState != null) {
-      return errorState(failure);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadedState value) loadedState,
-    required TResult Function(_LoadingState value) loadingState,
-    required TResult Function(_ErrorState value) errorState,
-  }) {
-    return errorState(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadedState value)? loadedState,
-    TResult? Function(_LoadingState value)? loadingState,
-    TResult? Function(_ErrorState value)? errorState,
-  }) {
-    return errorState?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadedState value)? loadedState,
-    TResult Function(_LoadingState value)? loadingState,
-    TResult Function(_ErrorState value)? errorState,
-    required TResult orElse(),
-  }) {
-    if (errorState != null) {
-      return errorState(this);
-    }
-    return orElse();
+  Map<String, dynamic> toJson() {
+    return _$$GroupDetailStateImplToJson(
+      this,
+    );
   }
 }
 
-abstract class _ErrorState implements GroupDetailState {
-  const factory _ErrorState(final Failure failure) = _$ErrorStateImpl;
+abstract class _GroupDetailState implements GroupDetailState {
+  const factory _GroupDetailState(
+      {final ApiState<List<UserModel>> membersState,
+      final ApiState<List<CategoriesModel>> categoriesState,
+      final ApiState<List<ItemModel>> itemsState,
+      final List<ItemModel> allItems,
+      final ApiState<SessionModel?> sessionState,
+      final String? selectedCategory}) = _$GroupDetailStateImpl;
 
-  Failure get failure;
-  @JsonKey(ignore: true)
-  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
+  factory _GroupDetailState.fromJson(Map<String, dynamic> json) =
+      _$GroupDetailStateImpl.fromJson;
+
+  @override
+  ApiState<List<UserModel>> get membersState;
+  @override
+  ApiState<List<CategoriesModel>> get categoriesState;
+  @override
+  ApiState<List<ItemModel>> get itemsState;
+  @override
+  List<ItemModel> get allItems;
+  @override
+  ApiState<SessionModel?> get sessionState;
+  @override
+  String? get selectedCategory;
+
+  /// Create a copy of GroupDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GroupDetailStateImplCopyWith<_$GroupDetailStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

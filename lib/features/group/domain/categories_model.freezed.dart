@@ -35,8 +35,12 @@ mixin _$CategoriesModel {
   @JsonKey(name: 'priority')
   int? get priority => throw _privateConstructorUsedError;
 
+  /// Serializes this CategoriesModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CategoriesModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CategoriesModelCopyWith<CategoriesModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -67,6 +71,8 @@ class _$CategoriesModelCopyWithImpl<$Res, $Val extends CategoriesModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CategoriesModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -137,6 +143,8 @@ class __$$CategoriesModelImplCopyWithImpl<$Res>
       _$CategoriesModelImpl _value, $Res Function(_$CategoriesModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CategoriesModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -256,12 +264,14 @@ class _$CategoriesModelImpl
                 other.priority == priority));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, uid, docId, groupId, name, createdBy, createdAt, priority);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CategoriesModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CategoriesModelImplCopyWith<_$CategoriesModelImpl> get copyWith =>
@@ -310,8 +320,11 @@ abstract class _CategoriesModel implements CategoriesModel {
   @override
   @JsonKey(name: 'priority')
   int? get priority;
+
+  /// Create a copy of CategoriesModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CategoriesModelImplCopyWith<_$CategoriesModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

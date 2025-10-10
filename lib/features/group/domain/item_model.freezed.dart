@@ -43,8 +43,12 @@ mixin _$ItemModel {
   @JsonKey(name: 'updatedAt')
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this ItemModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ItemModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ItemModelCopyWith<ItemModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -78,6 +82,8 @@ class _$ItemModelCopyWithImpl<$Res, $Val extends ItemModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ItemModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -172,6 +178,8 @@ class __$$ItemModelImplCopyWithImpl<$Res>
       _$ItemModelImpl _value, $Res Function(_$ItemModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ItemModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -343,7 +351,7 @@ class _$ItemModelImpl with DiagnosticableTreeMixin implements _ItemModel {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -359,7 +367,9 @@ class _$ItemModelImpl with DiagnosticableTreeMixin implements _ItemModel {
       createdAt,
       updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ItemModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ItemModelImplCopyWith<_$ItemModelImpl> get copyWith =>
@@ -423,8 +433,11 @@ abstract class _ItemModel implements ItemModel {
   @override
   @JsonKey(name: 'updatedAt')
   DateTime? get updatedAt;
+
+  /// Create a copy of ItemModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ItemModelImplCopyWith<_$ItemModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

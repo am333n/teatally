@@ -2,8 +2,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'failure.freezed.dart';
+part 'failure.g.dart';
 
-@freezed
+@Freezed()
 class Failure with _$Failure {
   const factory Failure.serverError({required String message}) = _ServerError;
   const factory Failure.clientError({required String message}) = _ClientError;
@@ -16,4 +17,6 @@ class Failure with _$Failure {
       {required String message, String? code}) = _FirebaseNetworkError;
   const factory Failure.firebaseUnknownError(
       {required String message, String? code}) = _FirebaseUnknownError;
+  factory Failure.fromJson(Map<String, dynamic> json) =>
+      _$FailureFromJson(json);
 }

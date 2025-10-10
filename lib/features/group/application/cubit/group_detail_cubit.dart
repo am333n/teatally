@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:teatally/core/common/api_state.dart';
 import 'package:teatally/core/infrastructure/failure.dart';
 import 'package:teatally/core/widgets/toast.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
@@ -24,15 +25,15 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
 
   GroupDetailCubit(
     this._repository,
-  ) : super(const GroupDetailState.loadingState());
-  GroupDetailsLoadedStateModel loadedStateData =
-      const GroupDetailsLoadedStateModel();
+  ) : super(GroupDetailState());
+  // GroupDetailsLoadedStateModel loadedStateData =
+  //     const GroupDetailsLoadedStateModel();
   StreamSubscription<Either<Failure, SessionModel?>>? _subscription;
-  List<ItemModel>? allItems;
 
   void resetSelection() {
-    allItems = null;
-    loadedStateData = const GroupDetailsLoadedStateModel();
+    // loadedStateData = const GroupDetailsLoadedStateModel();
+    emit(GroupDetailState(
+        itemsState: ApiLoaded(state.allItems ?? []), allItems: []));
   }
 
   Future<void> startUpFunction(GroupModel? groupDetails) async {
@@ -49,47 +50,47 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
   Future<void> getCategories(String? groupId,
       {bool emitLoading = false}) async {
     if (emitLoading) {
-      emit(const GroupDetailState.loadingState());
+      emit(state.copyWith(categoriesState: ApiLoading()));
     }
     final response = await _repository.getCategories(groupId);
     response.fold((l) {
-      emit(GroupDetailState.errorState(l));
+      emit(state.copyWith(categoriesState: ApiError(l)));
     }, (r) {
       setSelectedCategory(null);
-      loadedStateData =
-          loadedStateData.copyWith(categories: r, items: allItems);
-      emit(GroupDetailState.loadedState(loadedStateData));
+      emit(state.copyWith(categoriesState: ApiLoaded(r)));
     });
   }
 
   Future<void> getAllMembersDetails(List<String>? membersUids,
       {bool emitLoading = false}) async {
     if (emitLoading) {
-      emit(const GroupDetailState.loadingState());
+      emit(state.copyWith(membersState: ApiLoading()));
     }
     final response = await _repository.getAllMemberDetails(membersUids);
     response.fold((l) {
-      emit(GroupDetailState.errorState(l));
+      emit(state.copyWith(membersState: ApiError(l)));
       Toast.showErrorMessage(l.toString());
     }, (r) {
-      loadedStateData = loadedStateData.copyWith(members: r);
-      emit(GroupDetailState.loadedState(loadedStateData));
+      emit(state.copyWith(membersState: ApiLoaded(r)));
     });
   }
 
   Future<void> getItemsForGroup(String? groupId,
       {bool emitLoading = false}) async {
     if (emitLoading) {
-      emit(const GroupDetailState.loadingState());
+      emit(state.copyWith(itemsState: const ApiLoading()));
     }
     final response = await _repository.getItemsForGroup(groupId);
     response.fold((l) {
-      emit(GroupDetailState.errorState(l));
+      emit(state.copyWith(itemsState: ApiError(l)));
     }, (r) {
-      allItems = r;
-      loadedStateData =
-          loadedStateData.copyWith(items: getFilterdItems(allItems));
-      emit(GroupDetailState.loadedState(loadedStateData));
+      emit(state.copyWith(
+        allItems: r,
+      ));
+      getFilterdItems();
+      // loadedStateData =
+      //     loadedStateData.copyWith(items: getFilterdItems(allItems));
+      // emit(GroupDetailState.loadedState(loadedStateData));
     });
   }
 
@@ -108,38 +109,47 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
         result.fold(
           (failure) {
             Toast.showErrorMessage(failure.toString());
-            loadedStateData = loadedStateData.copyWith(session: null);
-            emit(GroupDetailState.loadedState(loadedStateData));
+            emit(state.copyWith(sessionState: ApiLoaded(null)));
+            // loadedStateData = loadedStateData.copyWith(session: null);
+            // emit(GroupDetailState.loadedState(loadedStateData));
           },
           (sessionData) {
             if (sessionData == null) {
-              loadedStateData = loadedStateData.copyWith(session: null);
-              emit(GroupDetailState.loadedState(loadedStateData));
+              emit(state.copyWith(sessionState: ApiLoaded(null)));
+              // loadedStateData = loadedStateData.copyWith(session: null);
+              // emit(GroupDetailState.loadedState(loadedStateData));
             } else {
-              loadedStateData = loadedStateData.copyWith(session: sessionData);
-              log('Update Data: ${loadedStateData.session}');
-              emit(GroupDetailState.loadedState(loadedStateData));
+              emit(state.copyWith(sessionState: ApiLoaded(sessionData)));
+              // loadedStateData = loadedStateData.copyWith(session: sessionData);
+              // log('Update Data: ${loadedStateData.session}');
+              // emit(GroupDetailState.loadedState(loadedStateData));
             }
           },
         );
       },
       onError: (error) {
-        emit(GroupDetailState.errorState(error));
-        Toast.showErrorMessage(error.toString());
+        emit(state.copyWith(sessionState: ApiError(error)));
+        // emit(GroupDetailState.errorState(error));
+        // Toast.showErrorMessage(error.toString());
         // Handle unexpected errors
         // emit(SessionError(error.toString()));
       },
     );
   }
 
-  Future<void> incrementOrDecrementItemCount(String? itemName, String? itemId,
-      String? groupId, String? categoryId, bool isIncrement) async {
-    if (loadedStateData.session != null) {
+  Future<void> incrementOrDecrementItemCount(
+      String? itemName,
+      String? itemId,
+      String? groupId,
+      double? itemPrice,
+      String? categoryId,
+      bool isIncrement) async {
+    if (state.sessionState.getOrNull() != null) {
       log('active session 1');
-      updateItemCount(itemId, itemName, categoryId, isIncrement);
+      updateItemCount(itemId, itemName, itemPrice, categoryId, isIncrement);
     } else {
       await startCountSession(itemId, groupId, categoryId);
-      updateItemCount(itemId, itemName, categoryId, isIncrement);
+      updateItemCount(itemId, itemName, itemPrice, categoryId, isIncrement);
       log('active session null');
     }
   }
@@ -162,6 +172,7 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
   Future<void> updateItemCount(
     String? itemId,
     String? itemName,
+    double? itemPrice,
     String? categoryId,
     bool isIncrement, // Flag to indicate increment or decrement
   ) async {
@@ -171,7 +182,8 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     final userId = await CredentialStorage.getUid();
 
     // Get the current session's selected items
-    final selectedItems = loadedStateData.session?.selectedItems ?? [];
+    // final selectedItems = loadedStateData.session?.selectedItems ?? [];
+    final selectedItems = state.sessionState.getOrNull()?.selectedItems ?? [];
 
     // Create a mutable copy of selected items
     final updatedSelectedItems = List<SelectedItem>.from(selectedItems);
@@ -237,6 +249,7 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
       // Item does not exist, add a new item for increment only
       final newItem = SelectedItem(
         itemUid: itemId,
+        itemPrice: itemPrice,
         itemName: itemName,
         categoryId: categoryId,
         totalCount: 1,
@@ -246,8 +259,10 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
       updatedSelectedItems.add(newItem);
     }
 
-    final session =
-        loadedStateData.session?.copyWith(selectedItems: updatedSelectedItems);
+    final session = state.sessionState
+        .getOrNull()
+        ?.copyWith(selectedItems: updatedSelectedItems);
+    // loadedStateData.session?.copyWith(selectedItems: updatedSelectedItems);
     updateActiveSession(session);
   }
 
@@ -269,21 +284,30 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
   }
 
   void setSelectedCategory(String? categoryId) {
-    loadedStateData = loadedStateData.copyWith(
-      selectedCategory: categoryId,
-    );
-    loadedStateData = loadedStateData.copyWith(
-      items: getFilterdItems(allItems),
-    );
+    // loadedStateData = loadedStateData.copyWith(
+    //   selectedCategory: categoryId,
+    // );
+    // loadedStateData = state.copyWith(
+    //   selectedCategory: categoryId,
+    // );
+    // loadedStateData = loadedStateData.copyWith(
+    //   items: getFilterdItems(allItems),
+    // );
 
-    emit(GroupDetailState.loadedState(loadedStateData));
+    emit(state.copyWith(
+      selectedCategory: categoryId,
+    ));
+    getFilterdItems();
+    // emit(GroupDetailState.loadedState(loadedStateData));
   }
 
-  List<ItemModel>? getFilterdItems(List<ItemModel>? items) {
-    final categoryId = loadedStateData.selectedCategory;
-    return (categoryId != null)
+  void getFilterdItems() {
+    final categoryId = state.selectedCategory;
+    final allItems = state.allItems;
+    final items = (categoryId != null)
         ? allItems?.where((e) => e.categoryId == categoryId).toList()
         : allItems;
+    emit(state.copyWith(itemsState: ApiLoaded(items ?? [])));
   }
 
   Future<void> addCategory(
@@ -322,7 +346,8 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
       String? categoryUid, String? categoryDocID, String? groupId) async {
     if (categoryUid == null || categoryDocID == null) return;
 
-    final allItemsUnderThisCategory = loadedStateData.items
+    final allItemsUnderThisCategory = state.itemsState
+        .getOrNull()
         ?.where((item) => item.categoryId == categoryUid)
         .toList();
 

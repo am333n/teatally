@@ -43,8 +43,12 @@ mixin _$SessionModel {
   @JsonKey(name: 'selectedItems')
   List<SelectedItem>? get selectedItems => throw _privateConstructorUsedError;
 
+  /// Serializes this SessionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SessionModelCopyWith<SessionModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -79,6 +83,8 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -173,6 +179,8 @@ class __$$SessionModelImplCopyWithImpl<$Res>
       _$SessionModelImpl _value, $Res Function(_$SessionModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -329,7 +337,7 @@ class _$SessionModelImpl implements _SessionModel {
                 .equals(other._selectedItems, _selectedItems));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -345,7 +353,9 @@ class _$SessionModelImpl implements _SessionModel {
       isActive,
       const DeepCollectionEquality().hash(_selectedItems));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SessionModelImplCopyWith<_$SessionModelImpl> get copyWith =>
@@ -411,8 +421,11 @@ abstract class _SessionModel implements SessionModel {
   @override
   @JsonKey(name: 'selectedItems')
   List<SelectedItem>? get selectedItems;
+
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SessionModelImplCopyWith<_$SessionModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -431,11 +444,17 @@ mixin _$SelectedItem {
   String? get categoryId => throw _privateConstructorUsedError;
   @JsonKey(name: 'totalCount')
   int? get totalCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'itemPrice')
+  double? get itemPrice => throw _privateConstructorUsedError;
   @JsonKey(name: 'selections')
   List<Selection>? get selections => throw _privateConstructorUsedError;
 
+  /// Serializes this SelectedItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SelectedItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SelectedItemCopyWith<SelectedItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -451,6 +470,7 @@ abstract class $SelectedItemCopyWith<$Res> {
       @JsonKey(name: 'itemName') String? itemName,
       @JsonKey(name: 'categoryId') String? categoryId,
       @JsonKey(name: 'totalCount') int? totalCount,
+      @JsonKey(name: 'itemPrice') double? itemPrice,
       @JsonKey(name: 'selections') List<Selection>? selections});
 }
 
@@ -464,6 +484,8 @@ class _$SelectedItemCopyWithImpl<$Res, $Val extends SelectedItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SelectedItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -471,6 +493,7 @@ class _$SelectedItemCopyWithImpl<$Res, $Val extends SelectedItem>
     Object? itemName = freezed,
     Object? categoryId = freezed,
     Object? totalCount = freezed,
+    Object? itemPrice = freezed,
     Object? selections = freezed,
   }) {
     return _then(_value.copyWith(
@@ -490,6 +513,10 @@ class _$SelectedItemCopyWithImpl<$Res, $Val extends SelectedItem>
           ? _value.totalCount
           : totalCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      itemPrice: freezed == itemPrice
+          ? _value.itemPrice
+          : itemPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       selections: freezed == selections
           ? _value.selections
           : selections // ignore: cast_nullable_to_non_nullable
@@ -511,6 +538,7 @@ abstract class _$$SelectedItemImplCopyWith<$Res>
       @JsonKey(name: 'itemName') String? itemName,
       @JsonKey(name: 'categoryId') String? categoryId,
       @JsonKey(name: 'totalCount') int? totalCount,
+      @JsonKey(name: 'itemPrice') double? itemPrice,
       @JsonKey(name: 'selections') List<Selection>? selections});
 }
 
@@ -522,6 +550,8 @@ class __$$SelectedItemImplCopyWithImpl<$Res>
       _$SelectedItemImpl _value, $Res Function(_$SelectedItemImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SelectedItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -529,6 +559,7 @@ class __$$SelectedItemImplCopyWithImpl<$Res>
     Object? itemName = freezed,
     Object? categoryId = freezed,
     Object? totalCount = freezed,
+    Object? itemPrice = freezed,
     Object? selections = freezed,
   }) {
     return _then(_$SelectedItemImpl(
@@ -548,6 +579,10 @@ class __$$SelectedItemImplCopyWithImpl<$Res>
           ? _value.totalCount
           : totalCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      itemPrice: freezed == itemPrice
+          ? _value.itemPrice
+          : itemPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       selections: freezed == selections
           ? _value._selections
           : selections // ignore: cast_nullable_to_non_nullable
@@ -564,6 +599,7 @@ class _$SelectedItemImpl implements _SelectedItem {
       @JsonKey(name: 'itemName') this.itemName,
       @JsonKey(name: 'categoryId') this.categoryId,
       @JsonKey(name: 'totalCount') this.totalCount,
+      @JsonKey(name: 'itemPrice') this.itemPrice,
       @JsonKey(name: 'selections') final List<Selection>? selections})
       : _selections = selections;
 
@@ -582,6 +618,9 @@ class _$SelectedItemImpl implements _SelectedItem {
   @override
   @JsonKey(name: 'totalCount')
   final int? totalCount;
+  @override
+  @JsonKey(name: 'itemPrice')
+  final double? itemPrice;
   final List<Selection>? _selections;
   @override
   @JsonKey(name: 'selections')
@@ -595,7 +634,7 @@ class _$SelectedItemImpl implements _SelectedItem {
 
   @override
   String toString() {
-    return 'SelectedItem(itemUid: $itemUid, itemName: $itemName, categoryId: $categoryId, totalCount: $totalCount, selections: $selections)';
+    return 'SelectedItem(itemUid: $itemUid, itemName: $itemName, categoryId: $categoryId, totalCount: $totalCount, itemPrice: $itemPrice, selections: $selections)';
   }
 
   @override
@@ -610,16 +649,20 @@ class _$SelectedItemImpl implements _SelectedItem {
                 other.categoryId == categoryId) &&
             (identical(other.totalCount, totalCount) ||
                 other.totalCount == totalCount) &&
+            (identical(other.itemPrice, itemPrice) ||
+                other.itemPrice == itemPrice) &&
             const DeepCollectionEquality()
                 .equals(other._selections, _selections));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, itemUid, itemName, categoryId,
-      totalCount, const DeepCollectionEquality().hash(_selections));
+      totalCount, itemPrice, const DeepCollectionEquality().hash(_selections));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SelectedItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectedItemImplCopyWith<_$SelectedItemImpl> get copyWith =>
@@ -639,6 +682,7 @@ abstract class _SelectedItem implements SelectedItem {
           @JsonKey(name: 'itemName') final String? itemName,
           @JsonKey(name: 'categoryId') final String? categoryId,
           @JsonKey(name: 'totalCount') final int? totalCount,
+          @JsonKey(name: 'itemPrice') final double? itemPrice,
           @JsonKey(name: 'selections') final List<Selection>? selections}) =
       _$SelectedItemImpl;
 
@@ -658,10 +702,16 @@ abstract class _SelectedItem implements SelectedItem {
   @JsonKey(name: 'totalCount')
   int? get totalCount;
   @override
+  @JsonKey(name: 'itemPrice')
+  double? get itemPrice;
+  @override
   @JsonKey(name: 'selections')
   List<Selection>? get selections;
+
+  /// Create a copy of SelectedItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectedItemImplCopyWith<_$SelectedItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -677,8 +727,12 @@ mixin _$Selection {
   @JsonKey(name: 'count')
   int? get count => throw _privateConstructorUsedError;
 
+  /// Serializes this Selection to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Selection
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SelectionCopyWith<Selection> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -703,6 +757,8 @@ class _$SelectionCopyWithImpl<$Res, $Val extends Selection>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Selection
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -743,6 +799,8 @@ class __$$SelectionImplCopyWithImpl<$Res>
       _$SelectionImpl _value, $Res Function(_$SelectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Selection
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -793,11 +851,13 @@ class _$SelectionImpl implements _Selection {
             (identical(other.count, count) || other.count == count));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, userUid, count);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Selection
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectionImplCopyWith<_$SelectionImpl> get copyWith =>
@@ -825,8 +885,11 @@ abstract class _Selection implements Selection {
   @override
   @JsonKey(name: 'count')
   int? get count;
+
+  /// Create a copy of Selection
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectionImplCopyWith<_$SelectionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

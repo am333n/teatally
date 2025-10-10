@@ -27,8 +27,12 @@ mixin _$GroupDetailsLoadedStateModel {
   List<UserModel>? get members => throw _privateConstructorUsedError;
   SessionModel? get session => throw _privateConstructorUsedError;
 
+  /// Serializes this GroupDetailsLoadedStateModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GroupDetailsLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GroupDetailsLoadedStateModelCopyWith<GroupDetailsLoadedStateModel>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -62,6 +66,8 @@ class _$GroupDetailsLoadedStateModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GroupDetailsLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -95,6 +101,8 @@ class _$GroupDetailsLoadedStateModelCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of GroupDetailsLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SessionModelCopyWith<$Res>? get session {
@@ -138,6 +146,8 @@ class __$$GroupDetailsLoadedStateModelImplCopyWithImpl<$Res>
       $Res Function(_$GroupDetailsLoadedStateModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GroupDetailsLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -257,7 +267,7 @@ class _$GroupDetailsLoadedStateModelImpl
             (identical(other.session, session) || other.session == session));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -267,7 +277,9 @@ class _$GroupDetailsLoadedStateModelImpl
       const DeepCollectionEquality().hash(_members),
       session);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GroupDetailsLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GroupDetailsLoadedStateModelImplCopyWith<
@@ -305,8 +317,11 @@ abstract class _GroupDetailsLoadedStateModel
   List<UserModel>? get members;
   @override
   SessionModel? get session;
+
+  /// Create a copy of GroupDetailsLoadedStateModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GroupDetailsLoadedStateModelImplCopyWith<
           _$GroupDetailsLoadedStateModelImpl>
       get copyWith => throw _privateConstructorUsedError;
