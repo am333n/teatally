@@ -1,14 +1,17 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:teatally/core/injection/injection.dart';
 import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/styles/text/txt_styles.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/app_card.dart';
+import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/color_picker.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
@@ -156,10 +159,10 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                         text: widget.isEdit ? "Update" : 'Create',
                         onPressed: () async {
                       final formState = _formKey.currentState;
-                      final currentUser = await CredentialStorage.getUid();
+                      final currentUser = context.currentUser;
                       var selectedMemebers =
                           _selectedUsers.map((user) => user!.uid).toList();
-                      selectedMemebers.add(currentUser ?? '');
+                      selectedMemebers.add(currentUser?.uid ?? '');
                       if ((formState?.validate() ?? false) &&
                           selectedMemebers.isNotEmpty) {
                         if (!widget.isEdit) {
@@ -168,11 +171,12 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                               uid: uuid.v1(),
                               name: formState?.fields['name']?.value,
                               description: formState?.fields['desc']?.value,
-                              createdBy: currentUser ?? '',
+                              createdBy: currentUser?.uid ?? '',
                               createdAt: DateTime.now(),
                               updatedAt: DateTime.now(),
                               members: selectedMemebers,
-                              admin: currentUser ?? '',
+                              admin: currentUser?.uid ?? '',
+                              adminUserName: currentUser?.displayName,
                               icon: formState?.fields['icon']?.value,
                               color: formState?.fields['color']?.value,
                               isPinned: false);

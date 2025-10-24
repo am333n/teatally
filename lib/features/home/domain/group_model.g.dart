@@ -18,6 +18,7 @@ _$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
       members:
           (json['members'] as List<dynamic>).map((e) => e as String).toList(),
       admin: json['admin'] as String,
+      adminUserName: json['adminUsername'] as String?,
       icon: json['icon'] as String,
       color: json['color'] as String?,
       isPinned: json['isPinned'] as bool,
@@ -26,7 +27,6 @@ _$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
-      'docId': instance.docId,
       'name': instance.name,
       'description': instance.description,
       'createdBy': instance.createdBy,
@@ -34,6 +34,7 @@ Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
       'updatedAt': instance.updatedAt.toIso8601String(),
       'members': instance.members,
       'admin': instance.admin,
+      'adminUsername': instance.adminUserName,
       'icon': instance.icon,
       'color': instance.color,
       'isPinned': instance.isPinned,

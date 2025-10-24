@@ -38,20 +38,20 @@ mixin _$RemoteResponse<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Success<T> value) success,
-    required TResult Function(_Failure<T> value) failure,
+    required TResult Function(Success<T> value) success,
+    required TResult Function(ResponseFailure<T> value) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Success<T> value)? success,
-    TResult? Function(_Failure<T> value)? failure,
+    TResult? Function(Success<T> value)? success,
+    TResult? Function(ResponseFailure<T> value)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Success<T> value)? success,
-    TResult Function(_Failure<T> value)? failure,
+    TResult Function(Success<T> value)? success,
+    TResult Function(ResponseFailure<T> value)? failure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -135,7 +135,7 @@ class __$$SuccessImplCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$SuccessImpl<T> implements _Success<T> {
+class _$SuccessImpl<T> implements Success<T> {
   const _$SuccessImpl(this.data);
 
   @override
@@ -200,8 +200,8 @@ class _$SuccessImpl<T> implements _Success<T> {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Success<T> value) success,
-    required TResult Function(_Failure<T> value) failure,
+    required TResult Function(Success<T> value) success,
+    required TResult Function(ResponseFailure<T> value) failure,
   }) {
     return success(this);
   }
@@ -209,8 +209,8 @@ class _$SuccessImpl<T> implements _Success<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Success<T> value)? success,
-    TResult? Function(_Failure<T> value)? failure,
+    TResult? Function(Success<T> value)? success,
+    TResult? Function(ResponseFailure<T> value)? failure,
   }) {
     return success?.call(this);
   }
@@ -218,8 +218,8 @@ class _$SuccessImpl<T> implements _Success<T> {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Success<T> value)? success,
-    TResult Function(_Failure<T> value)? failure,
+    TResult Function(Success<T> value)? success,
+    TResult Function(ResponseFailure<T> value)? failure,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -229,8 +229,8 @@ class _$SuccessImpl<T> implements _Success<T> {
   }
 }
 
-abstract class _Success<T> implements RemoteResponse<T> {
-  const factory _Success(final T data) = _$SuccessImpl<T>;
+abstract class Success<T> implements RemoteResponse<T> {
+  const factory Success(final T data) = _$SuccessImpl<T>;
 
   @override
   T get data;
@@ -244,22 +244,22 @@ abstract class _Success<T> implements RemoteResponse<T> {
 }
 
 /// @nodoc
-abstract class _$$FailureImplCopyWith<T, $Res>
+abstract class _$$ResponseFailureImplCopyWith<T, $Res>
     implements $RemoteResponseCopyWith<T, $Res> {
-  factory _$$FailureImplCopyWith(
-          _$FailureImpl<T> value, $Res Function(_$FailureImpl<T>) then) =
-      __$$FailureImplCopyWithImpl<T, $Res>;
+  factory _$$ResponseFailureImplCopyWith(_$ResponseFailureImpl<T> value,
+          $Res Function(_$ResponseFailureImpl<T>) then) =
+      __$$ResponseFailureImplCopyWithImpl<T, $Res>;
   @override
   @useResult
   $Res call({T data});
 }
 
 /// @nodoc
-class __$$FailureImplCopyWithImpl<T, $Res>
-    extends _$RemoteResponseCopyWithImpl<T, $Res, _$FailureImpl<T>>
-    implements _$$FailureImplCopyWith<T, $Res> {
-  __$$FailureImplCopyWithImpl(
-      _$FailureImpl<T> _value, $Res Function(_$FailureImpl<T>) _then)
+class __$$ResponseFailureImplCopyWithImpl<T, $Res>
+    extends _$RemoteResponseCopyWithImpl<T, $Res, _$ResponseFailureImpl<T>>
+    implements _$$ResponseFailureImplCopyWith<T, $Res> {
+  __$$ResponseFailureImplCopyWithImpl(_$ResponseFailureImpl<T> _value,
+      $Res Function(_$ResponseFailureImpl<T>) _then)
       : super(_value, _then);
 
   /// Create a copy of RemoteResponse
@@ -269,7 +269,7 @@ class __$$FailureImplCopyWithImpl<T, $Res>
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_$FailureImpl<T>(
+    return _then(_$ResponseFailureImpl<T>(
       freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -280,8 +280,8 @@ class __$$FailureImplCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$FailureImpl<T> implements _Failure<T> {
-  const _$FailureImpl(this.data);
+class _$ResponseFailureImpl<T> implements ResponseFailure<T> {
+  const _$ResponseFailureImpl(this.data);
 
   @override
   final T data;
@@ -295,7 +295,7 @@ class _$FailureImpl<T> implements _Failure<T> {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FailureImpl<T> &&
+            other is _$ResponseFailureImpl<T> &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
@@ -308,8 +308,9 @@ class _$FailureImpl<T> implements _Failure<T> {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$FailureImplCopyWith<T, _$FailureImpl<T>> get copyWith =>
-      __$$FailureImplCopyWithImpl<T, _$FailureImpl<T>>(this, _$identity);
+  _$$ResponseFailureImplCopyWith<T, _$ResponseFailureImpl<T>> get copyWith =>
+      __$$ResponseFailureImplCopyWithImpl<T, _$ResponseFailureImpl<T>>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -345,8 +346,8 @@ class _$FailureImpl<T> implements _Failure<T> {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Success<T> value) success,
-    required TResult Function(_Failure<T> value) failure,
+    required TResult Function(Success<T> value) success,
+    required TResult Function(ResponseFailure<T> value) failure,
   }) {
     return failure(this);
   }
@@ -354,8 +355,8 @@ class _$FailureImpl<T> implements _Failure<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Success<T> value)? success,
-    TResult? Function(_Failure<T> value)? failure,
+    TResult? Function(Success<T> value)? success,
+    TResult? Function(ResponseFailure<T> value)? failure,
   }) {
     return failure?.call(this);
   }
@@ -363,8 +364,8 @@ class _$FailureImpl<T> implements _Failure<T> {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Success<T> value)? success,
-    TResult Function(_Failure<T> value)? failure,
+    TResult Function(Success<T> value)? success,
+    TResult Function(ResponseFailure<T> value)? failure,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -374,8 +375,8 @@ class _$FailureImpl<T> implements _Failure<T> {
   }
 }
 
-abstract class _Failure<T> implements RemoteResponse<T> {
-  const factory _Failure(final T data) = _$FailureImpl<T>;
+abstract class ResponseFailure<T> implements RemoteResponse<T> {
+  const factory ResponseFailure(final T data) = _$ResponseFailureImpl<T>;
 
   @override
   T get data;
@@ -384,6 +385,6 @@ abstract class _Failure<T> implements RemoteResponse<T> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FailureImplCopyWith<T, _$FailureImpl<T>> get copyWith =>
+  _$$ResponseFailureImplCopyWith<T, _$ResponseFailureImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

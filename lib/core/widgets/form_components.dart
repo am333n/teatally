@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
+import 'package:teatally/core/app_colors.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/theme/application/cubit/theme_cubit.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
@@ -122,17 +123,100 @@ class FormComponents {
     );
   }
 
-  static Widget formBuilderDropDownWithId(
+  static Widget statusToggleSwitch(
+    BuildContext context, {
+    required String name,
+    required String label,
+    bool? initialValue,
+    bool visible = true,
+    bool enabled = true,
+    bool isRequired = false,
+    FormFieldValidator<bool>? validator,
+    Key? key,
+    void Function(bool?)? onChanged,
+    Attached attached = Attached.none,
+  }) {
+    return Visibility(
+      visible: visible,
+      child: FormBuilderField<bool>(
+        key: key,
+        name: name,
+        initialValue: initialValue,
+        builder: (FormFieldState<bool> field) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              final bool? currentValue = field.value;
+              final List<bool> isSelected = [
+                currentValue == false, // Unpaid = false = index 0
+                currentValue == true, // Paid = true = index 1
+              ];
+
+              return InputDecorator(
+                decoration: formFieldDecoration(
+                  context,
+                  '',
+                  readOnly: !enabled,
+                  attached: attached,
+                ).copyWith(
+                  fillColor: Colors.transparent,
+                  enabledBorder: InputBorder.none,
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+                isEmpty: currentValue == null,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Center(
+                      child: ToggleButtons(
+                        borderRadius: BorderRadius.circular(12),
+                        isSelected: isSelected,
+                        onPressed: !enabled
+                            ? null
+                            : (index) {
+                                final newValue = index ==
+                                    1; // index 1 = true (Paid), index 0 = false (Unpaid)
+                                setState(() {
+                                  field.didChange(newValue);
+                                  if (onChanged != null) {
+                                    onChanged(newValue);
+                                  }
+                                });
+                              },
+                        selectedColor: Colors.white,
+                        fillColor:
+                            isSelected[1] // Check if Paid is selected (index 1)
+                                ? AppColors.lightGreen
+                                : AppColors.lightYellow,
+                        color: Colors.black87,
+                        constraints: BoxConstraints.expand(
+                          width: constraints.maxWidth / 2 - 15,
+                        ),
+                        children: const [
+                          Txt('Pending', style: TxtStyle.bodyLBold),
+                          Txt('Paid', style: TxtStyle.bodyLBold),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  static Widget formBuilderDropDownWithId<T>(
     BuildContext context, {
     required String fieldName,
     required String label,
     required String hintText,
     bool? inAsyncCall,
-    int? initialValue,
+    T? initialValue,
     Attached? attached,
     List<DropdownItem>? items,
     double? menuHeight,
-    void Function(int?)? onChanged,
+    void Function(T?)? onChanged,
     bool? enabled,
     bool? isRequired,
     bool visible = true,
@@ -146,7 +230,7 @@ class FormComponents {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildFormLabel(label),
-            FormBuilderDropdown<int>(
+            FormBuilderDropdown<T>(
               alignment: Alignment.bottomCenter,
               isExpanded: true,
               isDense: true,
@@ -168,7 +252,7 @@ class FormComponents {
                   attached: attached ?? Attached.none),
               initialValue: initialValue,
               items: (items ?? [])
-                  .map((item) => DropdownMenuItem<int>(
+                  .map((item) => DropdownMenuItem<T>(
                         value: item.id, // Use item.id as the value
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -430,8 +514,8 @@ class FormComponents {
   }
 }
 
-class DropdownItem {
-  final int id;
+class DropdownItem<T> {
+  final T id;
   final String name;
 
   DropdownItem(this.id, this.name);

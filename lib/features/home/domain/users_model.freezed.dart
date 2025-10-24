@@ -26,7 +26,7 @@ mixin _$UserModel {
   String? get displayName => throw _privateConstructorUsedError;
   @JsonKey(name: 'uid')
   String get uid => throw _privateConstructorUsedError;
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId => throw _privateConstructorUsedError;
   @JsonKey(name: 'photoURL')
   String? get photoURL => throw _privateConstructorUsedError;
@@ -50,7 +50,7 @@ abstract class $UserModelCopyWith<$Res> {
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'displayName') String? displayName,
       @JsonKey(name: 'uid') String uid,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'photoURL') String? photoURL});
 }
 
@@ -112,7 +112,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'displayName') String? displayName,
       @JsonKey(name: 'uid') String uid,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'photoURL') String? photoURL});
 }
 
@@ -167,7 +167,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       {@JsonKey(name: 'email') required this.email,
       @JsonKey(name: 'displayName') this.displayName,
       @JsonKey(name: 'uid') required this.uid,
-      @JsonKey(name: 'docId') this.docId,
+      @JsonKey(name: 'docId', includeToJson: false) this.docId,
       @JsonKey(name: 'photoURL') this.photoURL});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -183,7 +183,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   @JsonKey(name: 'uid')
   final String uid;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   final String? docId;
   @override
   @JsonKey(name: 'photoURL')
@@ -246,7 +246,7 @@ abstract class _UserModel implements UserModel {
       {@JsonKey(name: 'email') required final String email,
       @JsonKey(name: 'displayName') final String? displayName,
       @JsonKey(name: 'uid') required final String uid,
-      @JsonKey(name: 'docId') final String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) final String? docId,
       @JsonKey(name: 'photoURL') final String? photoURL}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -262,7 +262,7 @@ abstract class _UserModel implements UserModel {
   @JsonKey(name: 'uid')
   String get uid;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId;
   @override
   @JsonKey(name: 'photoURL')

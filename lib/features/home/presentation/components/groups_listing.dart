@@ -1,14 +1,18 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:teatally/core/app_colors.dart';
 import 'package:teatally/core/infrastructure/failure_handler.dart';
+import 'package:teatally/core/injection/injection.dart';
 import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
 import 'package:teatally/core/widgets/dialog_helpers.dart';
 import 'package:teatally/core/widgets/toast.dart';
+import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
@@ -25,14 +29,23 @@ class GroupsListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(child:
-        BlocBuilder<HomePageCubit, HomePageState>(builder: (context, state) {
+    return BlocBuilder<HomePageCubit, HomePageState>(builder: (context, state) {
       return state.groupsStatus.whenOr(
           loading: () => const GroupLoadingShimmer(),
           error: (failure) => Center(
                 child: Txt(FailureHandler.getErrorMessageFromFailure(failure)),
               ),
           loaded: (data) {
+            if (data.isEmpty) {
+              return const Center(
+                child: NoItemPlaceHolder(
+                  image: 'assets/bevimages/coffee.png',
+                  color: AppColors.lightGreen,
+                  label:
+                      'Nothing to show here yet \nstart by creating a group.',
+                ),
+              );
+            }
             return AnimatedList(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -40,64 +53,73 @@ class GroupsListing extends StatelessWidget {
                 initialItemCount: data.length ?? 0,
                 itemBuilder: (context, index, aniamtion) {
                   final item = data[index];
+                  final currentUser = context.currentUser;
                   return Padding(
                     padding: const EdgeInsets.all(10),
                     child: Slidable(
                       endActionPane:
                           ActionPane(motion: const ScrollMotion(), children: [
-                        SlidableAction(
-                          borderRadius: BorderRadius.circular(15),
-                          onPressed: (_) async {
-                            await DialogHelpers.confirmDeleteDialog(
-                                context: context,
-                                onConfirmed: () {
-                                  context
-                                      .read<HomePageCubit>()
-                                      .deleteGroup(item?.docId);
-                                },
-                                onCanceled: () {});
-                          },
-                          backgroundColor: context.theme.appColors.danger,
-                          icon: Icons.delete,
-                        ),
-                        SlidableAction(
-                          onPressed: (_) async {
-                            final currentUser =
-                                await CredentialStorage.getUid();
-                            final isAdmin = item?.admin == currentUser;
-                            if (isAdmin) {
-                              await context
-                                  .read<HomePageCubit>()
-                                  .getAllUsers()
-                                  .then((data) {
-                                final List<UserModel>? groupMembers = state
-                                    .usersStatus
-                                    .getOrNull()
-                                    ?.where((user) =>
-                                        item.members.contains(user.uid))
-                                    .toList();
-                                showGeneralDialog(
-                                  context: context,
-                                  pageBuilder: (context, _, __) {
-                                    return SafeArea(
-                                      child: Material(
-                                          child: AddGroupDialog(
-                                        members: groupMembers,
-                                        groupDetails: item,
-                                        isEdit: true,
-                                      )),
-                                    );
-                                  },
-                                );
-                              });
-                            } else {
-                              Toast.showErrorMessage(
-                                  'No Permission : Only Admin Can Make Changes To Group');
-                            }
-                          },
-                          borderRadius: BorderRadius.circular(15),
-                          icon: Icons.edit,
-                        ),
+                        if (currentUser?.uid == item.admin)
+                          SlidableAction(
+                            borderRadius: BorderRadius.circular(15),
+                            onPressed: (_) async {
+                              final isAdmin = item?.admin == currentUser;
+                              if (isAdmin) {
+                                await DialogHelpers.confirmDeleteDialog(
+                                    context: context,
+                                    onConfirmed: () {
+                                      context
+                                          .read<HomePageCubit>()
+                                          .deleteGroup(item?.docId);
+                                    },
+                                    onCanceled: () {});
+                              } else {
+                                Toast.showErrorMessage(
+                                    'No Permission : Only Admin Can Make Changes To Group');
+                              }
+                            },
+                            backgroundColor: context.theme.appColors.danger,
+                            icon: Icons.delete,
+                          ),
+                        if (currentUser?.uid == item.admin)
+                          SlidableAction(
+                            onPressed: (_) async {
+                              final currentUser =
+                                  await CredentialStorage.getUid();
+                              final isAdmin = item?.admin == currentUser;
+                              if (isAdmin) {
+                                await context
+                                    .read<HomePageCubit>()
+                                    .getAllUsers()
+                                    .then((data) {
+                                  final List<UserModel>? groupMembers = state
+                                      .usersStatus
+                                      .getOrNull()
+                                      ?.where((user) =>
+                                          item.members.contains(user.uid))
+                                      .toList();
+                                  showGeneralDialog(
+                                    context: context,
+                                    pageBuilder: (context, _, __) {
+                                      return SafeArea(
+                                        child: Material(
+                                            child: AddGroupDialog(
+                                          members: groupMembers,
+                                          groupDetails: item,
+                                          isEdit: true,
+                                        )),
+                                      );
+                                    },
+                                  );
+                                });
+                              } else {
+                                Toast.showErrorMessage(
+                                    'No Permission : Only Admin Can Make Changes To Group');
+                              }
+                            },
+                            borderRadius: BorderRadius.circular(15),
+                            icon: Icons.edit,
+                          ),
                         SlidableAction(
                           backgroundColor: context.theme.appColors.primary,
                           borderRadius: BorderRadius.circular(15),
@@ -215,11 +237,38 @@ class GroupsListing extends StatelessWidget {
                                               style: TxtStyle.headerSSemiBold,
                                             ),
                                             const VerticalSpacing(5),
-                                            Txt(
-                                              "${item?.members.length} members" ??
-                                                  '-',
-                                              style: TxtStyle.bodyMRegular,
-                                              fontStyle: FontStyle.secondary,
+                                            Row(
+                                              children: [
+                                                if (item.adminUserName !=
+                                                    null) ...[
+                                                  const Icon(
+                                                    Icons
+                                                        .manage_accounts_outlined,
+                                                    size: 16,
+                                                  ),
+                                                  const HorizontalSpacing(5),
+                                                  Flexible(
+                                                    child: Txt(
+                                                      "${item.adminUserName ?? '-'}, ",
+                                                      style:
+                                                          TxtStyle.bodyMRegular,
+                                                      fontStyle:
+                                                          FontStyle.secondary,
+                                                    ),
+                                                  ),
+                                                  const HorizontalSpacing(10),
+                                                ],
+                                                Flexible(
+                                                  child: Txt(
+                                                    "${item?.members.length} members" ??
+                                                        '-',
+                                                    style:
+                                                        TxtStyle.bodyMRegular,
+                                                    fontStyle:
+                                                        FontStyle.secondary,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -251,6 +300,44 @@ class GroupsListing extends StatelessWidget {
                   );
                 });
           });
-    }));
+    });
+  }
+}
+
+class NoItemPlaceHolder extends StatelessWidget {
+  const NoItemPlaceHolder({
+    super.key,
+    this.image,
+    required this.label,
+    this.color,
+  });
+  final String? image;
+  final String label;
+  final Color? color;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (image != null) ...[
+            SizedBox(
+                height: 150,
+                width: 150,
+                child: Image.asset(
+                  image!,
+                  color: color,
+                )),
+            const VerticalSpacing(10)
+          ],
+          Txt(
+            label,
+            maxLines: 3,
+            style: TxtStyle.headerXSSemiBold,
+          )
+        ],
+      ),
+    );
   }
 }

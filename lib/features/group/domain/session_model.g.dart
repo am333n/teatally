@@ -13,6 +13,7 @@ _$SessionModelImpl _$$SessionModelImplFromJson(Map<String, dynamic> json) =>
       docId: json['docId'] as String?,
       groupId: json['groupId'] as String?,
       startedBy: json['startedBy'] as String?,
+      startedByName: json['startedByName'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -33,9 +34,9 @@ Map<String, dynamic> _$$SessionModelImplToJson(_$SessionModelImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'isCreatedByCurrentUser': instance.isCreatedByCurrentUser,
-      'docId': instance.docId,
       'groupId': instance.groupId,
       'startedBy': instance.startedBy,
+      'startedByName': instance.startedByName,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedBy': instance.updatedBy,
       'updatedAt': instance.updatedAt?.toIso8601String(),

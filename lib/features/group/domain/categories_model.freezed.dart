@@ -22,7 +22,7 @@ CategoriesModel _$CategoriesModelFromJson(Map<String, dynamic> json) {
 mixin _$CategoriesModel {
   @JsonKey(name: 'uid')
   String get uid => throw _privateConstructorUsedError;
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId => throw _privateConstructorUsedError;
   @JsonKey(name: 'groupId')
   String? get groupId => throw _privateConstructorUsedError;
@@ -53,7 +53,7 @@ abstract class $CategoriesModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String uid,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'createdBy') String? createdBy,
@@ -127,7 +127,7 @@ abstract class _$$CategoriesModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String uid,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'createdBy') String? createdBy,
@@ -196,7 +196,7 @@ class _$CategoriesModelImpl
     implements _CategoriesModel {
   const _$CategoriesModelImpl(
       {@JsonKey(name: 'uid') required this.uid,
-      @JsonKey(name: 'docId') this.docId,
+      @JsonKey(name: 'docId', includeToJson: false) this.docId,
       @JsonKey(name: 'groupId') this.groupId,
       @JsonKey(name: 'name') required this.name,
       @JsonKey(name: 'createdBy') this.createdBy,
@@ -210,7 +210,7 @@ class _$CategoriesModelImpl
   @JsonKey(name: 'uid')
   final String uid;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   final String? docId;
   @override
   @JsonKey(name: 'groupId')
@@ -289,7 +289,7 @@ class _$CategoriesModelImpl
 abstract class _CategoriesModel implements CategoriesModel {
   const factory _CategoriesModel(
       {@JsonKey(name: 'uid') required final String uid,
-      @JsonKey(name: 'docId') final String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) final String? docId,
       @JsonKey(name: 'groupId') final String? groupId,
       @JsonKey(name: 'name') required final String name,
       @JsonKey(name: 'createdBy') final String? createdBy,
@@ -303,7 +303,7 @@ abstract class _CategoriesModel implements CategoriesModel {
   @JsonKey(name: 'uid')
   String get uid;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId;
   @override
   @JsonKey(name: 'groupId')

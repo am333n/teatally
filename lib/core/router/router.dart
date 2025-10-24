@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:teatally/core/injection/injection.dart';
 import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/auth/presentation/auth_screen.dart';
+import 'package:teatally/features/expense/presentation/expense_detail_page.dart';
+import 'package:teatally/features/expense/presentation/expense_list_page.dart';
 import 'package:teatally/features/group/domain/categories_model.dart';
 import 'package:teatally/features/group/presentation/components/add_item_page.dart';
 import 'package:teatally/features/group/presentation/pages/group_details.dart';
@@ -25,18 +27,19 @@ class AppRouter extends RootStackRouter {
         _buildRoute(page: AddItemRoute.page),
         _buildRoute(page: GroupDetailRoute.page),
         _buildRoute(page: ExpenseFormRoute.page),
+        _buildRoute(page: ExpenseListRoute.page),
+        _buildRoute(page: ExpenseDetailRoute.page),
       ];
 
-  CustomRoute _buildRoute({
+  AutoRoute _buildRoute({
     required PageInfo page,
     List<AutoRouteGuard> guards = const [],
     bool initial = false,
   }) {
-    return CustomRoute(
+    return AutoRoute(
       page: page,
       guards: guards,
       initial: initial,
-      transitionsBuilder: TransitionsBuilders.slideRight,
     );
   }
 }
@@ -46,8 +49,7 @@ class AuthGuard extends AutoRouteGuard {
   @override
   Future<void> onNavigation(
       NavigationResolver resolver, StackRouter router) async {
-    final isUserLoggedIn = getIt<AuthCubit>().checkUserSignedInStatus();
-
+    final isUserLoggedIn = getIt<AuthCubit>().state.status is Authenticated;
     if (isUserLoggedIn) {
       router.replace(const HomeRoute());
     } else {

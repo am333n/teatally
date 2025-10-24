@@ -21,6 +21,10 @@ ExpenseState _$ExpenseStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ExpenseState {
   ApiState<ExpenseFormModel> get formData => throw _privateConstructorUsedError;
+  ApiState<List<ExpenseFormModel>> get expenseListStatus =>
+      throw _privateConstructorUsedError;
+  ApiState<ExpenseFormModel> get expenseDetailsStatus =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this ExpenseState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,9 +42,14 @@ abstract class $ExpenseStateCopyWith<$Res> {
           ExpenseState value, $Res Function(ExpenseState) then) =
       _$ExpenseStateCopyWithImpl<$Res, ExpenseState>;
   @useResult
-  $Res call({ApiState<ExpenseFormModel> formData});
+  $Res call(
+      {ApiState<ExpenseFormModel> formData,
+      ApiState<List<ExpenseFormModel>> expenseListStatus,
+      ApiState<ExpenseFormModel> expenseDetailsStatus});
 
   $ApiStateCopyWith<ExpenseFormModel, $Res> get formData;
+  $ApiStateCopyWith<List<ExpenseFormModel>, $Res> get expenseListStatus;
+  $ApiStateCopyWith<ExpenseFormModel, $Res> get expenseDetailsStatus;
 }
 
 /// @nodoc
@@ -59,11 +68,21 @@ class _$ExpenseStateCopyWithImpl<$Res, $Val extends ExpenseState>
   @override
   $Res call({
     Object? formData = null,
+    Object? expenseListStatus = null,
+    Object? expenseDetailsStatus = null,
   }) {
     return _then(_value.copyWith(
       formData: null == formData
           ? _value.formData
           : formData // ignore: cast_nullable_to_non_nullable
+              as ApiState<ExpenseFormModel>,
+      expenseListStatus: null == expenseListStatus
+          ? _value.expenseListStatus
+          : expenseListStatus // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<ExpenseFormModel>>,
+      expenseDetailsStatus: null == expenseDetailsStatus
+          ? _value.expenseDetailsStatus
+          : expenseDetailsStatus // ignore: cast_nullable_to_non_nullable
               as ApiState<ExpenseFormModel>,
     ) as $Val);
   }
@@ -77,6 +96,28 @@ class _$ExpenseStateCopyWithImpl<$Res, $Val extends ExpenseState>
       return _then(_value.copyWith(formData: value) as $Val);
     });
   }
+
+  /// Create a copy of ExpenseState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ApiStateCopyWith<List<ExpenseFormModel>, $Res> get expenseListStatus {
+    return $ApiStateCopyWith<List<ExpenseFormModel>, $Res>(
+        _value.expenseListStatus, (value) {
+      return _then(_value.copyWith(expenseListStatus: value) as $Val);
+    });
+  }
+
+  /// Create a copy of ExpenseState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ApiStateCopyWith<ExpenseFormModel, $Res> get expenseDetailsStatus {
+    return $ApiStateCopyWith<ExpenseFormModel, $Res>(
+        _value.expenseDetailsStatus, (value) {
+      return _then(_value.copyWith(expenseDetailsStatus: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -87,10 +128,17 @@ abstract class _$$ExpenseStateImplCopyWith<$Res>
       __$$ExpenseStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ApiState<ExpenseFormModel> formData});
+  $Res call(
+      {ApiState<ExpenseFormModel> formData,
+      ApiState<List<ExpenseFormModel>> expenseListStatus,
+      ApiState<ExpenseFormModel> expenseDetailsStatus});
 
   @override
   $ApiStateCopyWith<ExpenseFormModel, $Res> get formData;
+  @override
+  $ApiStateCopyWith<List<ExpenseFormModel>, $Res> get expenseListStatus;
+  @override
+  $ApiStateCopyWith<ExpenseFormModel, $Res> get expenseDetailsStatus;
 }
 
 /// @nodoc
@@ -107,11 +155,21 @@ class __$$ExpenseStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? formData = null,
+    Object? expenseListStatus = null,
+    Object? expenseDetailsStatus = null,
   }) {
     return _then(_$ExpenseStateImpl(
       formData: null == formData
           ? _value.formData
           : formData // ignore: cast_nullable_to_non_nullable
+              as ApiState<ExpenseFormModel>,
+      expenseListStatus: null == expenseListStatus
+          ? _value.expenseListStatus
+          : expenseListStatus // ignore: cast_nullable_to_non_nullable
+              as ApiState<List<ExpenseFormModel>>,
+      expenseDetailsStatus: null == expenseDetailsStatus
+          ? _value.expenseDetailsStatus
+          : expenseDetailsStatus // ignore: cast_nullable_to_non_nullable
               as ApiState<ExpenseFormModel>,
     ));
   }
@@ -120,7 +178,10 @@ class __$$ExpenseStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ExpenseStateImpl implements _ExpenseState {
-  const _$ExpenseStateImpl({this.formData = const ApiState.loading()});
+  const _$ExpenseStateImpl(
+      {this.formData = const ApiState.loading(),
+      this.expenseListStatus = const ApiState.loading(),
+      this.expenseDetailsStatus = const ApiState.loading()});
 
   factory _$ExpenseStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ExpenseStateImplFromJson(json);
@@ -128,10 +189,16 @@ class _$ExpenseStateImpl implements _ExpenseState {
   @override
   @JsonKey()
   final ApiState<ExpenseFormModel> formData;
+  @override
+  @JsonKey()
+  final ApiState<List<ExpenseFormModel>> expenseListStatus;
+  @override
+  @JsonKey()
+  final ApiState<ExpenseFormModel> expenseDetailsStatus;
 
   @override
   String toString() {
-    return 'ExpenseState(formData: $formData)';
+    return 'ExpenseState(formData: $formData, expenseListStatus: $expenseListStatus, expenseDetailsStatus: $expenseDetailsStatus)';
   }
 
   @override
@@ -140,12 +207,17 @@ class _$ExpenseStateImpl implements _ExpenseState {
         (other.runtimeType == runtimeType &&
             other is _$ExpenseStateImpl &&
             (identical(other.formData, formData) ||
-                other.formData == formData));
+                other.formData == formData) &&
+            (identical(other.expenseListStatus, expenseListStatus) ||
+                other.expenseListStatus == expenseListStatus) &&
+            (identical(other.expenseDetailsStatus, expenseDetailsStatus) ||
+                other.expenseDetailsStatus == expenseDetailsStatus));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, formData);
+  int get hashCode => Object.hash(
+      runtimeType, formData, expenseListStatus, expenseDetailsStatus);
 
   /// Create a copy of ExpenseState
   /// with the given fields replaced by the non-null parameter values.
@@ -164,7 +236,10 @@ class _$ExpenseStateImpl implements _ExpenseState {
 }
 
 abstract class _ExpenseState implements ExpenseState {
-  const factory _ExpenseState({final ApiState<ExpenseFormModel> formData}) =
+  const factory _ExpenseState(
+          {final ApiState<ExpenseFormModel> formData,
+          final ApiState<List<ExpenseFormModel>> expenseListStatus,
+          final ApiState<ExpenseFormModel> expenseDetailsStatus}) =
       _$ExpenseStateImpl;
 
   factory _ExpenseState.fromJson(Map<String, dynamic> json) =
@@ -172,6 +247,10 @@ abstract class _ExpenseState implements ExpenseState {
 
   @override
   ApiState<ExpenseFormModel> get formData;
+  @override
+  ApiState<List<ExpenseFormModel>> get expenseListStatus;
+  @override
+  ApiState<ExpenseFormModel> get expenseDetailsStatus;
 
   /// Create a copy of ExpenseState
   /// with the given fields replaced by the non-null parameter values.

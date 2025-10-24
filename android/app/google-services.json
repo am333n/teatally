@@ -39,10 +39,54 @@
               "client_type": 3
             },
             {
-              "client_id": "28068623394-npdobs6kcaip5gmb2n969kaspos8edj7.apps.googleusercontent.com",
+              "client_id": "28068623394-3aopa4j0598i767uoljqfqjr3bsbalc0.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.teatally"
+                "bundle_id": "com.teatally.pro"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28068623394:android:6ee85d7d6d0217606a067b",
+        "android_client_info": {
+          "package_name": "com.teatally.pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28068623394-h7v403mjsqcd73rgck94qprhcv8l3o5l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teatally.pro",
+            "certificate_hash": "c4c699434735f051f6c59da6bc7d9485bfd84024"
+          }
+        },
+        {
+          "client_id": "28068623394-1dsa8njivjnh6m1r4e4d6050f5vrcgn0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5wJ60iIe6VVgV1R358UKyqNePA8022Mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28068623394-1dsa8njivjnh6m1r4e4d6050f5vrcgn0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "28068623394-3aopa4j0598i767uoljqfqjr3bsbalc0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.teatally.pro"
               }
             }
           ]

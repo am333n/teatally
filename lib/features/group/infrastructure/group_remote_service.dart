@@ -66,14 +66,17 @@ class GroupRemoteService with BaseFirebase {
   }
 
   BaseReturnType addCategory(CategoriesModel categoryDetail) {
-    categoryDetail =
-        categoryDetail.copyWith(createdBy: super.firebaseAuth.currentUser?.uid);
+    categoryDetail = categoryDetail.copyWith(createdBy: super.userData?.uid);
     return super.addItem(Collections.categories, categoryDetail.toJson());
   }
 
   BaseReturnType updateCategory(CategoriesModel categoryDetail) {
     return super.updateItem(
         Collections.categories, categoryDetail.docId, categoryDetail.toJson());
+  }
+
+  BaseReturnType deleteCategoryItem(String? itemDocID) {
+    return super.deleteItem(Collections.items, itemDocID);
   }
 
   BaseReturnType deleteCategory(String docId) {
@@ -92,15 +95,15 @@ class GroupRemoteService with BaseFirebase {
 
   BaseReturnType addActiveSession(SessionModel sessionDetails) {
     sessionDetails = sessionDetails.copyWith(
-        startedBy: super.firebaseAuth.currentUser?.uid,
-        updatedBy: super.firebaseAuth.currentUser?.uid);
+        startedBy: super.userData?.uid,
+        startedByName: super.userData?.displayName,
+        updatedBy: super.userData?.uid);
     return super.addItem(Collections.counterSession, sessionDetails.toJson());
   }
 
   BaseReturnType updateActiveSession(SessionModel sessionDetails) {
     sessionDetails = sessionDetails.copyWith(
-        updatedAt: DateTime.now(),
-        updatedBy: super.firebaseAuth.currentUser?.uid);
+        updatedAt: DateTime.now(), updatedBy: super.userData?.uid);
     Map<String, dynamic> sessionJson = sessionDetails.toJson();
 
     return super.updateItem(
@@ -108,8 +111,7 @@ class GroupRemoteService with BaseFirebase {
   }
 
   BaseReturnType addItemForCategory(ItemModel itemDetail) {
-    itemDetail =
-        itemDetail.copyWith(createdBy: super.firebaseAuth.currentUser?.uid);
+    itemDetail = itemDetail.copyWith(createdBy: super.userData?.uid);
     return super.addItem(Collections.items, itemDetail.toJson());
   }
 
@@ -120,7 +122,7 @@ class GroupRemoteService with BaseFirebase {
     }
 
     try {
-      String? currentUserUid = FirebaseAuth.instance.currentUser?.uid;
+      String? currentUserUid = super.userData?.uid;
       List<String> filteredUids = List.from(membersUids);
       filteredUids.removeWhere((uid) => uid == currentUserUid);
 
@@ -148,7 +150,7 @@ class GroupRemoteService with BaseFirebase {
   }
 
   Stream<RemoteResponse<dynamic>> streamLatestActiveSession(String groupId) {
-    final currentUser = firebaseAuth.currentUser?.uid;
+    final currentUser = super.userData?.uid;
     return super
         .firebaseFirestore
         .collection(Collections.counterSession)

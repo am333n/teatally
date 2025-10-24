@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:teatally/core/app_animations.dart';
+import 'package:teatally/core/style_constants.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
 import 'package:teatally/core/widgets/form_components.dart';
 import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
-import 'package:teatally/features/auth/application/cubit/auth_state.dart';
 
 @RoutePage()
 class AuthScreen extends StatelessWidget {
@@ -18,16 +19,12 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
-        return CommonWidgets.modelProgressIndicator(
-          inAsyncCall: state.maybeWhen(
-            orElse: () => false,
-            authloadingState: () => true,
-          ),
-          child: Scaffold(
-            body: Column(
+        return Scaffold(
+          body: SafeArea(
+            child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding: Spacing.all,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -59,23 +56,30 @@ class AuthScreen extends StatelessWidget {
                               FormBuilderValidators.email(),
                             ],
                             isRequired: true),
-                        PasswordTextField(
+                        const PasswordTextField(
                           fieldName: 'pass',
                         ),
-                        state.maybeWhen(
-                          orElse: () => const SizedBox.shrink(),
-                          authErrorState: (errorMessage) => Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Txt(
-                              errorMessage ?? '-',
-                              color: context.theme.appColors.danger,
-                              maxLines: 3,
-                            ),
-                          ),
-                        ),
-                        VerticalSpacing(15),
-                        CommonWidgets.coloredTextButton(context, text: 'Login',
-                            onPressed: () {
+                        state.status.maybeWhen(
+                            orElse: () => const SizedBox.shrink(),
+                            unAuthenticated: (errorMessage) {
+                              return AnimatedSize(
+                                duration: AppAnimations.transitionDuration,
+                                child: errorMessage != null
+                                    ? Padding(
+                                        padding: Spacing.all,
+                                        child: Txt(
+                                          errorMessage ?? '-',
+                                          color: context.theme.appColors.danger,
+                                          maxLines: 3,
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              );
+                            }),
+                        Gap.verticalMedium,
+                        CommonWidgets.coloredTextButton(context,
+                            isLoading: state.status is AuthLoading,
+                            text: 'Login', onPressed: () {
                           if (_formkey.currentState?.validate() ?? false) {
                             final email =
                                 _formkey.currentState?.fields['email']?.value;

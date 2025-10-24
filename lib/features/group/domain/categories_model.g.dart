@@ -22,7 +22,6 @@ Map<String, dynamic> _$$CategoriesModelImplToJson(
         _$CategoriesModelImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
-      'docId': instance.docId,
       'groupId': instance.groupId,
       'name': instance.name,
       'createdBy': instance.createdBy,

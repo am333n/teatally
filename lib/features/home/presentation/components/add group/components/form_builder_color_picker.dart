@@ -8,8 +8,12 @@ import 'package:teatally/features/home/presentation/components/add%20group/compo
 
 class FormBuilderColorPicker extends StatelessWidget {
   const FormBuilderColorPicker(
-      {super.key, required this.name, this.onColorChanged});
+      {super.key,
+      required this.name,
+      this.onColorChanged,
+      this.initialColorCode});
   final String name;
+  final String? initialColorCode;
   final Function(Color)? onColorChanged;
   @override
   Widget build(BuildContext context) {

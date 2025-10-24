@@ -26,7 +26,6 @@ _$ItemModelImpl _$$ItemModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$ItemModelImplToJson(_$ItemModelImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
-      'docId': instance.docId,
       'groupId': instance.groupId,
       'categoryId': instance.categoryId,
       'color': instance.color,

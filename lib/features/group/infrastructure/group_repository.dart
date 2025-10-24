@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:teatally/core/infrastructure/base_repository.dart';
 import 'package:teatally/core/infrastructure/failure.dart';
 import 'package:teatally/core/infrastructure/failure_handler.dart';
 import 'package:teatally/features/group/domain/categories_model.dart';
@@ -10,7 +11,7 @@ import 'package:teatally/features/group/domain/session_model.dart';
 import 'package:teatally/features/home/domain/users_model.dart';
 
 @injectable
-class GroupRepository {
+class GroupRepository with BaseRepo {
   final GroupRemoteService _remoteService;
 
   GroupRepository(this._remoteService);
@@ -192,5 +193,10 @@ class GroupRepository {
     } catch (e) {
       return Left(FailureHandler.handleGenericException(e as Exception));
     }
+  }
+
+  RepoResponse<bool> deleteCategoryItem(String itemDocID) {
+    return super
+        .performAction(() => _remoteService.deleteCategoryItem(itemDocID));
   }
 }

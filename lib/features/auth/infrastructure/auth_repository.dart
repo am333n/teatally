@@ -1,13 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:teatally/core/common/notification_model.dart';
+import 'package:teatally/core/infrastructure/base_repository.dart';
 import 'package:teatally/core/infrastructure/failure.dart';
 import 'package:teatally/core/infrastructure/failure_handler.dart';
+import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/auth/infrastructure/auth_remote.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 
 @injectable
-class AuthRepository {
+class AuthRepository with BaseRepo {
   final AuthRemoteService _remoteService;
 
   AuthRepository(this._remoteService);
@@ -56,8 +59,25 @@ class AuthRepository {
     }
   }
 
-  User? checkifUserSignedIn() {
-    return _remoteService.checkUserSigned();
+  RepoResponse<List<UserData>> checkIfUserDataExist(String email) {
+    return super.getListData(
+        () => _remoteService.checkIfUserDataExist(email), UserData.fromJson);
+  }
+
+  RepoResponse<bool> updateUserData(UserData userData) {
+    return super.performAction(() => _remoteService.updateUserData(userData));
+  }
+
+  RepoResponse<NotificationModel> getUserNotification(String uid) {
+    return super.getData(() => _remoteService.getUserNotification(uid),
+        NotificationModel.fromJson);
+  }
+
+  RepoResponse<bool> setFcmInActive(
+      String docId, NotificationModel notification) {
+    return super.performAction(
+      () => _remoteService.setFcmInActive(docId, notification),
+    );
   }
 
   Future<Either<Failure, bool>> signOut() async {
@@ -73,8 +93,7 @@ class AuthRepository {
     }
   }
 
-  Future<Either<Failure, bool>> addUserToFireStore(
-      UserCredential userCred) async {
+  Future<Either<Failure, bool>> addUserToFireStore(UserData userCred) async {
     try {
       final response = await _remoteService.addUserDetailsToFireStore(userCred);
       return response.when(success: (isSignedOut) {

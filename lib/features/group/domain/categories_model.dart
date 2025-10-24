@@ -10,7 +10,7 @@ part 'categories_model.g.dart';
 class CategoriesModel with _$CategoriesModel {
   const factory CategoriesModel({
     @JsonKey(name: 'uid') required String uid,
-    @JsonKey(name: 'docId') String? docId,
+    @JsonKey(name: 'docId', includeToJson: false) String? docId,
     @JsonKey(name: 'groupId') String? groupId,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'createdBy') String? createdBy,

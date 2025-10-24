@@ -7,6 +7,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:teatally/core/common/api_state.dart';
 import 'package:teatally/core/infrastructure/failure.dart';
+import 'package:teatally/core/injection/injection.dart';
+import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/widgets/toast.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/group/application/cubit/group_detail_state.dart';
@@ -37,6 +39,10 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
   }
 
   Future<void> startUpFunction(GroupModel? groupDetails) async {
+    emit(state.copyWith(
+        categoriesState: const ApiLoading(),
+        itemsState: const ApiLoading(),
+        membersState: const ApiLoading()));
     await getCategories(groupDetails?.uid, emitLoading: true).then((_) async {
       await getItemsForGroup(groupDetails?.uid, emitLoading: true)
           .then((_) async {
@@ -50,7 +56,7 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
   Future<void> getCategories(String? groupId,
       {bool emitLoading = false}) async {
     if (emitLoading) {
-      emit(state.copyWith(categoriesState: ApiLoading()));
+      emit(state.copyWith(categoriesState: const ApiLoading()));
     }
     final response = await _repository.getCategories(groupId);
     response.fold((l) {
@@ -64,12 +70,12 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
   Future<void> getAllMembersDetails(List<String>? membersUids,
       {bool emitLoading = false}) async {
     if (emitLoading) {
-      emit(state.copyWith(membersState: ApiLoading()));
+      emit(state.copyWith(membersState: const ApiLoading()));
     }
     final response = await _repository.getAllMemberDetails(membersUids);
     response.fold((l) {
       emit(state.copyWith(membersState: ApiError(l)));
-      Toast.showErrorMessage(l.toString());
+      // Toast.showErrorMessage(l.toString());
     }, (r) {
       emit(state.copyWith(membersState: ApiLoaded(r)));
     });
@@ -109,13 +115,13 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
         result.fold(
           (failure) {
             Toast.showErrorMessage(failure.toString());
-            emit(state.copyWith(sessionState: ApiLoaded(null)));
+            emit(state.copyWith(sessionState: const ApiLoaded(null)));
             // loadedStateData = loadedStateData.copyWith(session: null);
             // emit(GroupDetailState.loadedState(loadedStateData));
           },
           (sessionData) {
             if (sessionData == null) {
-              emit(state.copyWith(sessionState: ApiLoaded(null)));
+              emit(state.copyWith(sessionState: const ApiLoaded(null)));
               // loadedStateData = loadedStateData.copyWith(session: null);
               // emit(GroupDetailState.loadedState(loadedStateData));
             } else {
@@ -159,7 +165,7 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     if (itemId == null && groupId == null && categoryId == null) return;
     final activeSessionDetails = SessionModel(
         isActive: true,
-        uid: Uuid().v4(),
+        uid: const Uuid().v4(),
         groupId: groupId,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now());
@@ -321,6 +327,20 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     });
   }
 
+  Future<void> deleteCetagoryItem(String? itemDocID, String? groupId) async {
+    if (itemDocID == null) {
+      Toast.showErrorMessage('InvalidID');
+      return;
+    }
+    final response = await _repository.deleteCategoryItem(itemDocID);
+    response.fold((f) {
+      Toast.showErrorMessage(f.toString());
+    }, (r) {
+      Toast.showSuccess('Item Deleted');
+    });
+    getItemsForGroup(groupId);
+  }
+
   Future<void> updateCategory(CategoriesModel? categoryDetail) async {
     if (categoryDetail == null) return;
     final response = await _repository.updateCategory(categoryDetail);
@@ -373,6 +393,7 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
       Toast.showErrorMessage(l.toString());
     }, (r) {
       Toast.showSuccess('item Added');
+      getIt<AppRouter>().maybePop();
       getItemsForGroup(groupId);
     });
   }

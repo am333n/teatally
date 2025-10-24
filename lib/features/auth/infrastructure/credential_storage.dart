@@ -12,6 +12,7 @@ class CredentialStorage {
   static const String _keyPhoneNumber = 'phoneNumber';
   static const String _keyPhotoURL = 'photoURL';
   static const String _keyUid = 'uid';
+  static String fcmTokenKey = "fcmToken";
 
   /// Stores user data from [UserCredential].
   static Future<void> storeUser(UserCredential userCredential) async {
@@ -53,6 +54,17 @@ class CredentialStorage {
   static Future<String?> getDisplayName() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_keyDisplayName);
+  }
+
+  static Future<bool> updateFcmToken({required String? token}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(fcmTokenKey, token ?? '');
+    return true;
+  }
+
+  static Future<String?> getFcmToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(fcmTokenKey);
   }
 
   static Future<Map<String, String?>> getUserDetails() async {

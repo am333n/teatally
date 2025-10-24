@@ -19,12 +19,12 @@ import 'package:teatally/features/group/presentation/components/item%20display/c
 import 'package:teatally/features/group/presentation/components/item%20display/components/counter_button.dart';
 import 'package:teatally/features/group/presentation/components/item%20display/components/item_label.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/icon_mapper.dart';
+import 'package:teatally/features/home/presentation/components/groups_listing.dart';
 
 @RoutePage()
 class GroupDetailPage extends StatefulWidget {
   const GroupDetailPage({super.key, required this.groupDetail});
   final GroupModel? groupDetail;
-
   @override
   State<GroupDetailPage> createState() => _GroupDetailPageState();
 }
@@ -51,57 +51,73 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
       builder: (context, state) {
         return Stack(
           children: [
-            CustomScrollView(slivers: [
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: context.theme.appColors.backgroundPrimary,
-                expandedHeight: kToolbarHeight + 10,
-                flexibleSpace: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CommonWidgets.backButton(context),
-                          InkWell(
-                            onTap: () {},
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: kToolbarHeight - 10,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: context
-                                          .theme.appColors.formBackground),
-                                  child: Image.asset(IconMapper.getPathFromCode(
-                                      widget.groupDetail?.icon)),
+            RefreshIndicator(
+              onRefresh: () async {
+                context.read<GroupDetailCubit>().resetSelection();
+                context
+                    .read<GroupDetailCubit>()
+                    .startUpFunction(widget.groupDetail);
+              },
+              child: CustomScrollView(slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: context.theme.appColors.backgroundPrimary,
+                  expandedHeight: kToolbarHeight + 10,
+                  flexibleSpace: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+                              CommonWidgets.backButton(context),
+                              InkWell(
+                                onTap: () {
+                                  AutoRouter.of(context).push(ExpenseListRoute(
+                                      groupName: widget.groupDetail?.name,
+                                      groupId: widget.groupDetail?.uid));
+                                },
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: kToolbarHeight - 10,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: context
+                                              .theme.appColors.formBackground),
+                                      child: Image.asset(
+                                          IconMapper.getPathFromCode(
+                                              widget.groupDetail?.icon)),
+                                    ),
+                                    const HorizontalSpacing(15),
+                                    Txt(
+                                      widget.groupDetail?.name ?? '-',
+                                      style: TxtStyle.headerSSemiBold,
+                                    ),
+                                  ],
                                 ),
-                                const HorizontalSpacing(15),
-                                Txt(
-                                  widget.groupDetail?.name ?? '-',
-                                  style: TxtStyle.headerSSemiBold,
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      SessionControls()
-                    ],
+                        ),
+                        Expanded(child: SessionControls())
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: CategoriesSelector(
-                  groupId: widget.groupDetail?.uid ?? '',
+                SliverToBoxAdapter(
+                  child: CategoriesSelector(
+                    groupId: widget.groupDetail?.uid ?? '',
+                  ),
                 ),
-              ),
-              ItemsListing(),
-            ]),
+                ItemsListing(),
+              ]),
+            ),
             if (state.selectedCategory?.isNotEmpty ?? false)
               Positioned(
                   bottom: 15,
@@ -144,7 +160,17 @@ class ItemsListing extends StatelessWidget {
           ),
           loaded: (data) {
             if (data.isEmpty) {
-              return SliverFillRemaining(child: Center(child: Txt('No Items')));
+              return SliverFillRemaining(
+                  child: Center(
+                      child: Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white),
+                child: NoItemPlaceHolder(
+                    image: 'assets/bevimages/biscuit.gif',
+                    label: 'Your list is feeling a little empty'),
+              )));
             }
             return SliverPadding(
               padding: const EdgeInsets.all(10),
@@ -194,10 +220,13 @@ class SessionControls extends StatelessWidget {
                 key: ValueKey(state.sessionState),
               ),
               loaded: (data) {
-                return Row(
-                  key: ValueKey(state.sessionState.getOrNull()?.docId),
-                  children: [
-                    if (data?.isCreatedByCurrentUser ?? false)
+                if (data == null) {
+                  return SizedBox.shrink();
+                }
+                if (data?.isCreatedByCurrentUser ?? false) {
+                  return Row(
+                    key: ValueKey(state.sessionState.getOrNull()?.docId),
+                    children: [
                       CommonWidgets.borderIconButton(
                         context,
                         color: context.theme.appColors.danger,
@@ -223,51 +252,51 @@ class SessionControls extends StatelessWidget {
                               onCanceled: () {});
                         },
                       ),
-                    const HorizontalSpacing(15),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: (data?.isCreatedByCurrentUser ?? false)
-                          ? CommonWidgets.coloredTextButton(context,
+                      const HorizontalSpacing(15),
+                      Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: CommonWidgets.coloredTextButton(context,
                               height: 40,
                               buttonPadding: 10,
                               text: ' Save  ', onPressed: () {
-                              context
-                                  .read<ExpenseCubit>()
-                                  .setUpExpenseDataFromSession(data,
-                                      state.membersState.getOrNull() ?? []);
-                              AutoRouter.of(context).push(ExpenseFormRoute());
-                            })
+                            context
+                                .read<ExpenseCubit>()
+                                .setUpExpenseDataFromSession(
+                                    data, state.membersState.getOrNull() ?? []);
+                            AutoRouter.of(context).push(
+                                ExpenseFormRoute(sessionDocId: data?.docId));
+                          })
                           // : Txt(
                           //     'SessionBy: ${loadedStateData.members?.firstWhere((e) => e.uid == loadedStateData.session?.startedBy).displayName}'),
-                          : (data != null)
-                              ? CommonWidgets.borderIconButton(
-                                  context,
-                                  color: context.theme.appColors.danger,
-                                  icon: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Icon(
-                                      Icons.stop,
-                                      color: context.theme.appColors.danger,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    DialogHelpers.confirmDeleteDialog(
-                                        context: context,
-                                        title: 'Stop Session?',
-                                        message: 'Ping to stop the session?',
-                                        confirmButtonText: 'Confirm',
-                                        onConfirmed: () {
-                                          context
-                                              .read<GroupDetailCubit>()
-                                              .deleteSession(data?.docId);
-                                        },
-                                        onCanceled: () {});
-                                  },
-                                )
-                              : SizedBox.shrink(),
+
+                          ),
+                    ],
+                  );
+                } else {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15)),
+                    height: 40,
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.asset('assets/group_icons/break.gif'),
+                        ),
+                        HorizontalSpacing(5),
+                        Expanded(
+                          child: Txt(
+                            data.startedByName ?? 'Unknown',
+                            overflow: TextOverflow.ellipsis,
+                            style: TxtStyle.bodyMSemiBold,
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                );
+                  );
+                }
               },
               error: (failure) =>
                   SizedBox.shrink(key: ValueKey(state.sessionState)),

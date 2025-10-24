@@ -1,10 +1,15 @@
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:teatally/core/common/api_state.dart';
+import 'package:teatally/core/infrastructure/failure.dart';
 import 'package:teatally/core/infrastructure/failure_handler.dart';
+import 'package:teatally/core/injection/injection.dart';
+import 'package:teatally/core/router/router.dart';
+import 'package:teatally/core/widgets/toast.dart';
 import 'package:teatally/features/expense/domain/expense_form_model.dart';
 import 'package:teatally/features/expense/infrastructure/expense_repository.dart';
 import 'package:teatally/features/group/domain/session_model.dart';
@@ -20,7 +25,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   final ExpenseRepository _repository;
   Future<void> setUpExpenseDataFromSession(
       SessionModel? session, List<UserModel> members) async {
-    emit(state.copyWith(formData: ApiLoading()));
+    emit(state.copyWith(formData: const ApiLoading()));
     final membersID = members.map((e) => e.uid).toList();
     List<UserModel> allMembers = [];
     final response = await _repository.getGroupMemberDetails(membersID);
@@ -35,18 +40,16 @@ class ExpenseCubit extends Cubit<ExpenseState> {
           0.0;
       final memeberExpenseModel = buildExpenseUserData(
           users: allMembers, selectedItems: session?.selectedItems ?? []);
-      final remainingAmount = memeberExpenseModel
-          .map((e) => e.amount)
-          .fold<double>(0, (sum, price) => sum + (price ?? 0));
       ExpenseFormModel formData = ExpenseFormModel(
           total: totalAmount,
           members: allMembers,
-          remainingAmount: remainingAmount,
+          groupId: session?.groupId,
+          sessionId: session?.uid,
           userExpense: memeberExpenseModel);
       emit(state.copyWith(formData: ApiLoaded(formData)));
     } on Exception catch (e) {
       emit(state.copyWith(
-          formData: ApiError(FailureHandler.dataConversionFailure)));
+          formData: const ApiError(FailureHandler.dataConversionFailure)));
     }
   }
 
@@ -85,11 +88,139 @@ class ExpenseCubit extends Cubit<ExpenseState> {
       result.add(ExpenseUserData(
         uid: user.uid,
         userName: user.displayName ?? '',
+        photoURL: user.photoURL,
         amount: totalAmount,
         items: itemsForUser,
       ));
     }
 
     return result;
+  }
+
+  Future<bool> createExpense(ExpenseFormModel data) async {
+    var formData = data.copyWith(isLoading: true);
+    emit(state.copyWith(formData: ApiLoaded(formData)));
+    final response = await _repository.createExpense(formData);
+    return response.fold((f) {
+      Toast.showErrorMessage(f.toString());
+      formData = data.copyWith(isLoading: false);
+      emit(state.copyWith(formData: ApiLoaded(formData)));
+      return false;
+    }, (r) {
+      Toast.showSuccess('Expense saved');
+      getIt<AppRouter>().maybePop();
+      formData = data.copyWith(isLoading: false);
+      emit(state.copyWith(formData: ApiLoaded(formData)));
+      return true;
+    });
+  }
+
+  Future<void> settleAllPendingExpense(
+      String? groupId, List<String> docIDs) async {
+    emit(state.copyWith(expenseListStatus: ApiLoading()));
+    final response = await _repository.settleAllPendingExpense(docIDs);
+    response.fold((f) {
+      Toast.showErrorMessage(f.toString());
+    }, (r) {
+      Toast.showSuccess('All Pending Settled');
+    });
+    getAllExpense(groupId);
+  }
+
+  Future<void> getEditData(String? docID) async {
+    if (docID == null) {
+      emit(state.copyWith(
+          formData:
+              const ApiError(Failure.clientError(message: 'Invalid Id'))));
+      return;
+    }
+    emit(state.copyWith(formData: const ApiLoading()));
+
+    final response = await _repository.getExpenseDetails(docID);
+    response.fold((f) {
+      emit(state.copyWith(formData: ApiError(f)));
+    }, (r) async {
+      final response = await _repository
+          .getGroupMemberDetails(r.userExpense.map((e) => e.uid).toList());
+      response.fold((f) {}, (members) {
+        r = r.copyWith(members: members);
+      });
+      emit(state.copyWith(formData: ApiLoaded(r)));
+    });
+  }
+
+  Future<void> updateExpenseDetails(
+      String? docID, ExpenseFormModel data) async {
+    if (docID == null) {
+      emit(state.copyWith(
+          formData:
+              const ApiError(Failure.clientError(message: 'Invalid Id'))));
+      return;
+    }
+    var formData = data.copyWith(isLoading: true);
+    emit(state.copyWith(formData: ApiLoaded(formData)));
+    final response = await _repository.updateExpenseDetails(docID, formData);
+    response.fold((f) {
+      Toast.showErrorMessage(f.toString());
+      formData = data.copyWith(isLoading: false);
+      emit(state.copyWith(formData: ApiLoaded(formData)));
+    }, (r) {
+      Toast.showSuccess('Expense Updated');
+      getIt<AppRouter>().maybePop();
+      getExpenseDetails(docID);
+      getAllExpense(formData.groupId);
+      formData = data.copyWith(isLoading: false);
+      emit(state.copyWith(formData: ApiLoaded(formData)));
+    });
+  }
+
+  Future<void> deleteExpense(String? docID, String? groupId) async {
+    if (docID == null) {
+      Toast.showErrorMessage('InvalidID');
+      return;
+    }
+    final data = state.expenseDetailsStatus.getOrNull();
+    emit(state.copyWith(expenseDetailsStatus: const ApiLoading()));
+    final response = await _repository.deleteExpense(docID);
+    response.fold((f) {
+      Toast.showErrorMessage(f.toString());
+    }, (r) {
+      getIt<AppRouter>().maybePop();
+      getAllExpense(groupId);
+    });
+    emit(state.copyWith(
+        expenseDetailsStatus: ApiLoaded(data ?? const ExpenseFormModel())));
+  }
+
+  Future<void> getAllExpense(String? groupUid) async {
+    if (groupUid == null) {
+      emit(state.copyWith(
+          expenseListStatus:
+              const ApiError(Failure.clientError(message: 'Invalid Id'))));
+      return;
+    }
+    emit(state.copyWith(expenseListStatus: const ApiLoading()));
+    final response = await _repository.getAllExpense(groupUid);
+    response.fold((f) {
+      emit(state.copyWith(expenseListStatus: ApiError(f)));
+    }, (r) {
+      emit(state.copyWith(expenseListStatus: ApiLoaded(r)));
+    });
+  }
+
+  Future<void> getExpenseDetails(String? docID) async {
+    if (docID == null) {
+      emit(state.copyWith(
+          expenseDetailsStatus:
+              const ApiError(Failure.clientError(message: 'Invalid Id'))));
+      return;
+    }
+    emit(state.copyWith(expenseDetailsStatus: const ApiLoading()));
+    final response = await _repository.getExpenseDetails(docID);
+    response.fold((f) {
+      emit(state.copyWith(expenseDetailsStatus: ApiError(f)));
+    }, (r) {
+      emit(state.copyWith(expenseDetailsStatus: ApiLoaded(r)));
+    });
   }
 }

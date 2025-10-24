@@ -8,7 +8,7 @@ part 'group_model.g.dart';
 class GroupModel with _$GroupModel {
   const factory GroupModel({
     @JsonKey(name: 'uid') required String uid,
-    @JsonKey(name: 'docId') String? docId,
+    @JsonKey(name: 'docId', includeToJson: false) String? docId,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'description') String? description,
     @JsonKey(name: 'createdBy') required String createdBy,
@@ -16,6 +16,7 @@ class GroupModel with _$GroupModel {
     @JsonKey(name: 'updatedAt') required DateTime updatedAt,
     @JsonKey(name: 'members') required List<String> members,
     @JsonKey(name: 'admin') required String admin,
+    @JsonKey(name: 'adminUsername') String? adminUserName,
     @JsonKey(name: 'icon') required String icon,
     @JsonKey(name: 'color') String? color,
     @JsonKey(name: 'isPinned') required bool isPinned,

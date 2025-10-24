@@ -1,12 +1,17 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
+import 'package:teatally/core/common/notification_model.dart';
 import 'package:teatally/core/constants.dart';
 import 'package:teatally/core/infrastructure/base_firebase.dart';
-import 'package:teatally/core/infrastructure/failure.dart';
+import 'package:teatally/core/infrastructure/failure.dart' as f;
 import 'package:teatally/core/infrastructure/failure_handler.dart';
 import 'package:teatally/core/infrastructure/remote_response.dart';
 import 'package:teatally/core/injection/injection.dart';
+import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 
 @injectable
 class AuthRemoteService with BaseFirebase {
@@ -31,7 +36,9 @@ class AuthRemoteService with BaseFirebase {
 
   BaseReturnType signInWithGoogle() async {
     try {
-      final googleUser = await GoogleSignIn().signIn();
+      final google = GoogleSignIn();
+      await google.signOut();
+      final googleUser = await google.signIn();
       final googleAuth = await googleUser?.authentication;
       if (googleAuth != null) {
         final cred = GoogleAuthProvider.credential(
@@ -58,10 +65,6 @@ class AuthRemoteService with BaseFirebase {
     }
   }
 
-  User? checkUserSigned() {
-    return _firebaseAuth.currentUser;
-  }
-
   BaseReturnType signOut() async {
     try {
       await _firebaseAuth.signOut();
@@ -75,15 +78,36 @@ class AuthRemoteService with BaseFirebase {
     }
   }
 
-  BaseReturnType addUserDetailsToFireStore(UserCredential userCred) {
+  BaseReturnType setFcmInActive(String docId, NotificationModel notification) {
+    return super
+        .updateItem(Collections.notification, docId, notification.toJson());
+  }
+
+  BaseReturnType getUserNotification(String uid) {
+    return super
+        .getItemWhere(Collections.notification, field: 'userUID', value: uid);
+  }
+
+  BaseReturnType checkIfUserDataExist(String email) {
+    return super.getAllItemsWhere(
+      Collections.users,
+      whereConditions: {'email': email},
+    );
+  }
+
+  BaseReturnType updateUserData(UserData userData) {
+    return super.updateItem(
+      Collections.users,
+      userData.docId,
+      userData.toJson(),
+    );
+  }
+
+  BaseReturnType addUserDetailsToFireStore(UserData userCred) async {
     return super.addItem(
-        Collections.users,
-        {
-          'email': userCred.user?.email,
-          'displayName': userCred.user?.displayName,
-          'uid': userCred.user?.uid,
-          'photoURL': userCred.user?.photoURL
-        },
-        uniqueField: 'uid');
+      Collections.users,
+      userCred.toJson(),
+      uniqueField: 'uid',
+    );
   }
 }

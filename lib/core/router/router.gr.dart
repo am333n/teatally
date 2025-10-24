@@ -97,11 +97,67 @@ class AuthRouteArgs {
 }
 
 /// generated route for
+/// [ExpenseDetailPage]
+class ExpenseDetailRoute extends PageRouteInfo<ExpenseDetailRouteArgs> {
+  ExpenseDetailRoute({
+    Key? key,
+    String? docID,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ExpenseDetailRoute.name,
+          args: ExpenseDetailRouteArgs(
+            key: key,
+            docID: docID,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ExpenseDetailRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ExpenseDetailRouteArgs>(
+          orElse: () => const ExpenseDetailRouteArgs());
+      return ExpenseDetailPage(
+        key: args.key,
+        docID: args.docID,
+      );
+    },
+  );
+}
+
+class ExpenseDetailRouteArgs {
+  const ExpenseDetailRouteArgs({
+    this.key,
+    this.docID,
+  });
+
+  final Key? key;
+
+  final String? docID;
+
+  @override
+  String toString() {
+    return 'ExpenseDetailRouteArgs{key: $key, docID: $docID}';
+  }
+}
+
+/// generated route for
 /// [ExpenseFormPage]
-class ExpenseFormRoute extends PageRouteInfo<void> {
-  const ExpenseFormRoute({List<PageRouteInfo>? children})
-      : super(
+class ExpenseFormRoute extends PageRouteInfo<ExpenseFormRouteArgs> {
+  ExpenseFormRoute({
+    Key? key,
+    required String? sessionDocId,
+    String? expenseDocID,
+    List<PageRouteInfo>? children,
+  }) : super(
           ExpenseFormRoute.name,
+          args: ExpenseFormRouteArgs(
+            key: key,
+            sessionDocId: sessionDocId,
+            expenseDocID: expenseDocID,
+          ),
           initialChildren: children,
         );
 
@@ -110,9 +166,86 @@ class ExpenseFormRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ExpenseFormPage();
+      final args = data.argsAs<ExpenseFormRouteArgs>();
+      return ExpenseFormPage(
+        key: args.key,
+        sessionDocId: args.sessionDocId,
+        expenseDocID: args.expenseDocID,
+      );
     },
   );
+}
+
+class ExpenseFormRouteArgs {
+  const ExpenseFormRouteArgs({
+    this.key,
+    required this.sessionDocId,
+    this.expenseDocID,
+  });
+
+  final Key? key;
+
+  final String? sessionDocId;
+
+  final String? expenseDocID;
+
+  @override
+  String toString() {
+    return 'ExpenseFormRouteArgs{key: $key, sessionDocId: $sessionDocId, expenseDocID: $expenseDocID}';
+  }
+}
+
+/// generated route for
+/// [ExpenseListPage]
+class ExpenseListRoute extends PageRouteInfo<ExpenseListRouteArgs> {
+  ExpenseListRoute({
+    Key? key,
+    String? groupId,
+    String? groupName,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ExpenseListRoute.name,
+          args: ExpenseListRouteArgs(
+            key: key,
+            groupId: groupId,
+            groupName: groupName,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ExpenseListRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ExpenseListRouteArgs>(
+          orElse: () => const ExpenseListRouteArgs());
+      return ExpenseListPage(
+        key: args.key,
+        groupId: args.groupId,
+        groupName: args.groupName,
+      );
+    },
+  );
+}
+
+class ExpenseListRouteArgs {
+  const ExpenseListRouteArgs({
+    this.key,
+    this.groupId,
+    this.groupName,
+  });
+
+  final Key? key;
+
+  final String? groupId;
+
+  final String? groupName;
+
+  @override
+  String toString() {
+    return 'ExpenseListRouteArgs{key: $key, groupId: $groupId, groupName: $groupName}';
+  }
 }
 
 /// generated route for

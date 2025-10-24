@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
             final isdarkMode = state.isDarkMode;
             return MaterialApp.router(
               title: 'TeaTally',
+              debugShowCheckedModeBanner: false,
               scaffoldMessengerKey:
                   GetIt.I<GlobalKey<ScaffoldMessengerState>>(),
               theme: AppTheme.getThemeData(currentTheme, false),

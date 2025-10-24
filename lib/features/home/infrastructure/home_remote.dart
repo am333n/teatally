@@ -12,7 +12,7 @@ import 'package:teatally/features/home/domain/group_model.dart';
 class HomeRemoteService with BaseFirebase {
   BaseReturnType getAllUsersList() async {
     try {
-      final currentUser = firebaseAuth.currentUser?.uid;
+      final currentUser = super.userData?.uid;
       if (currentUser == null) {
         return const RemoteResponse.failure(
             Failure.serverError(message: 'User Not Authenticated'));
@@ -43,7 +43,7 @@ class HomeRemoteService with BaseFirebase {
 
   BaseReturnType getAllGroups() async {
     try {
-      final currentUser = await CredentialStorage.getUid();
+      final currentUser = super.userData?.uid;
       final snapshot = await super
           .firebaseFirestore
           .collection(Collections.groups)

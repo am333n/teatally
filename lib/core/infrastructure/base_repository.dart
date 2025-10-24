@@ -53,7 +53,7 @@ mixin BaseRepo {
           }
         },
         failure: (data) {
-          return Left(FailureHandler.handleFirestoreException(data));
+          return Left(data);
         },
       );
     } on FirebaseException catch (e) {
@@ -69,10 +69,6 @@ mixin BaseRepo {
       return response.when(
         success: (data) async {
           try {
-            if (data is! List) {
-              return Left(FailureHandler.dataConversionFailure);
-            }
-
             return Right(true);
           } catch (e) {
             return Left(FailureHandler.dataConversionFailure);

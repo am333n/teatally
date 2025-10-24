@@ -58,6 +58,7 @@ class AddCategoryDialog extends StatelessWidget {
                   context
                       .read<GroupDetailCubit>()
                       .addCategory(groupId, categoryDetail);
+                  Navigator.of(context).pop();
                 }
               }
             })

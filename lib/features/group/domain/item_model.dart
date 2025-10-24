@@ -8,7 +8,7 @@ part 'item_model.g.dart';
 class ItemModel with _$ItemModel {
   const factory ItemModel({
     @JsonKey(name: 'uid') required String uid,
-    @JsonKey(name: 'docId') String? docId,
+    @JsonKey(name: 'docId', includeToJson: false) String? docId,
     @JsonKey(name: 'groupId') String? groupId,
     @JsonKey(name: 'categoryId') String? categoryId,
     @JsonKey(name: 'color') String? color,

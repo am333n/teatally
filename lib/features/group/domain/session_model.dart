@@ -8,9 +8,10 @@ class SessionModel with _$SessionModel {
   const factory SessionModel({
     @JsonKey(name: 'uid') String? uid,
     @JsonKey(name: 'isCreatedByCurrentUser') bool? isCreatedByCurrentUser,
-    @JsonKey(name: 'docId') String? docId,
+    @JsonKey(name: 'docId', includeToJson: false) String? docId,
     @JsonKey(name: 'groupId') String? groupId,
     @JsonKey(name: 'startedBy') String? startedBy,
+    @JsonKey(name: 'startedByName') String? startedByName,
     @JsonKey(name: 'createdAt') DateTime? createdAt,
     @JsonKey(name: 'updatedBy') String? updatedBy,
     @JsonKey(name: 'updatedAt') DateTime? updatedAt,

@@ -22,7 +22,7 @@ ItemModel _$ItemModelFromJson(Map<String, dynamic> json) {
 mixin _$ItemModel {
   @JsonKey(name: 'uid')
   String get uid => throw _privateConstructorUsedError;
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId => throw _privateConstructorUsedError;
   @JsonKey(name: 'groupId')
   String? get groupId => throw _privateConstructorUsedError;
@@ -60,7 +60,7 @@ abstract class $ItemModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String uid,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'categoryId') String? categoryId,
       @JsonKey(name: 'color') String? color,
@@ -158,7 +158,7 @@ abstract class _$$ItemModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'uid') String uid,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'categoryId') String? categoryId,
       @JsonKey(name: 'color') String? color,
@@ -249,7 +249,7 @@ class __$$ItemModelImplCopyWithImpl<$Res>
 class _$ItemModelImpl with DiagnosticableTreeMixin implements _ItemModel {
   const _$ItemModelImpl(
       {@JsonKey(name: 'uid') required this.uid,
-      @JsonKey(name: 'docId') this.docId,
+      @JsonKey(name: 'docId', includeToJson: false) this.docId,
       @JsonKey(name: 'groupId') this.groupId,
       @JsonKey(name: 'categoryId') this.categoryId,
       @JsonKey(name: 'color') this.color,
@@ -268,7 +268,7 @@ class _$ItemModelImpl with DiagnosticableTreeMixin implements _ItemModel {
   @JsonKey(name: 'uid')
   final String uid;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   final String? docId;
   @override
   @JsonKey(name: 'groupId')
@@ -386,7 +386,7 @@ class _$ItemModelImpl with DiagnosticableTreeMixin implements _ItemModel {
 abstract class _ItemModel implements ItemModel {
   const factory _ItemModel(
       {@JsonKey(name: 'uid') required final String uid,
-      @JsonKey(name: 'docId') final String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) final String? docId,
       @JsonKey(name: 'groupId') final String? groupId,
       @JsonKey(name: 'categoryId') final String? categoryId,
       @JsonKey(name: 'color') final String? color,
@@ -404,7 +404,7 @@ abstract class _ItemModel implements ItemModel {
   @JsonKey(name: 'uid')
   String get uid;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId;
   @override
   @JsonKey(name: 'groupId')

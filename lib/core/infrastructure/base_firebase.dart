@@ -2,17 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:teatally/core/infrastructure/failure_handler.dart';
 import 'package:teatally/core/infrastructure/remote_response.dart';
-import 'failure.dart'; // Assuming Failure class is already defined
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:teatally/core/infrastructure/failure_handler.dart';
-import 'package:teatally/core/infrastructure/remote_response.dart';
+import 'package:teatally/core/injection/injection.dart';
+import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'failure.dart'; // Assuming Failure class is already defined
 
 mixin BaseFirebase {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+  final userData = getIt<AuthCubit>().state.status.getUserDataOrNull();
   // Add a document or item to any Firestore collection
   Future<RemoteResponse> addItem(
     String collectionPath,
@@ -20,7 +16,7 @@ mixin BaseFirebase {
     String? uniqueField, // Optional: the field to check for uniqueness
   }) async {
     try {
-      final userId = firebaseAuth.currentUser?.uid;
+      final userId = userData?.uid;
 
       if (userId == null) {
         return const RemoteResponse.failure(
@@ -111,6 +107,40 @@ mixin BaseFirebase {
       return RemoteResponse.failure(Failure.serverError(message: e.toString()));
     }
   }
+  // ... your existing methods ...
+
+  Future<RemoteResponse> updateMultipleDocuments({
+    required List<String> docIds,
+    required String collectionPath,
+    required Map<String, dynamic> updateData,
+  }) async {
+    try {
+      final userId = userData?.uid;
+      if (userId == null) {
+        return const RemoteResponse.failure(
+            Failure.serverError(message: 'User is not authenticated.'));
+      }
+
+      final batch = firebaseFirestore.batch();
+
+      for (final docId in docIds) {
+        final docRef = firebaseFirestore.collection(collectionPath).doc(docId);
+        batch.update(docRef, updateData);
+      }
+
+      await batch.commit();
+
+      return RemoteResponse.success({
+        'updatedCount': docIds.length,
+        'docIds': docIds,
+      });
+    } on FirebaseException catch (e) {
+      return RemoteResponse.failure(Failure.firebaseNetworkError(
+          message: e.message ?? 'Unknown error', code: e.code));
+    } catch (e) {
+      return RemoteResponse.failure(Failure.serverError(message: e.toString()));
+    }
+  }
 
 // Get all items based on multiple field-value conditions
   Future<RemoteResponse> getAllItemsWhere(
@@ -118,6 +148,8 @@ mixin BaseFirebase {
     Map<String, dynamic>? whereConditions,
     List<MapEntry<String, dynamic>>? whereInConditions,
     int? limit,
+    String? orderByField,
+    bool descending = false, // Add this parameter
   }) async {
     try {
       Query query = firebaseFirestore.collection(collectionPath);
@@ -132,12 +164,16 @@ mixin BaseFirebase {
       // Apply whereIn conditions (field in [value1, value2, ...])
       if (whereInConditions != null && whereInConditions.isNotEmpty) {
         for (final condition in whereInConditions) {
-          // Ensure the value is a List for whereIn
           if (condition.value is List) {
             query =
                 query.where(condition.key, whereIn: condition.value as List);
           }
         }
+      }
+
+      // Apply ordering if provided
+      if (orderByField != null) {
+        query = query.orderBy(orderByField, descending: descending);
       }
 
       // Apply limit if provided
@@ -274,7 +310,7 @@ mixin BaseFirebase {
     String? documentId,
   ) async {
     try {
-      final userId = firebaseAuth.currentUser?.uid;
+      final userId = userData?.uid;
 
       if (userId == null) {
         return const RemoteResponse.failure(
@@ -302,7 +338,7 @@ mixin BaseFirebase {
   // Fetch all documents from a collection as a list of maps
   Future<RemoteResponse> getAllItems(String collectionPath) async {
     try {
-      final userId = firebaseAuth.currentUser?.uid;
+      final userId = userData?.uid;
 
       if (userId == null) {
         return const RemoteResponse.failure(
@@ -327,7 +363,7 @@ mixin BaseFirebase {
   Future<RemoteResponse> getAllItemsExceptCurrentUser(
     String collectionPath,
   ) async {
-    final userId = firebaseAuth.currentUser?.uid;
+    final userId = userData?.uid;
 
     if (userId == null) {
       return const RemoteResponse.failure(
@@ -357,7 +393,7 @@ mixin BaseFirebase {
   Future<RemoteResponse> getAllItemsOfCurrentUser(
     String collectionPath,
   ) async {
-    final userId = firebaseAuth.currentUser?.uid;
+    final userId = userData?.uid;
 
     if (userId == null) {
       return const RemoteResponse.failure(

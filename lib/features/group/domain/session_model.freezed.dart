@@ -24,12 +24,14 @@ mixin _$SessionModel {
   String? get uid => throw _privateConstructorUsedError;
   @JsonKey(name: 'isCreatedByCurrentUser')
   bool? get isCreatedByCurrentUser => throw _privateConstructorUsedError;
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId => throw _privateConstructorUsedError;
   @JsonKey(name: 'groupId')
   String? get groupId => throw _privateConstructorUsedError;
   @JsonKey(name: 'startedBy')
   String? get startedBy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'startedByName')
+  String? get startedByName => throw _privateConstructorUsedError;
   @JsonKey(name: 'createdAt')
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updatedBy')
@@ -62,9 +64,10 @@ abstract class $SessionModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'uid') String? uid,
       @JsonKey(name: 'isCreatedByCurrentUser') bool? isCreatedByCurrentUser,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'startedBy') String? startedBy,
+      @JsonKey(name: 'startedByName') String? startedByName,
       @JsonKey(name: 'createdAt') DateTime? createdAt,
       @JsonKey(name: 'updatedBy') String? updatedBy,
       @JsonKey(name: 'updatedAt') DateTime? updatedAt,
@@ -93,6 +96,7 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
     Object? docId = freezed,
     Object? groupId = freezed,
     Object? startedBy = freezed,
+    Object? startedByName = freezed,
     Object? createdAt = freezed,
     Object? updatedBy = freezed,
     Object? updatedAt = freezed,
@@ -120,6 +124,10 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
       startedBy: freezed == startedBy
           ? _value.startedBy
           : startedBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startedByName: freezed == startedByName
+          ? _value.startedByName
+          : startedByName // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -160,9 +168,10 @@ abstract class _$$SessionModelImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'uid') String? uid,
       @JsonKey(name: 'isCreatedByCurrentUser') bool? isCreatedByCurrentUser,
-      @JsonKey(name: 'docId') String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) String? docId,
       @JsonKey(name: 'groupId') String? groupId,
       @JsonKey(name: 'startedBy') String? startedBy,
+      @JsonKey(name: 'startedByName') String? startedByName,
       @JsonKey(name: 'createdAt') DateTime? createdAt,
       @JsonKey(name: 'updatedBy') String? updatedBy,
       @JsonKey(name: 'updatedAt') DateTime? updatedAt,
@@ -189,6 +198,7 @@ class __$$SessionModelImplCopyWithImpl<$Res>
     Object? docId = freezed,
     Object? groupId = freezed,
     Object? startedBy = freezed,
+    Object? startedByName = freezed,
     Object? createdAt = freezed,
     Object? updatedBy = freezed,
     Object? updatedAt = freezed,
@@ -216,6 +226,10 @@ class __$$SessionModelImplCopyWithImpl<$Res>
       startedBy: freezed == startedBy
           ? _value.startedBy
           : startedBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startedByName: freezed == startedByName
+          ? _value.startedByName
+          : startedByName // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -251,9 +265,10 @@ class _$SessionModelImpl implements _SessionModel {
   const _$SessionModelImpl(
       {@JsonKey(name: 'uid') this.uid,
       @JsonKey(name: 'isCreatedByCurrentUser') this.isCreatedByCurrentUser,
-      @JsonKey(name: 'docId') this.docId,
+      @JsonKey(name: 'docId', includeToJson: false) this.docId,
       @JsonKey(name: 'groupId') this.groupId,
       @JsonKey(name: 'startedBy') this.startedBy,
+      @JsonKey(name: 'startedByName') this.startedByName,
       @JsonKey(name: 'createdAt') this.createdAt,
       @JsonKey(name: 'updatedBy') this.updatedBy,
       @JsonKey(name: 'updatedAt') this.updatedAt,
@@ -272,7 +287,7 @@ class _$SessionModelImpl implements _SessionModel {
   @JsonKey(name: 'isCreatedByCurrentUser')
   final bool? isCreatedByCurrentUser;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   final String? docId;
   @override
   @JsonKey(name: 'groupId')
@@ -280,6 +295,9 @@ class _$SessionModelImpl implements _SessionModel {
   @override
   @JsonKey(name: 'startedBy')
   final String? startedBy;
+  @override
+  @JsonKey(name: 'startedByName')
+  final String? startedByName;
   @override
   @JsonKey(name: 'createdAt')
   final DateTime? createdAt;
@@ -308,7 +326,7 @@ class _$SessionModelImpl implements _SessionModel {
 
   @override
   String toString() {
-    return 'SessionModel(uid: $uid, isCreatedByCurrentUser: $isCreatedByCurrentUser, docId: $docId, groupId: $groupId, startedBy: $startedBy, createdAt: $createdAt, updatedBy: $updatedBy, updatedAt: $updatedAt, stoppedAt: $stoppedAt, isActive: $isActive, selectedItems: $selectedItems)';
+    return 'SessionModel(uid: $uid, isCreatedByCurrentUser: $isCreatedByCurrentUser, docId: $docId, groupId: $groupId, startedBy: $startedBy, startedByName: $startedByName, createdAt: $createdAt, updatedBy: $updatedBy, updatedAt: $updatedAt, stoppedAt: $stoppedAt, isActive: $isActive, selectedItems: $selectedItems)';
   }
 
   @override
@@ -323,6 +341,8 @@ class _$SessionModelImpl implements _SessionModel {
             (identical(other.groupId, groupId) || other.groupId == groupId) &&
             (identical(other.startedBy, startedBy) ||
                 other.startedBy == startedBy) &&
+            (identical(other.startedByName, startedByName) ||
+                other.startedByName == startedByName) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedBy, updatedBy) ||
@@ -346,6 +366,7 @@ class _$SessionModelImpl implements _SessionModel {
       docId,
       groupId,
       startedBy,
+      startedByName,
       createdAt,
       updatedBy,
       updatedAt,
@@ -374,9 +395,10 @@ abstract class _SessionModel implements SessionModel {
       {@JsonKey(name: 'uid') final String? uid,
       @JsonKey(name: 'isCreatedByCurrentUser')
       final bool? isCreatedByCurrentUser,
-      @JsonKey(name: 'docId') final String? docId,
+      @JsonKey(name: 'docId', includeToJson: false) final String? docId,
       @JsonKey(name: 'groupId') final String? groupId,
       @JsonKey(name: 'startedBy') final String? startedBy,
+      @JsonKey(name: 'startedByName') final String? startedByName,
       @JsonKey(name: 'createdAt') final DateTime? createdAt,
       @JsonKey(name: 'updatedBy') final String? updatedBy,
       @JsonKey(name: 'updatedAt') final DateTime? updatedAt,
@@ -395,7 +417,7 @@ abstract class _SessionModel implements SessionModel {
   @JsonKey(name: 'isCreatedByCurrentUser')
   bool? get isCreatedByCurrentUser;
   @override
-  @JsonKey(name: 'docId')
+  @JsonKey(name: 'docId', includeToJson: false)
   String? get docId;
   @override
   @JsonKey(name: 'groupId')
@@ -403,6 +425,9 @@ abstract class _SessionModel implements SessionModel {
   @override
   @JsonKey(name: 'startedBy')
   String? get startedBy;
+  @override
+  @JsonKey(name: 'startedByName')
+  String? get startedByName;
   @override
   @JsonKey(name: 'createdAt')
   DateTime? get createdAt;

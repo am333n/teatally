@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB5wJ60iIe6VVgV1R358UKyqNePA8022Mc',
-    appId: '1:28068623394:android:600106fc614f77c66a067b',
+    appId: '1:28068623394:android:6ee85d7d6d0217606a067b',
     messagingSenderId: '28068623394',
     projectId: 'teatally-d1b86',
     storageBucket: 'teatally-d1b86.firebasestorage.app',
@@ -59,10 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBSJuu2KiJ5BoM8XXRnO_lQiY6KNNrWe88',
-    appId: '1:28068623394:ios:f2cbb6c45b6f23ea6a067b',
+    appId: '1:28068623394:ios:52eeecd9557b3b0a6a067b',
     messagingSenderId: '28068623394',
     projectId: 'teatally-d1b86',
     storageBucket: 'teatally-d1b86.firebasestorage.app',
-    iosBundleId: 'com.example.teatally',
+    androidClientId: '28068623394-1gid21q03k9f651i37k4cc726uei6sip.apps.googleusercontent.com',
+    iosClientId: '28068623394-3aopa4j0598i767uoljqfqjr3bsbalc0.apps.googleusercontent.com',
+    iosBundleId: 'com.teatally.pro',
   );
+
 }

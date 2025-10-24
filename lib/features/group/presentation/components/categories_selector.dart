@@ -52,7 +52,11 @@ class CategoriesSelector extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30)),
                       padding: const EdgeInsets.all(5),
                       onSelected: (value) => {},
-                      label: Center(child: CircularProgressIndicator()),
+                      label: SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: const Center(
+                              child: const CircularProgressIndicator())),
                       selected: false,
                     ),
                   );
@@ -68,7 +72,7 @@ class CategoriesSelector extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
                       padding: const EdgeInsets.all(5),
-                      label: Txt('Add Categories +'),
+                      label: const Txt('Add Categories +'),
                       selected: false,
                       onSelected: (value) =>
                           handleCategoriesAdd(context: context),
