@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:teatally/core/injection/injection.dart';
 import 'package:teatally/core/router/router.dart';
+import 'package:teatally/core/style_constants.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/styles/text/txt_styles.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
@@ -27,18 +28,19 @@ import 'package:teatally/features/home/presentation/components/add%20group/compo
 import 'package:teatally/features/home/presentation/components/add%20group/components/icon_picker.dart';
 import 'package:uuid/uuid.dart';
 
-class AddGroupDialog extends StatefulWidget {
-  AddGroupDialog(
+@RoutePage()
+class GroupFormPage extends StatefulWidget {
+  GroupFormPage(
       {super.key, this.isEdit = false, this.groupDetails, this.members});
 
   final bool isEdit;
   final GroupModel? groupDetails;
   final List<UserModel?>? members;
   @override
-  State<AddGroupDialog> createState() => _AddGroupDialogState();
+  State<GroupFormPage> createState() => _GroupFormPageState();
 }
 
-class _AddGroupDialogState extends State<AddGroupDialog> {
+class _GroupFormPageState extends State<GroupFormPage> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   final TextEditingController _searchController = TextEditingController();
   List<UserModel?> _selectedUsers = [];
@@ -87,29 +89,24 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomePageCubit, HomePageState>(
-      builder: (context, state) {
-        return Container(
-          padding: const EdgeInsets.all(15),
-          child: FormBuilder(
-            key: _formKey,
-            child: Container(
-              // color: Colors.amber,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: CommonWidgets.backButton(context),
+        title: Txt(
+          '${widget.isEdit ? 'Edit' : 'Add'} Group',
+          style: TxtStyle.headerSSemiBold,
+        ),
+      ),
+      body: SafeArea(
+        child: BlocBuilder<HomePageCubit, HomePageState>(
+          builder: (context, state) {
+            return FormBuilder(
+              key: _formKey,
+              child: ListView(
+                padding: Spacing.all,
                 children: [
-                  // VerticalSpacing(200),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Txt(
-                        '${widget.isEdit ? 'Edit' : 'Add'} Group',
-                        style: TxtStyle.headerMSemiBold,
-                      ),
-                      const CloseButton()
-                    ],
-                  ),
-                  const VerticalSpacing(15),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -150,9 +147,7 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                   const VerticalSpacing(15),
                   FormComponents.buildFormLabel('Search users'),
                   Expanded(child: _buildUserSearchBox(context)),
-
                   const VerticalSpacing(15),
-
                   Container(
                     color: Theme.of(context).appColors.backgroundSecondary,
                     child: CommonWidgets.coloredTextButton(context,
@@ -206,10 +201,10 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
                   )
                 ],
               ),
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 

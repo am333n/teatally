@@ -87,7 +87,6 @@ class HomeRemoteService with BaseFirebase {
 
   BaseReturnType deleteGroup(String? docId) async {
     try {
-      final currentUser = await CredentialStorage.getUid();
       final snapshot = await super
           .firebaseFirestore
           .collection(Collections.groups)

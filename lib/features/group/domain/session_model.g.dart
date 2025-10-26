@@ -28,6 +28,10 @@ _$SessionModelImpl _$$SessionModelImplFromJson(Map<String, dynamic> json) =>
       selectedItems: (json['selectedItems'] as List<dynamic>?)
           ?.map((e) => SelectedItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      transferRequest: json['transferRequest'] == null
+          ? null
+          : TransferRequest.fromJson(
+              json['transferRequest'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$SessionModelImplToJson(_$SessionModelImpl instance) =>
@@ -43,6 +47,7 @@ Map<String, dynamic> _$$SessionModelImplToJson(_$SessionModelImpl instance) =>
       'stoppedAt': instance.stoppedAt?.toIso8601String(),
       'isActive': instance.isActive,
       'selectedItems': instance.selectedItems?.map((e) => e.toJson()).toList(),
+      'transferRequest': instance.transferRequest?.toJson(),
     };
 
 _$SelectedItemImpl _$$SelectedItemImplFromJson(Map<String, dynamic> json) =>
@@ -77,4 +82,28 @@ Map<String, dynamic> _$$SelectionImplToJson(_$SelectionImpl instance) =>
     <String, dynamic>{
       'userUid': instance.userUid,
       'count': instance.count,
+    };
+
+_$TransferRequestImpl _$$TransferRequestImplFromJson(
+        Map<String, dynamic> json) =>
+    _$TransferRequestImpl(
+      requesterUid: json['requesterUid'] as String?,
+      requesterName: json['requesterName'] as String?,
+      orginalOwner: json['orginalOwner'] as String?,
+      orginalOwnerName: json['orginalOwnerName'] as String?,
+      accepted: json['accepted'] as bool?,
+      time: json['requestTime'] == null
+          ? null
+          : DateTime.parse(json['requestTime'] as String),
+    );
+
+Map<String, dynamic> _$$TransferRequestImplToJson(
+        _$TransferRequestImpl instance) =>
+    <String, dynamic>{
+      'requesterUid': instance.requesterUid,
+      'requesterName': instance.requesterName,
+      'orginalOwner': instance.orginalOwner,
+      'orginalOwnerName': instance.orginalOwnerName,
+      'accepted': instance.accepted,
+      'requestTime': instance.time?.toIso8601String(),
     };

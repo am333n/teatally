@@ -16,7 +16,7 @@ import 'package:teatally/core/widgets/dialog_helpers.dart';
 import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
-import 'package:teatally/features/home/presentation/components/add%20group/add_group_dialog.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/group_form.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/color_mapper.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/icon_mapper.dart';
 import 'package:teatally/features/group/presentation/components/item%20display/components/item_background.dart';
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                             message:
                                 'Are you sure you want to sign out of your account?',
                             onConfirmed: () {
-                              // context.read<AuthCubit>().signOut();
+                              context.read<AuthCubit>().signOut();
                             },
                             onCanceled: () {},
                             confirmButtonText: 'Confirm');

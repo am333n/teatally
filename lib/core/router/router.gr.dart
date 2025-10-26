@@ -360,6 +360,65 @@ class GroupDetailsViewRouteArgs {
 }
 
 /// generated route for
+/// [GroupFormPage]
+class GroupFormRoute extends PageRouteInfo<GroupFormRouteArgs> {
+  GroupFormRoute({
+    Key? key,
+    bool isEdit = false,
+    GroupModel? groupDetails,
+    List<UserModel?>? members,
+    List<PageRouteInfo>? children,
+  }) : super(
+          GroupFormRoute.name,
+          args: GroupFormRouteArgs(
+            key: key,
+            isEdit: isEdit,
+            groupDetails: groupDetails,
+            members: members,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'GroupFormRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<GroupFormRouteArgs>(
+          orElse: () => const GroupFormRouteArgs());
+      return GroupFormPage(
+        key: args.key,
+        isEdit: args.isEdit,
+        groupDetails: args.groupDetails,
+        members: args.members,
+      );
+    },
+  );
+}
+
+class GroupFormRouteArgs {
+  const GroupFormRouteArgs({
+    this.key,
+    this.isEdit = false,
+    this.groupDetails,
+    this.members,
+  });
+
+  final Key? key;
+
+  final bool isEdit;
+
+  final GroupModel? groupDetails;
+
+  final List<UserModel?>? members;
+
+  @override
+  String toString() {
+    return 'GroupFormRouteArgs{key: $key, isEdit: $isEdit, groupDetails: $groupDetails, members: $members}';
+  }
+}
+
+/// generated route for
 /// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})

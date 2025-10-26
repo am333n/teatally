@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teatally/core/app_colors.dart';
 import 'package:teatally/core/styles/text/txt.dart';
+import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/group/application/cubit/group_detail_cubit.dart';
 import 'package:teatally/features/group/domain/item_model.dart';
@@ -22,28 +23,28 @@ class CounterButton extends StatefulWidget {
 }
 
 class _CounterButtonState extends State<CounterButton> {
-  String? _currentUserUid;
+  // String? _currentUserUid;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserId(); // Fetch the user ID once during widget initialization
+    // _fetchUserId(); // Fetch the user ID once during widget initialization
   }
 
-  Future<void> _fetchUserId() async {
-    final currentUserUid = await CredentialStorage.getUid();
-    setState(() {
-      _currentUserUid = currentUserUid; // Store the user ID in the state
-    });
-  }
+  // Future<void> _fetchUserId() async {
+  //   final currentUserUid = getI;
+  //   setState(() {
+  //     _currentUserUid = currentUserUid; // Store the user ID in the state
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    if (_currentUserUid == null) {
+    if (context.currentUser?.uid == null) {
       // Show a loading indicator or placeholder if the user UID is not yet fetched
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
 
     // Find the selected item based on item UID
@@ -60,7 +61,7 @@ class _CounterButtonState extends State<CounterButton> {
 
     // Find the user's selection for the current item
     final userSelection = selectedItem?.selections?.firstWhere(
-      (selection) => selection.userUid == _currentUserUid,
+      (selection) => selection.userUid == context.currentUser?.uid,
       orElse: () => Selection(userUid: '', count: 0),
     );
 

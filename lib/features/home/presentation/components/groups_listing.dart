@@ -17,7 +17,7 @@ import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
 import 'package:teatally/features/home/domain/users_model.dart';
-import 'package:teatally/features/home/presentation/components/add%20group/add_group_dialog.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/group_form.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/color_mapper.dart';
 import 'package:teatally/features/home/presentation/components/add%20group/components/icon_mapper.dart';
 import 'package:teatally/features/home/presentation/components/group_loading_shimmer.dart';
@@ -63,7 +63,7 @@ class GroupsListing extends StatelessWidget {
                           SlidableAction(
                             borderRadius: BorderRadius.circular(15),
                             onPressed: (_) async {
-                              final isAdmin = item?.admin == currentUser;
+                              final isAdmin = item.admin == currentUser?.uid;
                               if (isAdmin) {
                                 await DialogHelpers.confirmDeleteDialog(
                                     context: context,
@@ -84,9 +84,7 @@ class GroupsListing extends StatelessWidget {
                         if (currentUser?.uid == item.admin)
                           SlidableAction(
                             onPressed: (_) async {
-                              final currentUser =
-                                  await CredentialStorage.getUid();
-                              final isAdmin = item?.admin == currentUser;
+                              final isAdmin = item.admin == currentUser?.uid;
                               if (isAdmin) {
                                 await context
                                     .read<HomePageCubit>()
@@ -98,19 +96,24 @@ class GroupsListing extends StatelessWidget {
                                       ?.where((user) =>
                                           item.members.contains(user.uid))
                                       .toList();
-                                  showGeneralDialog(
-                                    context: context,
-                                    pageBuilder: (context, _, __) {
-                                      return SafeArea(
-                                        child: Material(
-                                            child: AddGroupDialog(
-                                          members: groupMembers,
-                                          groupDetails: item,
-                                          isEdit: true,
-                                        )),
-                                      );
-                                    },
-                                  );
+
+                                  AutoRouter.of(context).push(GroupFormRoute(
+                                      members: groupMembers,
+                                      groupDetails: item,
+                                      isEdit: true));
+                                  // showGeneralDialog(
+                                  //   context: context,
+                                  //   pageBuilder: (context, _, __) {
+                                  //     return SafeArea(
+                                  //       child: Material(
+                                  //           child: AddGroupDialog(
+                                  //         members: groupMembers,
+                                  //         groupDetails: item,
+                                  //         isEdit: true,
+                                  //       )),
+                                  //     );
+                                  //   },
+                                  // );
                                 });
                               } else {
                                 Toast.showErrorMessage(

@@ -1,15 +1,17 @@
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/styles/text/txt_styles.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
 import 'package:teatally/features/home/application/home_page_cubit.dart';
 import 'package:teatally/features/home/application/home_page_state.dart';
-import 'package:teatally/features/home/presentation/components/add%20group/add_group_dialog.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/group_form.dart';
 
 class SearchAndAddButtonHeader extends StatefulWidget {
   const SearchAndAddButtonHeader({super.key});
@@ -114,16 +116,17 @@ class _SearchAndAddButtonHeaderState extends State<SearchAndAddButtonHeader> {
                                 .read<HomePageCubit>()
                                 .getAllUsers()
                                 .then((_) {
-                              showGeneralDialog(
-                                context: context,
-                                pageBuilder: (context, _, __) {
-                                  return SafeArea(
-                                    child: Material(
-                                      child: AddGroupDialog(),
-                                    ),
-                                  );
-                                },
-                              );
+                              AutoRouter.of(context).push(GroupFormRoute());
+                              // showGeneralDialog(
+                              //   context: context,
+                              //   pageBuilder: (context, _, __) {
+                              //     return SafeArea(
+                              //       child: Material(
+                              //         child: AddGroupDialog(),
+                              //       ),
+                              //     );
+                              //   },
+                              // );
                             });
                           },
                           icon: state.usersStatus.isLoading

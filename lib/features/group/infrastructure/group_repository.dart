@@ -182,6 +182,17 @@ class GroupRepository with BaseRepo {
     }
   }
 
+  RepoResponse<bool> requestOwnershipTransfer(SessionModel sessionDetails) {
+    return super.performAction(
+        () => _remoteService.requestOwnershipTransfer(sessionDetails));
+  }
+
+  RepoResponse<bool> acceptOrRejectOwnershipTransfer(
+      SessionModel sessionDetails) {
+    return super.performAction(
+        () => _remoteService.acceptOrRejectOwnershipTransfer(sessionDetails));
+  }
+
   Future<Either<Failure, bool>> addItemForCategory(ItemModel itemDetail) async {
     try {
       final response = await _remoteService.addItemForCategory(itemDetail);

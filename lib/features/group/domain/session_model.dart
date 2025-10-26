@@ -18,6 +18,7 @@ class SessionModel with _$SessionModel {
     @JsonKey(name: 'stoppedAt') DateTime? stoppedAt,
     @JsonKey(name: 'isActive') bool? isActive,
     @JsonKey(name: 'selectedItems') List<SelectedItem>? selectedItems,
+    @JsonKey(name: 'transferRequest') TransferRequest? transferRequest,
   }) = _SessionModel;
 
   factory SessionModel.fromJson(Map<String, dynamic> json) =>
@@ -48,4 +49,19 @@ class Selection with _$Selection {
 
   factory Selection.fromJson(Map<String, dynamic> json) =>
       _$SelectionFromJson(json);
+}
+
+@freezed
+class TransferRequest with _$TransferRequest {
+  const factory TransferRequest({
+    @JsonKey(name: 'requesterUid') String? requesterUid,
+    @JsonKey(name: 'requesterName') String? requesterName,
+    @JsonKey(name: 'orginalOwner') String? orginalOwner,
+    @JsonKey(name: 'orginalOwnerName') String? orginalOwnerName,
+    @JsonKey(name: 'accepted') bool? accepted,
+    @JsonKey(name: 'requestTime') DateTime? time,
+  }) = _TransferRequest;
+
+  factory TransferRequest.fromJson(Map<String, dynamic> json) =>
+      _$TransferRequestFromJson(json);
 }

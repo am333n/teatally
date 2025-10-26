@@ -24,7 +24,7 @@ class LocalNotificationService {
     if (_initialized) return;
 
     const androidSettings = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+      '@mipmap/ic_stat_icon',
     );
     const iosSettings = DarwinInitializationSettings();
 

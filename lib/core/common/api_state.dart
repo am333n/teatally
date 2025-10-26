@@ -49,6 +49,7 @@ sealed class ApiState<T> with _$ApiState<T> {
       ApiLoading<T>() => loading(),
       ApiLoaded<T>(data: final data) => loaded(data),
       ApiError<T>(failure: final failure) => error(failure),
+      _ => loading(),
     };
   }
 

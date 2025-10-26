@@ -3,13 +3,17 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:teatally/core/common/api_state.dart';
+import 'package:teatally/core/common/notification_service_repository.dart';
+import 'package:teatally/core/common/send_notification_model.dart';
 import 'package:teatally/core/infrastructure/failure.dart';
 import 'package:teatally/core/injection/injection.dart';
 import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/widgets/toast.dart';
+import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 import 'package:teatally/features/auth/infrastructure/credential_storage.dart';
 import 'package:teatally/features/group/application/cubit/group_detail_state.dart';
 import 'package:teatally/features/group/domain/categories_model.dart';
@@ -24,9 +28,10 @@ import 'package:uuid/uuid.dart';
 @injectable
 class GroupDetailCubit extends Cubit<GroupDetailState> {
   final GroupRepository _repository;
-
+  final NotificationServiceRepository _notificationServiceRepository;
   GroupDetailCubit(
     this._repository,
+    this._notificationServiceRepository,
   ) : super(GroupDetailState());
   // GroupDetailsLoadedStateModel loadedStateData =
   //     const GroupDetailsLoadedStateModel();
@@ -185,7 +190,7 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     if (itemId == null || itemName == null || categoryId == null) return;
 
     // Get the user ID
-    final userId = await CredentialStorage.getUid();
+    final userId = getIt<AuthCubit>().currentUser?.uid;
 
     // Get the current session's selected items
     // final selectedItems = loadedStateData.session?.selectedItems ?? [];
@@ -278,6 +283,48 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     response.fold((l) {
       Toast.showErrorMessage(l.toString());
     }, (r) {});
+  }
+
+  Future<void> requestOwnershipTransfer(GroupModel? groupDetails) async {
+    final sessionDetails = state.sessionState.getOrNull();
+    if (sessionDetails == null) return;
+    final response = await _repository.requestOwnershipTransfer(sessionDetails);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      Toast.showSuccess(
+          'Requested ${sessionDetails.startedByName} for ownership');
+      pingSessionOwner(groupDetails, 'is requesting for session ownership');
+    });
+  }
+
+  Future<void> acceptOrRejectOwnershipTransfer(bool accepted) async {
+    final sessionDetails = state.sessionState.getOrNull();
+    if (sessionDetails == null) return;
+    var updatedDetails = sessionDetails;
+    if (accepted) {
+      updatedDetails = updatedDetails.copyWith(
+          startedBy: updatedDetails.transferRequest?.requesterUid,
+          startedByName: updatedDetails.transferRequest?.requesterName,
+          transferRequest:
+              updatedDetails.transferRequest?.copyWith(accepted: true));
+    } else {
+      updatedDetails = updatedDetails.copyWith(
+          transferRequest:
+              updatedDetails.transferRequest?.copyWith(accepted: false));
+    }
+    final response =
+        await _repository.acceptOrRejectOwnershipTransfer(updatedDetails);
+    response.fold((l) {
+      Toast.showErrorMessage(l.toString());
+    }, (r) {
+      if (updatedDetails.transferRequest?.accepted ?? false) {
+        Toast.showSuccess(
+            'Ownership transferred to : ${updatedDetails.transferRequest?.requesterName}');
+      } else {
+        Toast.showSuccess('Ownership transfer request rejected');
+      }
+    });
   }
 
   bool doesItemExistInCurrentSession(SessionModel session, String itemId) {
@@ -396,5 +443,42 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
       getIt<AppRouter>().maybePop();
       getItemsForGroup(groupId);
     });
+  }
+
+  Future<void> pingSessionOwner(
+      GroupModel? groupDetails, String message) async {
+    try {
+      final sessionDetails = state.sessionState.getOrNull();
+
+      if (sessionDetails == null) {
+        Toast.showErrorMessage('No Session Found');
+      }
+      FirebaseMessaging.instance.getToken().then((token) {
+        print('📱 My device token: $token');
+      });
+      final response = await _notificationServiceRepository
+          .getAllUsersFCM([sessionDetails?.startedBy ?? '']);
+      response.fold((f) {
+        Toast.showErrorMessage(f.toString());
+      }, (r) async {
+        print('📱 Owners token: $r');
+        final currentUser = getIt<AuthCubit>().currentUser;
+        final notification = SendNotificationModel(
+            title: groupDetails?.name ?? 'TeaTally',
+            body:
+                '${(currentUser?.displayName ?? 'Someone').toUpperCase()}: $message',
+            tokens: r.map((e) => e.fcmToken).toList());
+        final response2 = await _notificationServiceRepository
+            .sendNotifications(notification);
+        response2.fold((f) {
+          Toast.showErrorMessage(f.toString());
+        }, (r) {
+          Toast.showSuccess(
+              'Asked ${sessionDetails?.startedByName ?? 'Session Owner'} to stop session');
+        });
+      });
+    } catch (e) {
+      Toast.showErrorMessage(e.toString());
+    }
   }
 }

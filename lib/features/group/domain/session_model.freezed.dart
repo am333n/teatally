@@ -44,6 +44,8 @@ mixin _$SessionModel {
   bool? get isActive => throw _privateConstructorUsedError;
   @JsonKey(name: 'selectedItems')
   List<SelectedItem>? get selectedItems => throw _privateConstructorUsedError;
+  @JsonKey(name: 'transferRequest')
+  TransferRequest? get transferRequest => throw _privateConstructorUsedError;
 
   /// Serializes this SessionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -73,7 +75,10 @@ abstract class $SessionModelCopyWith<$Res> {
       @JsonKey(name: 'updatedAt') DateTime? updatedAt,
       @JsonKey(name: 'stoppedAt') DateTime? stoppedAt,
       @JsonKey(name: 'isActive') bool? isActive,
-      @JsonKey(name: 'selectedItems') List<SelectedItem>? selectedItems});
+      @JsonKey(name: 'selectedItems') List<SelectedItem>? selectedItems,
+      @JsonKey(name: 'transferRequest') TransferRequest? transferRequest});
+
+  $TransferRequestCopyWith<$Res>? get transferRequest;
 }
 
 /// @nodoc
@@ -103,6 +108,7 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
     Object? stoppedAt = freezed,
     Object? isActive = freezed,
     Object? selectedItems = freezed,
+    Object? transferRequest = freezed,
   }) {
     return _then(_value.copyWith(
       uid: freezed == uid
@@ -153,7 +159,25 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
           ? _value.selectedItems
           : selectedItems // ignore: cast_nullable_to_non_nullable
               as List<SelectedItem>?,
+      transferRequest: freezed == transferRequest
+          ? _value.transferRequest
+          : transferRequest // ignore: cast_nullable_to_non_nullable
+              as TransferRequest?,
     ) as $Val);
+  }
+
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TransferRequestCopyWith<$Res>? get transferRequest {
+    if (_value.transferRequest == null) {
+      return null;
+    }
+
+    return $TransferRequestCopyWith<$Res>(_value.transferRequest!, (value) {
+      return _then(_value.copyWith(transferRequest: value) as $Val);
+    });
   }
 }
 
@@ -177,7 +201,11 @@ abstract class _$$SessionModelImplCopyWith<$Res>
       @JsonKey(name: 'updatedAt') DateTime? updatedAt,
       @JsonKey(name: 'stoppedAt') DateTime? stoppedAt,
       @JsonKey(name: 'isActive') bool? isActive,
-      @JsonKey(name: 'selectedItems') List<SelectedItem>? selectedItems});
+      @JsonKey(name: 'selectedItems') List<SelectedItem>? selectedItems,
+      @JsonKey(name: 'transferRequest') TransferRequest? transferRequest});
+
+  @override
+  $TransferRequestCopyWith<$Res>? get transferRequest;
 }
 
 /// @nodoc
@@ -205,6 +233,7 @@ class __$$SessionModelImplCopyWithImpl<$Res>
     Object? stoppedAt = freezed,
     Object? isActive = freezed,
     Object? selectedItems = freezed,
+    Object? transferRequest = freezed,
   }) {
     return _then(_$SessionModelImpl(
       uid: freezed == uid
@@ -255,6 +284,10 @@ class __$$SessionModelImplCopyWithImpl<$Res>
           ? _value._selectedItems
           : selectedItems // ignore: cast_nullable_to_non_nullable
               as List<SelectedItem>?,
+      transferRequest: freezed == transferRequest
+          ? _value.transferRequest
+          : transferRequest // ignore: cast_nullable_to_non_nullable
+              as TransferRequest?,
     ));
   }
 }
@@ -274,7 +307,8 @@ class _$SessionModelImpl implements _SessionModel {
       @JsonKey(name: 'updatedAt') this.updatedAt,
       @JsonKey(name: 'stoppedAt') this.stoppedAt,
       @JsonKey(name: 'isActive') this.isActive,
-      @JsonKey(name: 'selectedItems') final List<SelectedItem>? selectedItems})
+      @JsonKey(name: 'selectedItems') final List<SelectedItem>? selectedItems,
+      @JsonKey(name: 'transferRequest') this.transferRequest})
       : _selectedItems = selectedItems;
 
   factory _$SessionModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -325,8 +359,12 @@ class _$SessionModelImpl implements _SessionModel {
   }
 
   @override
+  @JsonKey(name: 'transferRequest')
+  final TransferRequest? transferRequest;
+
+  @override
   String toString() {
-    return 'SessionModel(uid: $uid, isCreatedByCurrentUser: $isCreatedByCurrentUser, docId: $docId, groupId: $groupId, startedBy: $startedBy, startedByName: $startedByName, createdAt: $createdAt, updatedBy: $updatedBy, updatedAt: $updatedAt, stoppedAt: $stoppedAt, isActive: $isActive, selectedItems: $selectedItems)';
+    return 'SessionModel(uid: $uid, isCreatedByCurrentUser: $isCreatedByCurrentUser, docId: $docId, groupId: $groupId, startedBy: $startedBy, startedByName: $startedByName, createdAt: $createdAt, updatedBy: $updatedBy, updatedAt: $updatedAt, stoppedAt: $stoppedAt, isActive: $isActive, selectedItems: $selectedItems, transferRequest: $transferRequest)';
   }
 
   @override
@@ -354,7 +392,9 @@ class _$SessionModelImpl implements _SessionModel {
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
             const DeepCollectionEquality()
-                .equals(other._selectedItems, _selectedItems));
+                .equals(other._selectedItems, _selectedItems) &&
+            (identical(other.transferRequest, transferRequest) ||
+                other.transferRequest == transferRequest));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -372,7 +412,8 @@ class _$SessionModelImpl implements _SessionModel {
       updatedAt,
       stoppedAt,
       isActive,
-      const DeepCollectionEquality().hash(_selectedItems));
+      const DeepCollectionEquality().hash(_selectedItems),
+      transferRequest);
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.
@@ -404,8 +445,9 @@ abstract class _SessionModel implements SessionModel {
       @JsonKey(name: 'updatedAt') final DateTime? updatedAt,
       @JsonKey(name: 'stoppedAt') final DateTime? stoppedAt,
       @JsonKey(name: 'isActive') final bool? isActive,
-      @JsonKey(name: 'selectedItems')
-      final List<SelectedItem>? selectedItems}) = _$SessionModelImpl;
+      @JsonKey(name: 'selectedItems') final List<SelectedItem>? selectedItems,
+      @JsonKey(name: 'transferRequest')
+      final TransferRequest? transferRequest}) = _$SessionModelImpl;
 
   factory _SessionModel.fromJson(Map<String, dynamic> json) =
       _$SessionModelImpl.fromJson;
@@ -446,6 +488,9 @@ abstract class _SessionModel implements SessionModel {
   @override
   @JsonKey(name: 'selectedItems')
   List<SelectedItem>? get selectedItems;
+  @override
+  @JsonKey(name: 'transferRequest')
+  TransferRequest? get transferRequest;
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.
@@ -916,5 +961,284 @@ abstract class _Selection implements Selection {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectionImplCopyWith<_$SelectionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TransferRequest _$TransferRequestFromJson(Map<String, dynamic> json) {
+  return _TransferRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TransferRequest {
+  @JsonKey(name: 'requesterUid')
+  String? get requesterUid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'requesterName')
+  String? get requesterName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'orginalOwner')
+  String? get orginalOwner => throw _privateConstructorUsedError;
+  @JsonKey(name: 'orginalOwnerName')
+  String? get orginalOwnerName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'accepted')
+  bool? get accepted => throw _privateConstructorUsedError;
+  @JsonKey(name: 'requestTime')
+  DateTime? get time => throw _privateConstructorUsedError;
+
+  /// Serializes this TransferRequest to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of TransferRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TransferRequestCopyWith<TransferRequest> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TransferRequestCopyWith<$Res> {
+  factory $TransferRequestCopyWith(
+          TransferRequest value, $Res Function(TransferRequest) then) =
+      _$TransferRequestCopyWithImpl<$Res, TransferRequest>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'requesterUid') String? requesterUid,
+      @JsonKey(name: 'requesterName') String? requesterName,
+      @JsonKey(name: 'orginalOwner') String? orginalOwner,
+      @JsonKey(name: 'orginalOwnerName') String? orginalOwnerName,
+      @JsonKey(name: 'accepted') bool? accepted,
+      @JsonKey(name: 'requestTime') DateTime? time});
+}
+
+/// @nodoc
+class _$TransferRequestCopyWithImpl<$Res, $Val extends TransferRequest>
+    implements $TransferRequestCopyWith<$Res> {
+  _$TransferRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of TransferRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? requesterUid = freezed,
+    Object? requesterName = freezed,
+    Object? orginalOwner = freezed,
+    Object? orginalOwnerName = freezed,
+    Object? accepted = freezed,
+    Object? time = freezed,
+  }) {
+    return _then(_value.copyWith(
+      requesterUid: freezed == requesterUid
+          ? _value.requesterUid
+          : requesterUid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      requesterName: freezed == requesterName
+          ? _value.requesterName
+          : requesterName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orginalOwner: freezed == orginalOwner
+          ? _value.orginalOwner
+          : orginalOwner // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orginalOwnerName: freezed == orginalOwnerName
+          ? _value.orginalOwnerName
+          : orginalOwnerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      accepted: freezed == accepted
+          ? _value.accepted
+          : accepted // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      time: freezed == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$TransferRequestImplCopyWith<$Res>
+    implements $TransferRequestCopyWith<$Res> {
+  factory _$$TransferRequestImplCopyWith(_$TransferRequestImpl value,
+          $Res Function(_$TransferRequestImpl) then) =
+      __$$TransferRequestImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'requesterUid') String? requesterUid,
+      @JsonKey(name: 'requesterName') String? requesterName,
+      @JsonKey(name: 'orginalOwner') String? orginalOwner,
+      @JsonKey(name: 'orginalOwnerName') String? orginalOwnerName,
+      @JsonKey(name: 'accepted') bool? accepted,
+      @JsonKey(name: 'requestTime') DateTime? time});
+}
+
+/// @nodoc
+class __$$TransferRequestImplCopyWithImpl<$Res>
+    extends _$TransferRequestCopyWithImpl<$Res, _$TransferRequestImpl>
+    implements _$$TransferRequestImplCopyWith<$Res> {
+  __$$TransferRequestImplCopyWithImpl(
+      _$TransferRequestImpl _value, $Res Function(_$TransferRequestImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TransferRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? requesterUid = freezed,
+    Object? requesterName = freezed,
+    Object? orginalOwner = freezed,
+    Object? orginalOwnerName = freezed,
+    Object? accepted = freezed,
+    Object? time = freezed,
+  }) {
+    return _then(_$TransferRequestImpl(
+      requesterUid: freezed == requesterUid
+          ? _value.requesterUid
+          : requesterUid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      requesterName: freezed == requesterName
+          ? _value.requesterName
+          : requesterName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orginalOwner: freezed == orginalOwner
+          ? _value.orginalOwner
+          : orginalOwner // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orginalOwnerName: freezed == orginalOwnerName
+          ? _value.orginalOwnerName
+          : orginalOwnerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      accepted: freezed == accepted
+          ? _value.accepted
+          : accepted // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      time: freezed == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$TransferRequestImpl implements _TransferRequest {
+  const _$TransferRequestImpl(
+      {@JsonKey(name: 'requesterUid') this.requesterUid,
+      @JsonKey(name: 'requesterName') this.requesterName,
+      @JsonKey(name: 'orginalOwner') this.orginalOwner,
+      @JsonKey(name: 'orginalOwnerName') this.orginalOwnerName,
+      @JsonKey(name: 'accepted') this.accepted,
+      @JsonKey(name: 'requestTime') this.time});
+
+  factory _$TransferRequestImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TransferRequestImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'requesterUid')
+  final String? requesterUid;
+  @override
+  @JsonKey(name: 'requesterName')
+  final String? requesterName;
+  @override
+  @JsonKey(name: 'orginalOwner')
+  final String? orginalOwner;
+  @override
+  @JsonKey(name: 'orginalOwnerName')
+  final String? orginalOwnerName;
+  @override
+  @JsonKey(name: 'accepted')
+  final bool? accepted;
+  @override
+  @JsonKey(name: 'requestTime')
+  final DateTime? time;
+
+  @override
+  String toString() {
+    return 'TransferRequest(requesterUid: $requesterUid, requesterName: $requesterName, orginalOwner: $orginalOwner, orginalOwnerName: $orginalOwnerName, accepted: $accepted, time: $time)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TransferRequestImpl &&
+            (identical(other.requesterUid, requesterUid) ||
+                other.requesterUid == requesterUid) &&
+            (identical(other.requesterName, requesterName) ||
+                other.requesterName == requesterName) &&
+            (identical(other.orginalOwner, orginalOwner) ||
+                other.orginalOwner == orginalOwner) &&
+            (identical(other.orginalOwnerName, orginalOwnerName) ||
+                other.orginalOwnerName == orginalOwnerName) &&
+            (identical(other.accepted, accepted) ||
+                other.accepted == accepted) &&
+            (identical(other.time, time) || other.time == time));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, requesterUid, requesterName,
+      orginalOwner, orginalOwnerName, accepted, time);
+
+  /// Create a copy of TransferRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TransferRequestImplCopyWith<_$TransferRequestImpl> get copyWith =>
+      __$$TransferRequestImplCopyWithImpl<_$TransferRequestImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TransferRequestImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TransferRequest implements TransferRequest {
+  const factory _TransferRequest(
+          {@JsonKey(name: 'requesterUid') final String? requesterUid,
+          @JsonKey(name: 'requesterName') final String? requesterName,
+          @JsonKey(name: 'orginalOwner') final String? orginalOwner,
+          @JsonKey(name: 'orginalOwnerName') final String? orginalOwnerName,
+          @JsonKey(name: 'accepted') final bool? accepted,
+          @JsonKey(name: 'requestTime') final DateTime? time}) =
+      _$TransferRequestImpl;
+
+  factory _TransferRequest.fromJson(Map<String, dynamic> json) =
+      _$TransferRequestImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'requesterUid')
+  String? get requesterUid;
+  @override
+  @JsonKey(name: 'requesterName')
+  String? get requesterName;
+  @override
+  @JsonKey(name: 'orginalOwner')
+  String? get orginalOwner;
+  @override
+  @JsonKey(name: 'orginalOwnerName')
+  String? get orginalOwnerName;
+  @override
+  @JsonKey(name: 'accepted')
+  bool? get accepted;
+  @override
+  @JsonKey(name: 'requestTime')
+  DateTime? get time;
+
+  /// Create a copy of TransferRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TransferRequestImplCopyWith<_$TransferRequestImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

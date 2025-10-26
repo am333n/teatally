@@ -110,6 +110,26 @@ class GroupRemoteService with BaseFirebase {
         Collections.counterSession, sessionDetails.docId, sessionJson);
   }
 
+  BaseReturnType requestOwnershipTransfer(SessionModel sessionDetails) {
+    sessionDetails = sessionDetails.copyWith(
+        transferRequest: TransferRequest(
+            requesterName: super.userData?.displayName,
+            time: DateTime.now(),
+            accepted: null,
+            orginalOwner: sessionDetails.startedBy,
+            orginalOwnerName: sessionDetails.startedByName,
+            requesterUid: super.userData?.uid));
+    Map<String, dynamic> sessionJson = sessionDetails.toJson();
+    return super.updateItem(
+        Collections.counterSession, sessionDetails.docId, sessionJson);
+  }
+
+  BaseReturnType acceptOrRejectOwnershipTransfer(SessionModel sessionDetails) {
+    Map<String, dynamic> sessionJson = sessionDetails.toJson();
+    return super.updateItem(
+        Collections.counterSession, sessionDetails.docId, sessionJson);
+  }
+
   BaseReturnType addItemForCategory(ItemModel itemDetail) {
     itemDetail = itemDetail.copyWith(createdBy: super.userData?.uid);
     return super.addItem(Collections.items, itemDetail.toJson());

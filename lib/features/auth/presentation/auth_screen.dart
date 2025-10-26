@@ -77,24 +77,56 @@ class AuthScreen extends StatelessWidget {
                               );
                             }),
                         Gap.verticalMedium,
-                        CommonWidgets.coloredTextButton(context,
-                            isLoading: state.status is AuthLoading,
-                            text: 'Login', onPressed: () {
-                          if (_formkey.currentState?.validate() ?? false) {
-                            final email =
-                                _formkey.currentState?.fields['email']?.value;
-                            final password =
-                                _formkey.currentState?.fields['pass']?.value;
-                            context
-                                .read<AuthCubit>()
-                                .signInWithEmailAndPassowrd(email, password);
-                          }
-                        }),
-                        VerticalSpacing(15),
-                        CommonWidgets.coloredTextButton(context,
-                            text: 'Sign In With Google', onPressed: () {
-                          context.read<AuthCubit>().signInWithGoogle();
-                        })
+                        SizedBox(
+                          height: kTextTabBarHeight * 3,
+                          child: AnimatedSwitcher(
+                            duration: AppAnimations.transitionDuration,
+                            transitionBuilder:
+                                AppAnimations.smoothSwitcherTransition,
+                            child: state.status is AuthLoading
+                                ? Center(
+                                    key: ValueKey('Loading'),
+                                    child: SizedBox(
+                                        child: CircularProgressIndicator()))
+                                : Column(
+                                    key: ValueKey('Loaded'),
+                                    children: [
+                                      CommonWidgets.coloredTextButton(context,
+                                          text: 'Login', onPressed: () {
+                                        if (_formkey.currentState?.validate() ??
+                                            false) {
+                                          final email = _formkey.currentState
+                                              ?.fields['email']?.value;
+                                          final password = _formkey.currentState
+                                              ?.fields['pass']?.value;
+                                          context
+                                              .read<AuthCubit>()
+                                              .signInWithEmailAndPassowrd(
+                                                  email, password);
+                                        }
+                                      }),
+                                      VerticalSpacing(15),
+                                      CommonWidgets.coloredTextButton(context,
+                                          leading: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: Spacing.medium),
+                                            child: SizedBox(
+                                              height: Spacing.large,
+                                              width: Spacing.large,
+                                              child: Image.asset(
+                                                  'assets/bevimages/google_icon.png'),
+                                            ),
+                                          ),
+                                          text: 'Sign In With Google',
+                                          onPressed: () {
+                                        context
+                                            .read<AuthCubit>()
+                                            .signInWithGoogle();
+                                      }),
+                                    ],
+                                  ),
+                          ),
+                        )
                       ],
                     ),
                   ),

@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:teatally/core/style_constants.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/styles/text/txt_styles.dart';
 import 'package:teatally/core/theme/application/cubit/theme_cubit.dart';
@@ -40,7 +41,7 @@ class CommonWidgets {
       curve: Curves.easeInOut, // Smooth curve for animation
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: RoundedCorner.large,
         border: Border.all(color: color, width: 1),
       ),
       child: Material(

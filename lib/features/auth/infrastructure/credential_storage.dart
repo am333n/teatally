@@ -80,10 +80,10 @@ class CredentialStorage {
     return prefs.getString(_keyEmail);
   }
 
-  static Future<String?> getUid() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_keyUid);
-  }
+  // static Future<String?> getUid() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString(_keyUid);
+  // }
 
   static Future<void> clearUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

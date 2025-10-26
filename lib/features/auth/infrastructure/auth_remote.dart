@@ -36,32 +36,49 @@ class AuthRemoteService with BaseFirebase {
 
   BaseReturnType signInWithGoogle() async {
     try {
-      final google = GoogleSignIn();
-      await google.signOut();
-      final googleUser = await google.signIn();
-      final googleAuth = await googleUser?.authentication;
-      if (googleAuth != null) {
-        final cred = GoogleAuthProvider.credential(
-            idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-        return RemoteResponse.success(cred);
-      } else {
-        return const RemoteResponse.failure('Something went wrong');
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+      final googleSignIn = GoogleSignIn();
+
+      // Don't force signOut — this causes auth instability sometimes
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        return const RemoteResponse.failure('Sign-in cancelled by user');
       }
+
+      final googleAuth = await googleUser.authentication;
+
+      if (googleAuth.idToken == null || googleAuth.accessToken == null) {
+        return const RemoteResponse.failure('Google authentication failed');
+      }
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return RemoteResponse.success(credential);
     } catch (e) {
-      return RemoteResponse.failure(e);
+      return RemoteResponse.failure(
+        FailureHandler.handleGenericException(e as Exception),
+      );
     }
   }
 
   BaseReturnType signInWithCredential(AuthCredential credential) async {
     try {
-      final response = await _firebaseAuth.signInWithCredential(credential);
+      final response =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
       return RemoteResponse.success(response);
     } on FirebaseAuthException catch (e) {
       return RemoteResponse.failure(
-          FailureHandler.handleFirebaseAuthException(e));
+        FailureHandler.handleFirebaseAuthException(e),
+      );
     } catch (e) {
       return RemoteResponse.failure(
-          FailureHandler.handleGenericException(e as Exception));
+        FailureHandler.handleGenericException(e as Exception),
+      );
     }
   }
 
@@ -104,10 +121,35 @@ class AuthRemoteService with BaseFirebase {
   }
 
   BaseReturnType addUserDetailsToFireStore(UserData userCred) async {
-    return super.addItem(
-      Collections.users,
-      userCred.toJson(),
-      uniqueField: 'uid',
-    );
+    try {
+      const uniqueField = 'uid';
+      final data = userCred.toJson();
+      final collectionPath = Collections.users;
+
+      // Check for uniqueness if needed
+      if (uniqueField != null && data.containsKey(uniqueField)) {
+        final querySnapshot = await firebaseFirestore
+            .collection(collectionPath)
+            .where(uniqueField, isEqualTo: data[uniqueField])
+            .get();
+        if (querySnapshot.docs.isNotEmpty) {
+          return const RemoteResponse.failure(
+            f.Failure.serverError(message: '$uniqueField already exists.'),
+          );
+        }
+      }
+
+      final response =
+          await firebaseFirestore.collection(collectionPath).add(data);
+
+      return RemoteResponse.success({
+        'docId': response.id,
+      });
+    } on FirebaseException catch (e) {
+      return RemoteResponse.failure(FailureHandler.handleFirestoreException(e));
+    } catch (e) {
+      return RemoteResponse.failure(
+          FailureHandler.handleGenericException(e as Exception));
+    }
   }
 }

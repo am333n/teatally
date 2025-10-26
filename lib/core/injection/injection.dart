@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:teatally/core/injection/injection.config.dart';
+import 'package:teatally/core/network/interceptors/logging_interceptor.dart';
 import 'package:teatally/core/router/router.dart';
 
 final getIt = GetIt.instance;
@@ -11,4 +13,7 @@ void configureDependencies() {
   GetIt.I.registerSingleton<GlobalKey<ScaffoldMessengerState>>(
       GlobalKey<ScaffoldMessengerState>());
   getIt.registerSingleton<AppRouter>(AppRouter());
+  final dio = getIt<Dio>(instanceName: 'commonInstance');
+  dio.options = BaseOptions();
+  dio.interceptors.add(LoggingInterceptor(enableLogging: true));
 }

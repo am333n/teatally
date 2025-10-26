@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/foundation.dart';
@@ -30,6 +31,8 @@ mixin BaseRepo {
       );
     } on FirebaseException catch (e) {
       return Left(FailureHandler.handleFirestoreException(e));
+    } on DioException catch (e) {
+      return Left(Failure.serverError(message: e.toString()));
     }
   }
 
@@ -80,6 +83,8 @@ mixin BaseRepo {
       );
     } on FirebaseException catch (e) {
       return Left(FailureHandler.handleFirestoreException(e));
+    } on DioException catch (e) {
+      return Left(Failure.serverError(message: e.toString()));
     }
   }
 }

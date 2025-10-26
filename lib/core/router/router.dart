@@ -9,6 +9,8 @@ import 'package:teatally/features/group/domain/categories_model.dart';
 import 'package:teatally/features/group/presentation/components/add_item_page.dart';
 import 'package:teatally/features/group/presentation/pages/group_details.dart';
 import 'package:teatally/features/group/presentation/pages/group_details_edit_page.dart';
+import 'package:teatally/features/home/domain/users_model.dart';
+import 'package:teatally/features/home/presentation/components/add%20group/group_form.dart';
 import 'package:teatally/features/home/presentation/home_page.dart';
 import 'package:teatally/features/expense/presentation/expense_form_page.dart';
 
@@ -29,6 +31,7 @@ class AppRouter extends RootStackRouter {
         _buildRoute(page: ExpenseFormRoute.page),
         _buildRoute(page: ExpenseListRoute.page),
         _buildRoute(page: ExpenseDetailRoute.page),
+        _buildRoute(page: GroupFormRoute.page),
       ];
 
   AutoRoute _buildRoute({

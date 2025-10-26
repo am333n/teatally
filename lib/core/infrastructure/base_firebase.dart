@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 import 'package:teatally/core/infrastructure/failure_handler.dart';
 import 'package:teatally/core/infrastructure/remote_response.dart';
 import 'package:teatally/core/injection/injection.dart';
@@ -8,7 +9,8 @@ import 'failure.dart'; // Assuming Failure class is already defined
 
 mixin BaseFirebase {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  final userData = getIt<AuthCubit>().state.status.getUserDataOrNull();
+  UserData? get userData =>
+      GetIt.I<AuthCubit>().state.status.getUserDataOrNull();
   // Add a document or item to any Firestore collection
   Future<RemoteResponse> addItem(
     String collectionPath,

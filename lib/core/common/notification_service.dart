@@ -171,33 +171,5 @@ class NotificationService {
 
     final String type = parts[1];
     final String? id = parts.length > 2 ? parts[2] : null;
-
-    // switch (type) {
-    //   case 'alert':
-    //     if (id != null) {
-    //       print("🚨 Opening alert with ID: $id");
-    //       getIt<AppRouter>().push(DocumentListingRoute());
-    //       final context = getIt<AppRouter>().navigatorKey.currentContext;
-    //       if (context != null) {
-    //         context.read<DocumentListingBloc>().add(
-    //               DocumentListingEvent.setAlertFromHomeScreen(
-    //                 int.tryParse(id) ?? 0,
-    //               ),
-    //             );
-    //       }
-    //     } else {
-    //       getIt<AppRouter>().push(HomeRoute());
-    //     }
-    //     break;
-    //   case 'document':
-    //     if (id != null) {
-    //       print("📄 Opening document with ID: $id");
-    //     } else {
-    //       print("📄 Opening document list");
-    //     }
-    //     break;
-    //   default:
-    //     print("ℹ️ Unknown URL type: $type");
-    // }
   }
 }

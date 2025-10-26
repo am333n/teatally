@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teatally/core/app_animations.dart';
 import 'package:teatally/core/styles/text/txt.dart';
 import 'package:teatally/core/theme/presentation/app_theme.dart';
 import 'package:teatally/core/widgets/common_widgets.dart';
@@ -9,11 +10,15 @@ import 'package:teatally/features/group/application/cubit/group_detail_state.dar
 import 'package:teatally/features/group/domain/categories_model.dart';
 import 'package:teatally/features/group/domain/group_details_state_model.dart';
 import 'package:teatally/features/group/presentation/components/add_catgeory_dialog.dart';
+import 'package:teatally/features/group/presentation/components/ping_memebers_dialog.dart';
+import 'package:teatally/features/home/domain/group_model.dart';
 
 class CategoriesSelector extends StatelessWidget {
-  const CategoriesSelector({super.key, required this.groupId});
+  const CategoriesSelector(
+      {super.key, required this.groupId, required this.groupDetails});
   // final GroupDetailsLoadedStateModel loadedStateData;
   final String groupId;
+  final GroupModel? groupDetails;
 
   void handleCategoriesAdd(
       {required BuildContext context,
@@ -26,6 +31,17 @@ class CategoriesSelector extends StatelessWidget {
             groupId: groupId,
             isEdit: isEdit,
             categoriesDetail: categoriesDetail,
+          );
+        });
+  }
+
+  void handlePingMembers(
+      {required BuildContext context, GroupModel? groupdetails}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return PingMemebersDialog(
+            groupDetails: groupdetails,
           );
         });
   }
@@ -84,11 +100,11 @@ class CategoriesSelector extends StatelessWidget {
                   height: kToolbarHeight,
                   child: ListView.builder(
                     itemCount: (categories?.length ?? 0) +
-                        1, // Add +1 for the "Add" button
+                        2, // Add +1 for the "Add" button
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      if (index == categories?.length) {
+                      if (index == ((categories?.length))) {
                         return Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: ChoiceChip(
@@ -101,6 +117,31 @@ class CategoriesSelector extends StatelessWidget {
                             selected: false,
                             onSelected: (value) =>
                                 handleCategoriesAdd(context: context),
+                          ),
+                        );
+                      } else if (index == categories.length + 1) {
+                        return AnimatedSize(
+                          duration: AppAnimations.transitionDuration,
+                          child: AnimatedOpacity(
+                            duration: AppAnimations.transitionDuration,
+                            opacity: state.membersState.isLoaded ? 1 : 0,
+                            child: state.membersState.isLoaded
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: ChoiceChip(
+                                      backgroundColor: context
+                                          .theme.appColors.formBackground,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      padding: const EdgeInsets.all(5),
+                                      label: const Icon(Icons.message_outlined),
+                                      selected: false,
+                                      onSelected: (value) => handlePingMembers(
+                                          context: context,
+                                          groupdetails: groupDetails),
+                                    ))
+                                : const SizedBox.shrink(),
                           ),
                         );
                       } else {

@@ -76,7 +76,7 @@ class Gap {
 class RoundedCorner {
   static const double smallRadius = 4;
   static const double mediumRadius = 8;
-  static const double largeRadius = 16;
+  static const double largeRadius = 20;
   static const double verticalRadius = 12;
   static const double horizontalRadius = 12;
 
