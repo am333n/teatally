@@ -10,8 +10,16 @@ class SendNotificationModel with _$SendNotificationModel {
     @JsonKey(name: 'title') required String title,
     @JsonKey(name: 'body') required String body,
     @JsonKey(name: 'tokens') required List<String> tokens,
-    @JsonKey(name: 'data') Map<String, dynamic>? data,
+    @JsonKey(name: 'data') NotificationData? data,
   }) = _SendNotificationModel;
   factory SendNotificationModel.fromJson(Map<String, dynamic> json) =>
       _$SendNotificationModelFromJson(json);
+}
+
+@freezed
+class NotificationData with _$NotificationData {
+  const factory NotificationData({@JsonKey(name: 'type') String? type}) =
+      _NotificationData;
+  factory NotificationData.fromJson(Map<String, dynamic> json) =>
+      _$NotificationDataFromJson(json);
 }

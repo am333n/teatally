@@ -3,6 +3,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:teatally/app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:teatally/core/common/local_notification_service.dart';
+import 'package:teatally/core/common/notification_service.dart';
 import 'package:teatally/core/injection/injection.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,5 +15,6 @@ void main() async {
   );
   configureDependencies();
   await getIt<LocalNotificationService>().init();
+  await getIt<NotificationService>().initialize();
   runApp(const MyApp());
 }

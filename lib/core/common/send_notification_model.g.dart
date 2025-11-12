@@ -13,7 +13,9 @@ _$SendNotificationModelImpl _$$SendNotificationModelImplFromJson(
       body: json['body'] as String,
       tokens:
           (json['tokens'] as List<dynamic>).map((e) => e as String).toList(),
-      data: json['data'] as Map<String, dynamic>?,
+      data: json['data'] == null
+          ? null
+          : NotificationData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$SendNotificationModelImplToJson(
@@ -22,5 +24,17 @@ Map<String, dynamic> _$$SendNotificationModelImplToJson(
       'title': instance.title,
       'body': instance.body,
       'tokens': instance.tokens,
-      'data': instance.data,
+      'data': instance.data?.toJson(),
+    };
+
+_$NotificationDataImpl _$$NotificationDataImplFromJson(
+        Map<String, dynamic> json) =>
+    _$NotificationDataImpl(
+      type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$NotificationDataImplToJson(
+        _$NotificationDataImpl instance) =>
+    <String, dynamic>{
+      'type': instance.type,
     };

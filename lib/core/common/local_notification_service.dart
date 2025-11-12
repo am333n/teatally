@@ -14,6 +14,8 @@ class LocalNotificationService {
   // Channel name constants
 
   static const String sessionChannel = 'session_channel';
+  static const String alertChannel = 'alerts';
+  static const String messageChannel = 'message';
 
   final FlutterLocalNotificationsPlugin notifications =
       FlutterLocalNotificationsPlugin();
@@ -36,13 +38,13 @@ class LocalNotificationService {
     await notifications.initialize(
       initSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
-        final payload = response.payload ?? '';
-        log(payload.toString());
-        if (payload.startsWith('{') && payload.contains('"isDownload":true')) {
-          // _handleDownloadClick(payload, response.id);
-        } else {
-          NotificationService.handleNotificationClick(_parsePayload(payload));
-        }
+        // final payload = response.payload ?? '';
+        // log(payload.toString());
+        // if (payload.startsWith('{') && payload.contains('"isDownload":true')) {
+        //   // _handleDownloadClick(payload, response.id);
+        // } else {
+        //   NotificationService.handleNotificationClick(_parsePayload(payload));
+        // }
       },
     );
 
@@ -76,22 +78,42 @@ class LocalNotificationService {
         importance: Importance.high,
       ),
     );
+    await android?.createNotificationChannel(
+      const AndroidNotificationChannel(
+        alertChannel,
+        'Group Alert Notifications',
+        description: 'Group Alert Notifications',
+        importance: Importance.high,
+      ),
+    );
+    await android?.createNotificationChannel(
+      const AndroidNotificationChannel(
+        messageChannel,
+        'Group Message Notifications',
+        description: 'Group Message Notifications',
+        importance: Importance.high,
+      ),
+    );
   }
 
   // -------------------- GENERAL PUSH NOTIFICATIONS --------------------
 
-  Future<void> showPushNotification(RemoteMessage message) async {
+  Future<void> showPushNotification(RemoteMessage message,
+      {String? channel}) async {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
 
     if (notification != null && android != null) {
+      final selectedChannel =
+          channel ?? LocalNotificationService.sessionChannel;
+
       await notifications.show(
         notification.hashCode,
         notification.title,
         notification.body,
-        const NotificationDetails(
+        NotificationDetails(
           android: AndroidNotificationDetails(
-            sessionChannel,
+            selectedChannel,
             'High Importance Notifications',
             channelDescription:
                 'This channel is used for important notifications.',
@@ -99,7 +121,7 @@ class LocalNotificationService {
             priority: Priority.high,
             icon: '@mipmap/ic_stat_icon',
           ),
-          iOS: DarwinNotificationDetails(
+          iOS: const DarwinNotificationDetails(
             presentAlert: true,
             presentBadge: true,
             presentSound: true,

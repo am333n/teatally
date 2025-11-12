@@ -139,7 +139,11 @@ class NotificationService {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
     if (notification != null && android != null) {
-      await getIt<LocalNotificationService>().showPushNotification(message);
+      final channel = message.data['type'] as String?;
+      await getIt<LocalNotificationService>().showPushNotification(
+        message,
+        channel: channel,
+      );
     }
   }
 

@@ -91,6 +91,15 @@ flutter_native_splash:
   image: assets/bevimages/teaicon.png
   android: true
   ios: true
+  android_12:
+    # Full background color
+    color: "#afd170"
+
+    # Splash icon (must be circular for seamless display)
+    image: assets/bevimages/teaicon.png
+
+    # Background color behind circular icon (match color for no white corners)
+    icon_background_color: "#afd170"
 flutter_launcher_icons:
   android: true
   ios: true

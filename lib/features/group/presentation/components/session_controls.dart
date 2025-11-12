@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teatally/core/app_animations.dart';
 import 'package:teatally/core/app_colors.dart';
 import 'package:teatally/core/common/extensions.dart';
+import 'package:teatally/core/common/local_notification_service.dart';
 import 'package:teatally/core/router/router.dart';
 import 'package:teatally/core/style_constants.dart';
 import 'package:teatally/core/styles/text/txt.dart';
@@ -80,6 +81,11 @@ class SessionControls extends StatelessWidget {
                                 .read<ExpenseCubit>()
                                 .setUpExpenseDataFromSession(
                                     data, state.membersState.getOrNull() ?? []);
+                            context.read<GroupDetailCubit>().pingMembers(
+                                groupdetails,
+                                '${context.currentUser?.displayName} is submitting expense details. Kindly clear your session.',
+                                null,
+                                channel: LocalNotificationService.alertChannel);
                             AutoRouter.of(context).push(
                                 ExpenseFormRoute(sessionDocId: data?.docId));
                           })

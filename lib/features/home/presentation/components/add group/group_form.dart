@@ -211,30 +211,51 @@ class _GroupFormPageState extends State<GroupFormPage> {
   Container _buildUserSearchBox(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Theme.of(context).appColors.formBorder)),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Theme.of(context).appColors.formBorder),
+      ),
       child: Column(
         children: [
-          SearchBar(
-              controller: _searchController,
-              hintText: 'Search Users',
-              leading: Icon(
-                Icons.search,
-                color:
-                    Theme.of(context).appColors.fontSecondary.withOpacity(0.5),
-              ),
-              hintStyle: WidgetStateProperty.all(TextStyles.getTextStyle(
-                context,
-                TxtStyle.bodyLRegular,
-                color:
-                    Theme.of(context).appColors.fontSecondary.withOpacity(0.5),
-              )),
-              elevation: WidgetStateProperty.all(0),
-              shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15))),
-              backgroundColor: WidgetStateProperty.all(
-                Theme.of(context).appColors.formBackground,
-              )),
+          SearchAnchor(
+            builder: (BuildContext context, SearchController controller) {
+              return SearchBar(
+                controller: controller,
+                hintText: 'Search Users',
+                leading: Icon(
+                  Icons.search,
+                  color: Theme.of(context)
+                      .appColors
+                      .fontSecondary
+                      .withOpacity(0.5),
+                ),
+                hintStyle: WidgetStateProperty.all(TextStyles.getTextStyle(
+                  context,
+                  TxtStyle.bodyLRegular,
+                  color: Theme.of(context)
+                      .appColors
+                      .fontSecondary
+                      .withOpacity(0.5),
+                )),
+                elevation: WidgetStateProperty.all(0),
+                shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                )),
+                backgroundColor: WidgetStateProperty.all(
+                  Theme.of(context).appColors.formBackground,
+                ),
+                onTap: () {
+                  controller.openView();
+                },
+                onChanged: (_) {
+                  controller.openView();
+                },
+              );
+            },
+            suggestionsBuilder:
+                (BuildContext context, SearchController controller) {
+              return _buildSuggestions(context, controller.text);
+            },
+          ),
           if (_selectedUsers.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
@@ -266,45 +287,49 @@ class _GroupFormPageState extends State<GroupFormPage> {
                 ],
               ),
             ),
-          if (_searchQuery.isNotEmpty)
-            Expanded(
-              child: BlocBuilder<HomePageCubit, HomePageState>(
-                builder: (context, state) {
-                  return ListView(shrinkWrap: true, children: [
-                    ..._getSuggestions(
-                            state.usersStatus.getOrNull() ?? [], _searchQuery)
-                        .map((user) {
-                      final isSelected = _selectedUsers.contains(user);
-                      return ListTile(
-                          title: Text(user?.displayName ?? 'No Name'),
-                          subtitle: Text(user?.email ?? 'No Email'),
-                          trailing: IconButton(
-                            onPressed: isSelected
-                                ? () {
-                                    setState(() {
-                                      if (_selectedUsers.contains(user)) {
-                                        _selectedUsers.remove(user);
-                                      }
-                                    });
-                                  }
-                                : () {
-                                    setState(() {
-                                      _selectedUsers.add(user);
-                                    });
-                                  },
-                            icon: isSelected
-                                ? Icon(Icons.check,
-                                    color: Theme.of(context).appColors.primary)
-                                : const Icon(Icons.add),
-                          ));
-                    }),
-                  ]);
-                },
-              ),
-            ),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildSuggestions(BuildContext context, String searchQuery) {
+    final state = context.read<HomePageCubit>().state;
+    final users = state.usersStatus.getOrNull() ?? [];
+    final suggestions = _getSuggestions(users, searchQuery);
+
+    return suggestions.map((user) {
+      final isSelected = _selectedUsers.contains(user);
+      return ListTile(
+        title: Text(user?.displayName ?? 'No Name'),
+        subtitle: Text(user?.email ?? 'No Email'),
+        trailing: IconButton(
+          onPressed: () {
+            // Use a context that can trigger setState
+            Navigator.of(context).pop(); // Close the search view first
+            setState(() {
+              if (isSelected) {
+                _selectedUsers.remove(user);
+              } else {
+                _selectedUsers.add(user);
+              }
+            });
+          },
+          icon: isSelected
+              ? Icon(Icons.check, color: Theme.of(context).appColors.primary)
+              : const Icon(Icons.add),
+        ),
+        onTap: () {
+          Navigator.of(context).pop(); // Close the search view first
+          setState(() {
+            if (isSelected) {
+              _selectedUsers.remove(user);
+            } else {
+              _selectedUsers.add(user);
+            }
+          });
+        },
+      );
+    }).toList();
   }
 
   List<UserModel?> _getSuggestions(List<UserModel> users, String query) {

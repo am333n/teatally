@@ -117,6 +117,17 @@ class AuthCubit extends HydratedCubit<AuthState> {
     getIt<AppRouter>().replace(const HomeRoute());
   }
 
+  void resetState() {
+    if (state.status is AuthLoading) {
+      emit(state.copyWith(status: const UnAuthenticated()));
+    } else if (state.status is UnAuthenticated) {
+      // Reset UnAuthenticated state with no error message
+      emit(state.copyWith(
+        status: const UnAuthenticated(errorMessage: null),
+      ));
+    }
+  }
+
   UserData? get currentUser => state.status.getUserDataOrNull();
 
   Future<UserData?> checkIfUserDataExist(String? email) async {

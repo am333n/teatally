@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:teatally/core/common/api_state.dart';
+import 'package:teatally/core/common/local_notification_service.dart';
 import 'package:teatally/core/common/notification_service_repository.dart';
 import 'package:teatally/core/common/send_notification_model.dart';
 import 'package:teatally/core/infrastructure/failure.dart';
@@ -467,7 +468,9 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
             title: groupDetails?.name ?? 'TeaTally',
             body:
                 '${(currentUser?.displayName ?? 'Someone').toUpperCase()}: $message',
-            tokens: r.map((e) => e.fcmToken).toList());
+            tokens: r.map((e) => e.fcmToken).toList(),
+            data: const NotificationData(
+                type: LocalNotificationService.sessionChannel));
         final response2 = await _notificationServiceRepository
             .sendNotifications(notification);
         response2.fold((f) {
@@ -480,5 +483,37 @@ class GroupDetailCubit extends Cubit<GroupDetailState> {
     } catch (e) {
       Toast.showErrorMessage(e.toString());
     }
+  }
+
+  Future<void> pingMembers(
+      GroupModel? groupDetails, String? message, String? senderName,
+      {String? channel}) async {
+    if (message == null) {
+      return;
+    }
+    final membersList = state.membersState.getOrNull();
+    if (membersList == null) {
+      return;
+    }
+    final membersUIDs = membersList?.map((e) => e.uid).toList();
+    if (membersUIDs == null || membersUIDs.isEmpty) {
+      return;
+    }
+    final membersToken =
+        await _notificationServiceRepository.getAllUsersFCM(membersUIDs);
+    membersToken.fold((f) {
+      Toast.showErrorMessage(f.toString());
+    }, (r) async {
+      final notification = SendNotificationModel(
+          title: groupDetails?.name ?? 'TeaTally',
+          body: "${senderName != null ? "[$senderName] " : ''}$message",
+          tokens: r.map((e) => e.fcmToken).toList(),
+          data: NotificationData(type: channel));
+      final response2 =
+          await _notificationServiceRepository.sendNotifications(notification);
+      response2.fold((f) {
+        Toast.showErrorMessage(f.toString());
+      }, (r) {});
+    });
   }
 }

@@ -41,9 +41,7 @@ class _HomePageState extends State<HomePage> {
   int? selectedBeverageTypeIndex;
   @override
   void initState() {
-    getIt<NotificationService>().initialize();
     context.read<HomePageCubit>().loadGroups();
-
     super.initState();
   }
 

@@ -12,37 +12,47 @@ import 'package:teatally/core/widgets/form_components.dart';
 import 'package:teatally/features/auth/application/cubit/auth_cubit.dart';
 
 @RoutePage()
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   AuthScreen({super.key});
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  @override
+  void initState() {
+    context.read<AuthCubit>().resetState();
+    super.initState();
+  }
+
   final GlobalKey<FormBuilderState> _formkey = GlobalKey<FormBuilderState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return Scaffold(
           body: SafeArea(
-            child: Column(
+            child: ListView(
+              padding: Spacing.all,
               children: [
-                Padding(
-                  padding: Spacing.all,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/bevimages/tealogo.png',
-                        height: 160,
-                        width: double.maxFinite,
-                      ),
-                      const Txt(
-                        'TeaTally',
-                        style: TxtStyle.headerLBold,
-                      ),
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/bevimages/tealogo.png',
+                      height: 160,
+                      width: double.maxFinite,
+                    ),
+                    const Txt(
+                      'TeaTally',
+                      style: TxtStyle.headerLBold,
+                    ),
+                  ],
                 ),
                 Container(
                   color: context.theme.dialogBackgroundColor,
-                  padding: EdgeInsets.all(15),
                   child: FormBuilder(
                     key: _formkey,
                     child: Column(
